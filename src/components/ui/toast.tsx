@@ -23,15 +23,15 @@ const ToastViewport = React.forwardRef<
 ToastViewport.displayName = ToastPrimitives.Viewport.displayName;
 
 const toastVariants = cva(
-  'w-[70%] mx-auto group pointer-events-auto relative flex items-center justify-between space-x-2 overflow-hidden rounded-none border p-4 shadow-lg transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-top-full data-[state=open]:slide-in-from-top-full',
+  'w-[70%] mx-auto group pointer-events-auto relative flex items-center space-x-2 justify-between overflow-hidden rounded-none border p-2 transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-top-full data-[state=open]:slide-in-from-top-full',
   {
     variants: {
       variant: {
-        default: 'border bg-white dark:bg-gray-900 text-gray-900 dark:text-white',
+        default: 'border bg-white dark:bg-gray-900 text-white',
         destructive:
-          'destructive group border-red-200 bg-red-100 text-red-800 dark:border-red-800 dark:bg-red-900 dark:text-red-200',
+          'destructive group bg-red-500 text-white',
         success:
-          'border-gray-200 bg-green-200 text-green-900 dark:border-gray-700 dark:bg-green-800 dark:text-green-100',
+          'bg-green-500 text-white',
       },
     },
     defaultVariants: {
@@ -62,7 +62,7 @@ const ToastAction = React.forwardRef<
   <ToastPrimitives.Action
     ref={ref}
     className={cn(
-      'inline-flex h-8 shrink-0 items-center justify-center rounded-none border bg-transparent px-3 text-sm font-medium transition-colors hover:bg-secondary focus:outline-none focus:ring-1 focus:ring-ring disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-muted/40 group-[.destructive]:hover:border-destructive/30 group-[.destructive]:hover:bg-destructive group-[.destructive]:hover:text-destructive-foreground group-[.destructive]:focus:ring-destructive',
+      'inline-flex h-8 shrink-0 items-center justify-center rounded-none border bg-transparent px-3 text-sm font-medium transition-colors hover:bg-white/20 focus:outline-none focus:ring-1 focus:ring-white disabled:pointer-events-none disabled:opacity-50 text-white group-[.destructive]:border-white group-[.destructive]:hover:border-white group-[.destructive]:hover:bg-white/20 group-[.destructive]:hover:text-white group-[.destructive]:focus:ring-white',
       className
     )}
     {...props}
@@ -77,7 +77,7 @@ const ToastClose = React.forwardRef<
   <ToastPrimitives.Close
     ref={ref}
     className={cn(
-      'absolute right-1 top-1 rounded-none p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none focus:ring-1 group-hover:opacity-100 group-[.destructive]:text-red-300 group-[.destructive]:hover:text-red-50 group-[.destructive]:focus:ring-red-400 group-[.destructive]:focus:ring-offset-red-600',
+      'absolute right-1 top-1 rounded-none p-1 text-white opacity-0 transition-opacity hover:text-white focus:opacity-100 focus:outline-none focus:ring-1 group-hover:opacity-100 group-[.destructive]:text-white group-[.destructive]:hover:text-white group-[.destructive]:focus:ring-white group-[.destructive]:focus:ring-offset-red-600',
       className
     )}
     toast-close=""
@@ -106,7 +106,7 @@ const ToastDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <ToastPrimitives.Description
     ref={ref}
-    className={cn('text-sm opacity-90', className)}
+    className={cn('text-sm text-white', className)}
     {...props}
   />
 ));

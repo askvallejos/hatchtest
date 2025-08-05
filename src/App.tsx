@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
-import { Copy, Play, RotateCcw } from 'lucide-react';
+import { Copy } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Toaster } from '@/components/ui/toaster';
 import { ThemeToggle } from '@/components/ThemeToggle';
@@ -117,7 +117,6 @@ function App() {
                   </div>
                 ) : (
                   <div className="flex items-center gap-2">
-                    <Play className="w-5 h-5" />
                     Convert
                   </div>
                 )}
@@ -159,7 +158,6 @@ function App() {
                 disabled={!cypressCode.trim()}
                 className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 backdrop-blur-sm border-0 py-6 text-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed rounded-none"
               >
-                <RotateCcw className="w-5 h-5 mr-2" />
                 Reset
               </Button>
             </div>
