@@ -28,7 +28,7 @@ export function Toaster() {
         );
       })}
       <ToastViewport 
-        className="z-[9999] flex w-full flex-col p-4 md:max-w-[420px] pointer-events-none" 
+        className="z-[9999] flex w-auto flex-col p-4 max-w-sm pointer-events-none" 
         style={{
           position: 'fixed',
           top: '0',

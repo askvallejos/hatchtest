@@ -61,7 +61,7 @@ function App() {
     toast({
       title: "Copied to Clipboard",
       description: "Code has been copied to your clipboard.",
-      variant: "success",
+      variant: "default",
     });
   };
 
@@ -70,7 +70,7 @@ function App() {
     toast({
       title: "Output Reset",
       description: "The output has been cleared.",
-      variant: "success",
+      variant: "default",
     });
   };
 
