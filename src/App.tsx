@@ -96,7 +96,7 @@ function App() {
       <div className="flex w-[90vw] h-[90vh] gap-x-4">
         {/* Input Section */}
         <Card className="w-1/2 h-full p-8 bg-white/40 dark:bg-gray-900/40 backdrop-blur-xl border-white/30 dark:border-gray-700/30 shadow-2xl">
-          <div className="space-y-6">
+          <div className="flex flex-col h-full space-y-6">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-2 h-2 rounded-full bg-orange-500"></div>
               <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Input</h2>
@@ -105,7 +105,7 @@ function App() {
               value={customCode}
               onChange={(e) => setCustomCode(e.target.value)}
               placeholder="Enter your custom test syntax here..."
-              className="min-h-[320px] bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 resize-none font-mono text-sm leading-relaxed placeholder:text-gray-400 focus:bg-white/70 dark:focus:bg-gray-800/70 transition-all duration-200"
+              className="flex-1 min-h-0 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 resize-none font-mono text-sm leading-relaxed placeholder:text-gray-400 focus:bg-white/70 dark:focus:bg-gray-800/70 transition-all duration-200"
             />
             <Button 
               onClick={convertToCypress}
@@ -129,7 +129,7 @@ function App() {
 
         {/* Output Section */}
         <Card className="w-1/2 h-full p-8 bg-white/40 dark:bg-gray-900/40 backdrop-blur-xl border-white/30 dark:border-gray-700/30 shadow-2xl">
-          <div className="space-y-6">
+          <div className="flex flex-col h-full space-y-6">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
                 <div className="w-2 h-2 rounded-full bg-gray-500"></div>
@@ -151,7 +151,7 @@ function App() {
               value={cypressCode}
               readOnly
               placeholder="Converted Cypress code will appear here..."
-              className="min-h-[320px] bg-gray-50/80 dark:bg-gray-950/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 resize-none font-mono text-sm leading-relaxed placeholder:text-gray-400"
+              className="flex-1 min-h-0 bg-gray-50/80 dark:bg-gray-950/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 resize-none font-mono text-sm leading-relaxed placeholder:text-gray-400"
             />
             <div className="flex justify-between items-center pt-2">
               {getStatusBadge()}
