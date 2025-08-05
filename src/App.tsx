@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
-import { Copy, Play, CheckCircle, AlertCircle } from 'lucide-react';
+import { Copy, Play, RotateCcw } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Toaster } from '@/components/ui/sonner';
 import { ThemeToggle } from '@/components/ThemeToggle';
@@ -19,12 +18,10 @@ function App() {
   
   const [cypressCode, setCypressCode] = useState('');
   const [isConverting, setIsConverting] = useState(false);
-  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const { toast } = useToast();
 
   const convertToCypress = async () => {
     setIsConverting(true);
-    setStatus('idle');
     
     // Simulate conversion process
     await new Promise(resolve => setTimeout(resolve, 1500));
@@ -43,13 +40,11 @@ function App() {
 });`;
       
       setCypressCode(converted);
-      setStatus('success');
       toast({
         title: "Conversion Successful",
         description: "Your test has been converted to Cypress format.",
       });
     } catch (error) {
-      setStatus('error');
       toast({
         title: "Conversion Failed", 
         description: "There was an error converting your test.",
@@ -68,25 +63,12 @@ function App() {
     });
   };
 
-  const getStatusBadge = () => {
-    switch (status) {
-      case 'success':
-        return (
-          <Badge variant="default" className="bg-green-500/20 text-green-700 dark:text-green-300 border-green-500/30 backdrop-blur-sm">
-            <CheckCircle className="w-3 h-3 mr-1" />
-            Conversion Successful
-          </Badge>
-        );
-      case 'error':
-        return (
-          <Badge variant="destructive" className="bg-red-500/20 text-red-600 dark:text-red-400 border-red-500/30 backdrop-blur-sm">
-            <AlertCircle className="w-3 h-3 mr-1" />
-            Conversion Failed
-          </Badge>
-        );
-      default:
-        return null;
-    }
+  const resetOutput = () => {
+    setCypressCode('');
+    toast({
+      title: "Output Reset",
+      description: "The output has been cleared.",
+    });
   };
 
   return (
@@ -154,17 +136,17 @@ function App() {
             <Textarea
               value={cypressCode}
               readOnly
-              placeholder="Converted Cypress code will appear here..."
+              placeholder="Converted code will appear here"
               className="flex-1 min-h-0 bg-gray-50/80 dark:bg-gray-950/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 resize-none font-mono text-sm leading-relaxed placeholder:text-gray-400"
             />
-            <div className="flex justify-between items-center pt-2">
-              {getStatusBadge()}
-              {cypressCode && (
-                <div className="text-sm text-gray-500 dark:text-gray-400">
-                  {cypressCode.split('\n').length} lines generated
-                </div>
-              )}
-            </div>
+            <Button
+              onClick={resetOutput}
+              disabled={!cypressCode.trim()}
+              className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 backdrop-blur-sm border-0 py-6 text-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <RotateCcw className="w-5 h-5 mr-2" />
+              Reset Output
+            </Button>
           </div>
         </Card>
       </div>
