@@ -7,17 +7,17 @@ export function ThemeToggle() {
 
   return (
     <Button
-      variant="outline"
-      size="icon"
+      variant="ghost"
+      size="default"
       onClick={toggleTheme}
-      className="fixed top-2 right-2 z-50 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 hover:bg-white/80 dark:hover:bg-gray-800/80 transition-all duration-200 shadow-lg rounded-full"
+      className="w-full justify-start bg-transparent hover:bg-gray-100/50 dark:hover:bg-gray-800/50 transition-all duration-200 border-0 h-10 px-3"
     >
       {theme === 'light' ? (
-        <Moon className="h-4 w-4" />
+        <Moon className="h-4 w-4 !min-w-[1rem] !min-h-[1rem]" />
       ) : (
-        <Sun className="h-4 w-4" />
+        <Sun className="h-4 w-4 !min-w-[1rem] !min-h-[1rem]" />
       )}
-      <span className="sr-only">Toggle theme</span>
+      <span className="text-sm ml-2">{theme === 'light' ? 'Dark Mode' : 'Light Mode'}</span>
     </Button>
   );
 } 
