@@ -71,6 +71,7 @@ function App() {
 
   const resetOutput = () => {
     setCypressCode('');
+    setConversionStatus('idle');
     toast({
       title: "Output Reset",
       description: "The output has been cleared.",
@@ -101,7 +102,7 @@ function App() {
               <Textarea
                 value={customCode}
                 onChange={(e) => setCustomCode(e.target.value)}
-                placeholder="Enter your custom test syntax here..."
+                placeholder="Input your test here."
                 className="flex-1 min-h-0 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 resize-none font-mono text-sm leading-relaxed placeholder:text-gray-400 focus:bg-white/70 dark:focus:bg-gray-800/70 transition-all duration-200"
               />
               <Button 
