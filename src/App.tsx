@@ -18,10 +18,12 @@ function App() {
   
   const [cypressCode, setCypressCode] = useState('');
   const [isConverting, setIsConverting] = useState(false);
+  const [conversionStatus, setConversionStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const { toast } = useToast();
 
   const convertToCypress = async () => {
     setIsConverting(true);
+    setConversionStatus('idle');
     
     // Simulate conversion process
     await new Promise(resolve => setTimeout(resolve, 1500));
@@ -40,12 +42,14 @@ function App() {
 });`;
       
       setCypressCode(converted);
+      setConversionStatus('success');
       toast({
         title: "Conversion Successful",
         description: "Your test has been converted.",
         variant: "success",
       });
     } catch (error) {
+      setConversionStatus('error');
       toast({
         title: "Conversion Failed", 
         description: "There was an error converting your test.",
@@ -113,7 +117,7 @@ function App() {
                 ) : (
                   <div className="flex items-center gap-2">
                     <Play className="w-5 h-5" />
-                    Convert to Cypress
+                    Convert
                   </div>
                 )}
               </Button>
@@ -125,7 +129,11 @@ function App() {
             <div className="flex flex-col h-full space-y-6">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 rounded-full bg-gray-500"></div>
+                  <div className={`w-2 h-2 rounded-full transition-colors duration-300 ${
+                    conversionStatus === 'success' ? 'bg-green-500' :
+                    conversionStatus === 'error' ? 'bg-red-500' :
+                    'bg-gray-500'
+                  }`}></div>
                   <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Output</h2>
                 </div>
                 {cypressCode && (
@@ -152,7 +160,7 @@ function App() {
                 className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 backdrop-blur-sm border-0 py-6 text-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <RotateCcw className="w-5 h-5 mr-2" />
-                Reset Output
+                Reset
               </Button>
             </div>
           </Card>
