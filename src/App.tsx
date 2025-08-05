@@ -84,7 +84,7 @@ function App() {
       {/* Toaster - positioned outside main layout for proper rendering in Electron */}
       <Toaster />
       
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-0 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-0 flex items-center justify-center">
         {/* Theme Toggle */}
         <ThemeToggle />
         
@@ -108,7 +108,7 @@ function App() {
               <Button 
                 onClick={convertToCypress}
                 disabled={isConverting || !customCode.trim()}
-                className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 backdrop-blur-sm border-0 py-6 text-lg font-medium rounded-none"
+                className="w-full bg-orange-500 hover:bg-orange-600 text-white shadow-lg hover:shadow-xl transition-all duration-200 backdrop-blur-sm border-0 py-6 text-lg font-medium rounded-none"
               >
                 {isConverting ? (
                   <div className="flex items-center gap-2">
@@ -156,7 +156,7 @@ function App() {
               <Button
                 onClick={resetOutput}
                 disabled={!cypressCode.trim()}
-                className="w-full bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 backdrop-blur-sm border-0 py-6 text-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed rounded-none"
+                className="w-full bg-gray-500 hover:bg-gray-600 text-white shadow-lg hover:shadow-xl transition-all duration-200 backdrop-blur-sm border-0 py-6 text-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed rounded-none"
               >
                 Reset
               </Button>
