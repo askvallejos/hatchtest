@@ -103,7 +103,7 @@ function App() {
                 value={customCode}
                 onChange={(e) => setCustomCode(e.target.value)}
                 placeholder="Input your test here."
-                className="flex-1 min-h-0 bg-gray-200/90 dark:bg-gray-950/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 resize-none font-mono text-sm leading-relaxed placeholder:text-gray-400 focus:bg-gray-200/90 dark:focus:bg-gray-950/70 transition-all duration-200"
+                className="flex-1 min-h-0 bg-gray-200/90 dark:bg-gray-950/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 resize-none font-mono text-sm leading-relaxed placeholder:text-gray-400 focus:bg-gray-200/90 dark:focus:bg-gray-950/70"
               />
               <Button 
                 onClick={convertToCypress}
