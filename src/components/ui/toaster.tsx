@@ -27,7 +27,16 @@ export function Toaster() {
           </Toast>
         );
       })}
-      <ToastViewport />
+      <ToastViewport 
+        className="z-[9999] flex w-full flex-col p-4 md:max-w-[420px] pointer-events-none" 
+        style={{
+          position: 'fixed',
+          top: '0',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 9999
+        }}
+      />
     </ToastProvider>
   );
 }
