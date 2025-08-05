@@ -94,21 +94,6 @@ function App() {
       <div className="fixed inset-0 bg-[url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg fill=%22none%22 fill-rule=%22evenodd%22%3E%3Cg fill=%22%23FF6633%22 fill-opacity=%220.03%22%3E%3Ccircle cx=%2230%22 cy=%2230%22 r=%221%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] pointer-events-none" />
       
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-3 mb-6">
-            <div className="p-3 rounded-2xl bg-white/30 dark:bg-white/10 backdrop-blur-sm border border-white/20 shadow-lg">
-              <FileText className="w-8 h-8 text-orange-600 dark:text-orange-400" />
-            </div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
-              Cypress Test Converter
-            </h1>
-          </div>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
-            Transform your custom test language into production-ready Cypress code with our intelligent converter
-          </p>
-        </div>
-
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Input Section */}
           <Card className="p-8 bg-white/40 dark:bg-gray-900/40 backdrop-blur-xl border-white/30 dark:border-gray-700/30 shadow-2xl">
@@ -183,33 +168,6 @@ function App() {
               </div>
             </div>
           </Card>
-        </div>
-
-        {/* Feature Highlights */}
-        <div className="grid md:grid-cols-3 gap-6 mt-16">
-          {[
-            {
-              icon: '🚀',
-              title: 'Fast Conversion',
-              description: 'Convert your tests in seconds with our optimized parser'
-            },
-            {
-              icon: '🎯',
-              title: 'Accurate Output',
-              description: 'Generate clean, maintainable Cypress code following best practices'
-            },
-            {
-              icon: '🔧',
-              title: 'Customizable',
-              description: 'Support for custom syntax and test patterns'
-            }
-          ].map((feature, index) => (
-            <Card key={index} className="p-6 bg-white/30 dark:bg-gray-900/30 backdrop-blur-sm border-white/30 dark:border-gray-700/30 text-center hover:bg-white/40 dark:hover:bg-gray-900/40 transition-all duration-200">
-              <div className="text-3xl mb-3">{feature.icon}</div>
-              <h3 className="font-semibold text-gray-800 dark:text-white mb-2">{feature.title}</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{feature.description}</p>
-            </Card>
-          ))}
         </div>
       </div>
       
