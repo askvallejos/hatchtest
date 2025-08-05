@@ -91,11 +91,11 @@ function App() {
         {/* Background Pattern */}
         <div className="fixed inset-0 bg-[url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg fill=%22none%22 fill-rule=%22evenodd%22%3E%3Cg fill=%22%23FF6633%22 fill-opacity=%220.03%22%3E%3Ccircle cx=%2230%22 cy=%2230%22 r=%221%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] pointer-events-none" />
         
-        <div className="flex w-[90vw] h-[90vh] gap-x-4">
+        <div className="flex w-[95vw] h-[90vh] gap-x-4">
           {/* Input Section */}
           <Card className="w-1/2 h-full p-8 bg-white/40 dark:bg-gray-900/40 backdrop-blur-xl border-white/30 dark:border-gray-700/30 shadow-2xl">
             <div className="flex flex-col h-full space-y-6">
-              <div className="flex items-center gap-3 mb-6">
+              <div className="flex items-center gap-3">
                 <div className="w-2 h-2 rounded-full bg-orange-500"></div>
                 <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Input</h2>
               </div>
@@ -128,7 +128,7 @@ function App() {
           {/* Output Section */}
           <Card className="w-1/2 h-full p-8 bg-white/40 dark:bg-gray-900/40 backdrop-blur-xl border-white/30 dark:border-gray-700/30 shadow-2xl">
             <div className="flex flex-col h-full space-y-6">
-              <div className="flex items-center gap-3 mb-6">
+              <div className="flex items-center gap-3">
                 <div className={`w-2 h-2 rounded-full transition-colors duration-300 ${
                   conversionStatus === 'success' ? 'bg-green-500' :
                   conversionStatus === 'error' ? 'bg-red-500' :
