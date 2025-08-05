@@ -128,33 +128,32 @@ function App() {
           {/* Output Section */}
           <Card className="w-1/2 h-full p-8 bg-white/40 dark:bg-gray-900/40 backdrop-blur-xl border-white/30 dark:border-gray-700/30 shadow-2xl">
             <div className="flex flex-col h-full space-y-6">
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-3">
-                  <div className={`w-2 h-2 rounded-full transition-colors duration-300 ${
-                    conversionStatus === 'success' ? 'bg-green-500' :
-                    conversionStatus === 'error' ? 'bg-red-500' :
-                    'bg-gray-500'
-                  }`}></div>
-                  <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Output</h2>
-                </div>
+              <div className="flex items-center gap-3 mb-6">
+                <div className={`w-2 h-2 rounded-full transition-colors duration-300 ${
+                  conversionStatus === 'success' ? 'bg-green-500' :
+                  conversionStatus === 'error' ? 'bg-red-500' :
+                  'bg-gray-500'
+                }`}></div>
+                <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Output</h2>
+              </div>
+              <div className="flex-1 min-h-0 relative">
+                <Textarea
+                  value={cypressCode}
+                  readOnly
+                  placeholder="Converted code will appear here."
+                  className="w-full h-full bg-gray-50/80 dark:bg-gray-950/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 resize-none font-mono text-sm leading-relaxed placeholder:text-gray-400 pr-12"
+                />
                 {cypressCode && (
                   <Button
-                    variant="outline"
+                    variant="ghost"
                     size="sm"
                     onClick={copyToClipboard}
-                    className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 hover:bg-white/80 dark:hover:bg-gray-800/80"
+                    className="absolute top-2 right-2 h-8 w-8 p-0 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 hover:bg-white/80 dark:hover:bg-gray-800/80 rounded-md"
                   >
-                    <Copy className="w-4 h-4 mr-2" />
-                    Copy
+                    <Copy className="w-4 h-4" />
                   </Button>
                 )}
               </div>
-              <Textarea
-                value={cypressCode}
-                readOnly
-                placeholder="Converted code will appear here"
-                className="flex-1 min-h-0 bg-gray-50/80 dark:bg-gray-950/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 resize-none font-mono text-sm leading-relaxed placeholder:text-gray-400"
-              />
               <Button
                 onClick={resetOutput}
                 disabled={!cypressCode.trim()}
