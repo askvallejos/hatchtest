@@ -1,0 +1,154 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  font-weight: 400;
+  color-scheme: light dark;
+  
+  /* Glassmorphism variables */
+  --glass-bg: rgba(255, 255, 255, 0.3);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-shadow: 0 8px 32px 0 rgba(255, 102, 51, 0.15);
+  
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #dee2e6 100%);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Glassmorphism effects */
+.glass-morphism {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: var(--glass-shadow);
+}
+
+/* Custom animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.float-animation {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Enhanced focus states */
+.focus-ring:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 210 11% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 210 11% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 210 11% 15%;
+    --primary: 20 95% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 210 11% 15%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 210 11% 46%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 210 11% 15%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 20 95% 60%;
+    --chart-1: 20 95% 60%;
+    --chart-2: 210 11% 46%;
+    --chart-3: 210 11% 71%;
+    --chart-4: 20 95% 70%;
+    --chart-5: 20 95% 50%;
+    --radius: 0.75rem;
+  }
+  
+  .dark {
+    --background: 210 11% 4%;
+    --foreground: 210 40% 98%;
+    --card: 210 11% 6%;
+    --card-foreground: 210 40% 98%;
+    --popover: 210 11% 6%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 20 95% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 11% 10%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 210 11% 10%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 210 11% 10%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 210 11% 15%;
+    --input: 210 11% 15%;
+    --ring: 20 95% 60%;
+    --chart-1: 20 95% 60%;
+    --chart-2: 210 40% 70%;
+    --chart-3: 210 40% 50%;
+    --chart-4: 20 95% 70%;
+    --chart-5: 20 95% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Additional glassmorphism utilities */
+.backdrop-blur-glass {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.glass-border {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-shadow {
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+}
