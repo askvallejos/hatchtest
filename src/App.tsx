@@ -93,22 +93,22 @@ function App() {
         
         <div className="flex w-[95vw] h-[90vh] gap-x-4">
           {/* Input Section */}
-          <Card className="w-1/2 h-full p-8 bg-white/40 dark:bg-gray-900/40 backdrop-blur-xl border-white/30 dark:border-gray-700/30 shadow-2xl rounded-sm">
+          <Card className="w-1/2 h-full p-8 bg-white/40 dark:bg-gray-900/40 backdrop-blur-xl border-white/30 dark:border-gray-700/30 shadow-2xl rounded-none">
             <div className="flex flex-col h-full space-y-6">
               <div className="flex items-center gap-3">
-                <div className="w-2 h-2 rounded-sm bg-orange-500"></div>
+                <div className="w-2 h-2 rounded-full bg-orange-500"></div>
                 <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Input</h2>
               </div>
               <Textarea
                 value={customCode}
                 onChange={(e) => setCustomCode(e.target.value)}
                 placeholder="Input your test here."
-                className="flex-1 min-h-0 bg-gray-200/90 dark:bg-gray-950/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 resize-none font-mono text-sm leading-relaxed placeholder:text-gray-400 focus:bg-gray-200/90 dark:focus:bg-gray-950/70 rounded-sm"
+                className="flex-1 min-h-0 bg-gray-200/90 dark:bg-gray-950/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 resize-none font-mono text-sm leading-relaxed placeholder:text-gray-400 focus:bg-gray-200/90 dark:focus:bg-gray-950/70 rounded-none"
               />
               <Button 
                 onClick={convertToCypress}
                 disabled={isConverting || !customCode.trim()}
-                className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 backdrop-blur-sm border-0 py-6 text-lg font-medium rounded-sm"
+                className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 backdrop-blur-sm border-0 py-6 text-lg font-medium rounded-none"
               >
                 {isConverting ? (
                   <div className="flex items-center gap-2">
@@ -126,10 +126,10 @@ function App() {
           </Card>
 
           {/* Output Section */}
-          <Card className="w-1/2 h-full p-8 bg-white/40 dark:bg-gray-900/40 backdrop-blur-xl border-white/30 dark:border-gray-700/30 shadow-2xl rounded-sm">
+          <Card className="w-1/2 h-full p-8 bg-white/40 dark:bg-gray-900/40 backdrop-blur-xl border-white/30 dark:border-gray-700/30 shadow-2xl rounded-none">
             <div className="flex flex-col h-full space-y-6">
               <div className="flex items-center gap-3">
-                <div className={`w-2 h-2 rounded-sm transition-colors duration-300 ${
+                <div className={`w-2 h-2 rounded-full transition-colors duration-300 ${
                   conversionStatus === 'success' ? 'bg-green-500' :
                   conversionStatus === 'error' ? 'bg-red-500' :
                   'bg-gray-500'
@@ -141,14 +141,14 @@ function App() {
                   value={cypressCode}
                   readOnly
                   placeholder="Converted code will appear here."
-                  className="w-full h-full bg-gray-200/90 dark:bg-gray-950/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 resize-none font-mono text-sm leading-relaxed placeholder:text-gray-400 pr-12 rounded-sm"
+                  className="w-full h-full bg-gray-200/90 dark:bg-gray-950/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 resize-none font-mono text-sm leading-relaxed placeholder:text-gray-400 pr-12 rounded-none"
                 />
                 {cypressCode && (
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={copyToClipboard}
-                    className="absolute top-2 right-2 h-8 w-8 p-0 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 hover:bg-white/80 dark:hover:bg-gray-800/80 rounded-sm"
+                    className="absolute top-2 right-2 h-8 w-8 p-0 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 hover:bg-white/80 dark:hover:bg-gray-800/80 rounded-none"
                   >
                     <Copy className="w-4 h-4" />
                   </Button>
@@ -157,7 +157,7 @@ function App() {
               <Button
                 onClick={resetOutput}
                 disabled={!cypressCode.trim()}
-                className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 backdrop-blur-sm border-0 py-6 text-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed rounded-sm"
+                className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 backdrop-blur-sm border-0 py-6 text-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed rounded-none"
               >
                 <RotateCcw className="w-5 h-5 mr-2" />
                 Reset
