@@ -8,7 +8,12 @@ function createWindow() {
     height: 720,
     webPreferences: {
       nodeIntegration: false,
-      contextIsolation: true
+      contextIsolation: true,
+      enableRemoteModule: false,
+      webSecurity: true,
+      allowRunningInsecureContent: false,
+      // Ensure proper theme handling
+      backgroundThrottling: false
     }
   });
 

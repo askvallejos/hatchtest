@@ -6,6 +6,7 @@ import { Card } from '@/components/ui/card';
 import { Copy, Play, CheckCircle, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Toaster } from '@/components/ui/sonner';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 function App() {
   const [customCode, setCustomCode] = useState(`it complete login test
@@ -90,6 +91,9 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-0 flex items-center justify-center">
+      {/* Theme Toggle */}
+      <ThemeToggle />
+      
       {/* Background Pattern */}
       <div className="fixed inset-0 bg-[url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg fill=%22none%22 fill-rule=%22evenodd%22%3E%3Cg fill=%22%23FF6633%22 fill-opacity=%220.03%22%3E%3Ccircle cx=%2230%22 cy=%2230%22 r=%221%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] pointer-events-none" />
       
