@@ -156,7 +156,6 @@ function toast({ ...props }: Toast) {
     },
   });
 
-  // Auto-dismiss after timeout
   setTimeout(() => {
     dismiss();
   }, TOAST_REMOVE_DELAY);
