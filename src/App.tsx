@@ -108,9 +108,9 @@ function App() {
           onCollapsedChange={setSidebarCollapsed}
           className="h-screen border-r border-gray-300/50 dark:border-gray-600/50 bg-gray-100/90 dark:bg-gray-800/90 hover:bg-gray-150/95 dark:hover:bg-gray-750/95 backdrop-blur-xl transition-colors duration-200"
         >
-          <SidebarHeader>
+          <SidebarHeader collapsed={sidebarCollapsed}>
             <SidebarHeaderTitle>
-              {!sidebarCollapsed && "Hatcht Test"}
+              {!sidebarCollapsed && "HatchTest"}
             </SidebarHeaderTitle>
             <SidebarToggle 
               collapsed={sidebarCollapsed} 

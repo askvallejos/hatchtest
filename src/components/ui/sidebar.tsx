@@ -59,11 +59,13 @@ Sidebar.displayName = "Sidebar"
 
 const SidebarHeader = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, children, ...props }, ref) => (
+  React.HTMLAttributes<HTMLDivElement> & {
+    collapsed?: boolean
+  }
+>(({ className, collapsed = false, children, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("flex h-10 shrink-0 items-center justify-between", className)}
+    className={cn("flex h-10 shrink-0 items-center", collapsed ? "justify-center" : "justify-between", className)}
     {...props}
   >
     {children}
@@ -96,7 +98,7 @@ const SidebarToggle = React.forwardRef<
     ref={ref}
     variant="ghost"
     size="sm"
-    className={cn("h-8 w-8 p-0", className)}
+    className={cn("h-8 w-8 p-0 hover:bg-transparent", className)}
     onClick={() => onCollapsedChange?.(!collapsed)}
     {...props}
   >
