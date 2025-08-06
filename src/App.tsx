@@ -6,6 +6,7 @@ import { Copy, Home, Settings } from 'lucide-react';
 import { useToast } from '@/hooks/useToast';
 import { Toaster } from '@/components/ui/toaster';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { convertToCypress } from '@/lib/cypressConverter';
 import {
   Sidebar,
   SidebarHeader,
@@ -19,39 +20,19 @@ import {
 } from '@/components/ui/sidebar';
 
 function App() {
-  const [customCode, setCustomCode] = useState(`it complete login test
-  go to https://example.com/login
-  type admin into username_input
-  type password123 into password_input
-  click login_button
-  wait for dashboard_page
-  assert text "Welcome" is visible`);
-  
+  const [input, setInput] = useState('');
   const [cypressCode, setCypressCode] = useState('');
   const [isConverting, setIsConverting] = useState(false);
   const [conversionStatus, setConversionStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const { toast } = useToast();
 
-  const convertToCypress = async () => {
+  const convertToCypressHandler = async () => {
     setIsConverting(true);
     setConversionStatus('idle');
     
-    // Simulate conversion process
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
     try {
-      // Mock conversion logic
-      const converted = `describe('Login Test', () => {
-  it('complete login test', () => {
-    cy.visit('https://example.com/login');
-    cy.get('[data-testid="username_input"]').type('admin');
-    cy.get('[data-testid="password_input"]').type('password123');
-    cy.get('[data-testid="login_button"]').click();
-    cy.get('[data-testid="dashboard_page"]').should('be.visible');
-    cy.contains('Welcome').should('be.visible');
-  });
-});`;
+      const converted = convertToCypress(input);
       
       setCypressCode(converted);
       setConversionStatus('success');
@@ -153,14 +134,14 @@ function App() {
                   <h2 className="text-xl font-semibold text-gray-800 dark:text-white tracking-wide">Input</h2>
                 </div>
                 <Textarea
-                  value={customCode}
-                  onChange={(e) => setCustomCode(e.target.value)}
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
                   placeholder="Input your test here."
                   className="flex-1 min-h-0 bg-gray-200/90 dark:bg-gray-950/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 resize-none font-mono text-sm leading-relaxed placeholder:text-gray-400 focus:bg-gray-200/90 dark:focus:bg-gray-950/70 rounded-xs"
                 />
                 <Button 
-                  onClick={convertToCypress}
-                  disabled={isConverting || !customCode.trim()}
+                  onClick={convertToCypressHandler}
+                  disabled={isConverting || !input.trim()}
                   className="w-full bg-orange-500 hover:bg-orange-600 text-white shadow-lg hover:shadow-xl transition-all duration-200 backdrop-blur-sm border-0 py-6 text-lg font-medium rounded-xs"
                 >
                   {isConverting ? (
