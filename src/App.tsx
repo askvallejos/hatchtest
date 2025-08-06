@@ -146,7 +146,7 @@ function App() {
         
         <div className="flex-1 flex items-center justify-center p-4">
           <div className="flex w-full h-full gap-x-4">
-            <Card className="w-1/2 h-full p-6 bg-white/40 dark:bg-gray-900/40 backdrop-blur-xl border-white/30 dark:border-gray-700/30 shadow-2xl rounded-none">
+            <Card className="w-1/2 h-full p-6 bg-white/40 dark:bg-gray-900/40 backdrop-blur-xl border-white/30 dark:border-gray-700/30 shadow-2xl rounded-xs">
               <div className="flex flex-col h-full space-y-4">
                 <div className="flex items-center gap-3">
                   <div className="w-3 h-3 rounded-full bg-orange-500"></div>
@@ -156,12 +156,12 @@ function App() {
                   value={customCode}
                   onChange={(e) => setCustomCode(e.target.value)}
                   placeholder="Input your test here."
-                  className="flex-1 min-h-0 bg-gray-200/90 dark:bg-gray-950/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 resize-none font-mono text-sm leading-relaxed placeholder:text-gray-400 focus:bg-gray-200/90 dark:focus:bg-gray-950/70 rounded-none"
+                  className="flex-1 min-h-0 bg-gray-200/90 dark:bg-gray-950/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 resize-none font-mono text-sm leading-relaxed placeholder:text-gray-400 focus:bg-gray-200/90 dark:focus:bg-gray-950/70 rounded-xs"
                 />
                 <Button 
                   onClick={convertToCypress}
                   disabled={isConverting || !customCode.trim()}
-                  className="w-full bg-orange-500 hover:bg-orange-600 text-white shadow-lg hover:shadow-xl transition-all duration-200 backdrop-blur-sm border-0 py-6 text-lg font-medium rounded-none"
+                  className="w-full bg-orange-500 hover:bg-orange-600 text-white shadow-lg hover:shadow-xl transition-all duration-200 backdrop-blur-sm border-0 py-6 text-lg font-medium rounded-xs"
                 >
                   {isConverting ? (
                     <div className="flex items-center gap-2">
@@ -177,7 +177,7 @@ function App() {
               </div>
             </Card>
 
-            <Card className="w-1/2 h-full p-6 bg-white/40 dark:bg-gray-900/40 backdrop-blur-xl border-white/30 dark:border-gray-700/30 shadow-2xl rounded-none">
+            <Card className="w-1/2 h-full p-6 bg-white/40 dark:bg-gray-900/40 backdrop-blur-xl border-white/30 dark:border-gray-700/30 shadow-2xl rounded-xs">
               <div className="flex flex-col h-full space-y-4">
                 <div className="flex items-center gap-3">
                   <div className={`w-3 h-3 rounded-full transition-colors duration-300 ${
@@ -192,14 +192,14 @@ function App() {
                     value={cypressCode}
                     readOnly
                     placeholder="Converted code will appear here."
-                    className="w-full h-full bg-gray-200/90 dark:bg-gray-950/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 resize-none font-mono text-sm leading-relaxed placeholder:text-gray-400 pr-12 rounded-none"
+                    className="w-full h-full bg-gray-200/90 dark:bg-gray-950/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 resize-none font-mono text-sm leading-relaxed placeholder:text-gray-400 pr-12 rounded-xs"
                   />
                   {cypressCode && (
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={copyToClipboard}
-                      className="absolute top-2 right-2 h-8 w-8 p-0 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 hover:bg-white/80 dark:hover:bg-gray-800/80 rounded-none"
+                      className="absolute top-2 right-2 h-8 w-8 p-0 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 hover:bg-white/80 dark:hover:bg-gray-800/80 rounded-xs"
                     >
                       <Copy className="w-4 h-4" />
                     </Button>
@@ -208,7 +208,7 @@ function App() {
                 <Button
                   onClick={clearOutput}
                   disabled={!cypressCode.trim()}
-                  className="w-full bg-gray-500 hover:bg-gray-600 text-white shadow-lg hover:shadow-xl transition-all duration-200 backdrop-blur-sm border-0 py-6 text-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed rounded-none"
+                  className="w-full bg-gray-500 hover:bg-gray-600 text-white shadow-lg hover:shadow-xl transition-all duration-200 backdrop-blur-sm border-0 py-6 text-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed rounded-xs"
                 >
                   Clear
                 </Button>
