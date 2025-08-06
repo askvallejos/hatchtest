@@ -2,7 +2,11 @@ import { Moon, Sun } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/contexts/ThemeContext';
 
-export function ThemeToggle() {
+interface ThemeToggleProps {
+  collapsed?: boolean;
+}
+
+export function ThemeToggle({ collapsed = false }: ThemeToggleProps) {
   const { theme, toggleTheme } = useTheme();
 
   return (
@@ -10,14 +14,16 @@ export function ThemeToggle() {
       variant="ghost"
       size="default"
       onClick={toggleTheme}
-      className="w-full justify-start bg-transparent hover:bg-gray-100/50 dark:hover:bg-gray-800/50 transition-all duration-200 border-0 h-10 px-3"
+      className={`w-full justify-start bg-transparent hover:bg-gray-200/80 dark:hover:bg-gray-700/80 hover:text-gray-900 dark:hover:text-gray-100 transition-all duration-200 border-0 h-10 px-3 rounded-md ${
+        collapsed ? 'justify-center px-2' : ''
+      }`}
     >
       {theme === 'light' ? (
         <Moon className="h-4 w-4 !min-w-[1rem] !min-h-[1rem]" />
       ) : (
         <Sun className="h-4 w-4 !min-w-[1rem] !min-h-[1rem]" />
       )}
-      <span className="text-sm ml-2">{theme === 'light' ? 'Dark Mode' : 'Light Mode'}</span>
+      {!collapsed && <span className="text-sm ml-2">{theme === 'light' ? 'Dark Mode' : 'Light Mode'}</span>}
     </Button>
   );
 } 

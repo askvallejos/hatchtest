@@ -106,7 +106,7 @@ function App() {
         <Sidebar 
           collapsed={sidebarCollapsed} 
           onCollapsedChange={setSidebarCollapsed}
-          className="h-screen border-r border-gray-300/50 dark:border-gray-600/50 bg-gray-100/90 dark:bg-gray-800/90 backdrop-blur-xl"
+          className="h-screen border-r border-gray-300/50 dark:border-gray-600/50 bg-gray-100/90 dark:bg-gray-800/90 hover:bg-gray-150/95 dark:hover:bg-gray-750/95 backdrop-blur-xl transition-colors duration-200"
         >
           <SidebarHeader>
             <SidebarHeaderTitle>
@@ -121,17 +121,17 @@ function App() {
           <SidebarScrollArea>
             <SidebarNav>
               <SidebarNavItem>
-                <SidebarNavLink href="#" icon={<Home className="h-4 w-4" />}>
+                <SidebarNavLink href="#" icon={<Home className="h-4 w-4" />} collapsed={sidebarCollapsed}>
                   Dashboard
                 </SidebarNavLink>
               </SidebarNavItem>
               
               <SidebarNavItem>
-                <ThemeToggle />
+                <ThemeToggle collapsed={sidebarCollapsed} />
               </SidebarNavItem>
 
               <SidebarNavItem>
-                <SidebarNavLink href="#" icon={<Settings className="h-4 w-4" />}>
+                <SidebarNavLink href="#" icon={<Settings className="h-4 w-4" />} collapsed={sidebarCollapsed}>
                   Preferences
                 </SidebarNavLink>
               </SidebarNavItem>
