@@ -15,6 +15,7 @@ import {
   SidebarNavItem,
   SidebarNavLink,
   SidebarScrollArea,
+  SidebarFooter,
 } from '@/components/ui/sidebar';
 
 function App() {
@@ -129,14 +130,18 @@ function App() {
               <SidebarNavItem>
                 <ThemeToggle collapsed={sidebarCollapsed} />
               </SidebarNavItem>
-
+            </SidebarNav>
+          </SidebarScrollArea>
+          
+          <SidebarFooter>
+            <SidebarNav>
               <SidebarNavItem>
                 <SidebarNavLink href="#" icon={<Settings className="h-4 w-4" />} collapsed={sidebarCollapsed}>
                   Preferences
                 </SidebarNavLink>
               </SidebarNavItem>
             </SidebarNav>
-          </SidebarScrollArea>
+          </SidebarFooter>
         </Sidebar>
         
         <div className="flex-1 flex items-center justify-center p-4">
