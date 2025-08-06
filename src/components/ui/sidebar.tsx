@@ -1,6 +1,6 @@
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { PanelLeft, PanelRight } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -103,9 +103,9 @@ const SidebarToggle = React.forwardRef<
     {...props}
   >
     {collapsed ? (
-      <ChevronRight className="h-4 w-4" />
+      <PanelRight className="h-4 w-4" />
     ) : (
-      <ChevronLeft className="h-4 w-4" />
+      <PanelLeft className="h-4 w-4" />
     )}
     <span className="sr-only">Toggle sidebar</span>
   </Button>
@@ -189,7 +189,7 @@ const SidebarNavSection = React.forwardRef<
             className="flex h-8 items-center justify-between px-3 py-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground hover:bg-accent hover:text-accent-foreground"
           >
             {title}
-            <ChevronRight className="h-3 w-3 transition-transform duration-200 group-data-[state=open]:rotate-90" />
+            <PanelRight className="h-3 w-3 transition-transform duration-200 group-data-[state=open]:rotate-90" />
           </Button>
         </CollapsibleTrigger>
         <CollapsibleContent className="flex flex-col gap-1">

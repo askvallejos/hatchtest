@@ -104,7 +104,13 @@ function App() {
         >
           <SidebarHeader collapsed={sidebarCollapsed}>
             <SidebarHeaderTitle>
-              {!sidebarCollapsed && "HatchTest"}
+              {!sidebarCollapsed && (
+                <img 
+                  src="/logo/logo.png" 
+                  alt="HatchTest Logo" 
+                  className="h-8 w-auto object-contain"
+                />
+              )}
             </SidebarHeaderTitle>
             <SidebarToggle 
               collapsed={sidebarCollapsed} 
@@ -134,7 +140,7 @@ function App() {
         </Sidebar>
         
         <div className="flex-1 flex items-center justify-center p-4">
-          <div className="flex w-full h-[95vh] gap-x-4">
+          <div className="flex w-full h-full gap-x-4">
             <Card className="w-1/2 h-full p-6 bg-white/40 dark:bg-gray-900/40 backdrop-blur-xl border-white/30 dark:border-gray-700/30 shadow-2xl rounded-none">
               <div className="flex flex-col h-full space-y-4">
                 <div className="flex items-center gap-3">
