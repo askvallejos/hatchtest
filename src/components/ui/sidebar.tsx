@@ -143,7 +143,6 @@ const SidebarNavLink = React.forwardRef<
     className={cn(
       "group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-all duration-300 ease-in-out hover:bg-gray-200/80 dark:hover:bg-gray-700/80 hover:text-gray-900 dark:hover:text-gray-100 h-10",
       active && "bg-accent text-accent-foreground",
-      collapsed && "justify-center",
       className
     )}
     {...props}
