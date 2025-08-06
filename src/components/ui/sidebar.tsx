@@ -9,7 +9,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
 
 const sidebarVariants = cva(
-  "group relative flex h-full w-full flex-col gap-4 border-r bg-background p-4 transition-all duration-500 ease-in-out",
+  "group relative flex h-full w-full flex-col gap-4 border-r bg-background p-4 transition-all duration-300 ease-in-out",
   {
     variants: {
       variant: {

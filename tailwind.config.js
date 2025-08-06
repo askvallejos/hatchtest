@@ -9,6 +9,9 @@ export default {
   ],
   theme: {
     extend: {
+      width: {
+        '18': '4.5rem', // 72px
+      },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
-import { Copy, Home, Settings, FileText, BarChart3, Users, Mail, Calendar, User, LogOut } from 'lucide-react';
+import { Copy, Home, Settings } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Toaster } from '@/components/ui/toaster';
 import { ThemeToggle } from '@/components/ThemeToggle';
@@ -14,10 +14,7 @@ import {
   SidebarNav,
   SidebarNavItem,
   SidebarNavLink,
-  SidebarNavSection,
-  SidebarFooter,
   SidebarScrollArea,
-  SidebarSeparator,
 } from '@/components/ui/sidebar';
 
 function App() {
@@ -106,7 +103,7 @@ function App() {
         <Sidebar 
           collapsed={sidebarCollapsed} 
           onCollapsedChange={setSidebarCollapsed}
-          className="h-screen border-r border-gray-300/50 dark:border-gray-600/50 bg-gray-100/90 dark:bg-gray-800/90 hover:bg-gray-150/95 dark:hover:bg-gray-750/95 backdrop-blur-xl transition-colors duration-200"
+          className="h-screen border-r border-gray-300/50 dark:border-gray-600/50 bg-gray-100/90 dark:bg-gray-800/90 hover:bg-gray-150/95 dark:hover:bg-gray-750/95 backdrop-blur-xl"
         >
           <SidebarHeader collapsed={sidebarCollapsed}>
             <SidebarHeaderTitle>
