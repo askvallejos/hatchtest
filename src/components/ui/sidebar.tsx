@@ -23,7 +23,7 @@ const sidebarVariants = cva(
         full: "w-full",
       },
       collapsed: {
-        true: "w-16",
+        true: "w-18",
         false: "",
       },
     },
