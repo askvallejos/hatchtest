@@ -145,7 +145,7 @@ function App() {
               <div className="flex flex-col h-full space-y-4">
                 <div className="flex items-center gap-3">
                   <div className="w-3 h-3 rounded-full bg-orange-500"></div>
-                  <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Input</h2>
+                  <h2 className="text-xl font-semibold text-gray-800 dark:text-white tracking-wide">Input</h2>
                 </div>
                 <Textarea
                   value={customCode}
@@ -180,7 +180,7 @@ function App() {
                     conversionStatus === 'error' ? 'bg-red-500' :
                     'bg-gray-500'
                   }`}></div>
-                  <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Output</h2>
+                  <h2 className="text-xl font-semibold text-gray-800 dark:text-white tracking-wide">Output</h2>
                 </div>
                 <div className="flex-1 min-h-0 relative">
                   <Textarea
