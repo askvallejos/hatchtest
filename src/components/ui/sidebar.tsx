@@ -116,7 +116,7 @@ const SidebarNav = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, children, ...props }, ref) => (
-  <div ref={ref} className={cn("flex flex-col gap-2", className)} {...props}>
+  <div ref={ref} className={cn("flex flex-col gap-2 w-full", className)} {...props}>
     {children}
   </div>
 ))
@@ -126,7 +126,7 @@ const SidebarNavItem = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, children, ...props }, ref) => (
-  <div ref={ref} className={cn("flex flex-col gap-1", className)} {...props}>
+  <div ref={ref} className={cn("flex flex-col gap-1 w-full", className)} {...props}>
     {children}
   </div>
 ))
@@ -143,7 +143,7 @@ const SidebarNavLink = React.forwardRef<
   <a
     ref={ref}
     className={cn(
-      "group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-all duration-300 ease-in-out hover:bg-gray-200/80 dark:hover:bg-gray-700/80 hover:text-gray-900 dark:hover:text-gray-100 h-10",
+      "group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-all duration-300 ease-in-out hover:bg-gray-200/80 dark:hover:bg-gray-700/80 hover:text-gray-900 dark:hover:text-gray-100 h-10 w-full",
       active && "bg-accent text-accent-foreground",
       className
     )}
