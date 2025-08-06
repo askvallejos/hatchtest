@@ -23,34 +23,41 @@ function App() {
   const [input, setInput] = useState('');
   const [cypressCode, setCypressCode] = useState('');
   const [isConverting, setIsConverting] = useState(false);
+  const [showProcessing, setShowProcessing] = useState(false);
   const [conversionStatus, setConversionStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const { toast } = useToast();
 
   const convertToCypressHandler = async () => {
     setIsConverting(true);
+    setShowProcessing(true);
     setConversionStatus('idle');
     
-    try {
-      const converted = convertToCypress(input);
+    setTimeout(async () => {
+      try {
+        const converted = convertToCypress(input);
+        
+        setCypressCode(converted);
+        setConversionStatus('success');
+        toast({
+          title: "Conversion Successful",
+          description: "Your test has been converted.",
+          variant: "success",
+        });
+      } catch (error) {
+        setConversionStatus('error');
+        toast({
+          title: "Conversion Failed", 
+          description: "There was an error converting your test.",
+          variant: "destructive",
+        });
+      }
       
-      setCypressCode(converted);
-      setConversionStatus('success');
-      toast({
-        title: "Conversion Successful",
-        description: "Your test has been converted.",
-        variant: "success",
-      });
-    } catch (error) {
-      setConversionStatus('error');
-      toast({
-        title: "Conversion Failed", 
-        description: "There was an error converting your test.",
-        variant: "destructive",
-      });
-    }
-    
-    setIsConverting(false);
+      setTimeout(() => {
+        setIsConverting(false);
+        setShowProcessing(false);
+      }, 500);
+    }, 1000);
   };
 
   const copyToClipboard = async () => {
@@ -144,7 +151,7 @@ function App() {
                   disabled={isConverting || !input.trim()}
                   className="w-full bg-orange-500 hover:bg-orange-600 text-white shadow-lg hover:shadow-xl transition-all duration-200 backdrop-blur-sm border-0 py-6 text-lg font-medium rounded-xs"
                 >
-                  {isConverting ? (
+                  {showProcessing ? (
                     <div className="flex items-center gap-2">
                       <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                       Converting...
