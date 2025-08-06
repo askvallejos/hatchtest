@@ -80,11 +80,11 @@ function App() {
     });
   };
 
-  const resetOutput = () => {
+  const clearOutput = () => {
     setCypressCode('');
     setConversionStatus('idle');
     toast({
-      title: "Output Reset",
+      title: "Output Cleared",
       description: "The output has been cleared.",
       variant: "default",
     });
@@ -195,11 +195,11 @@ function App() {
                   )}
                 </div>
                 <Button
-                  onClick={resetOutput}
+                  onClick={clearOutput}
                   disabled={!cypressCode.trim()}
                   className="w-full bg-gray-500 hover:bg-gray-600 text-white shadow-lg hover:shadow-xl transition-all duration-200 backdrop-blur-sm border-0 py-6 text-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed rounded-none"
                 >
-                  Reset
+                  Clear
                 </Button>
               </div>
             </Card>

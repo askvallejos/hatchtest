@@ -9,6 +9,9 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['IBM Plex Sans', 'system-ui', '-apple-system', 'sans-serif'],
+      },
       width: {
         '18': '4.5rem', // 72px
       },
