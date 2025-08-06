@@ -23,7 +23,7 @@ export function ThemeToggle({ collapsed = false }: ThemeToggleProps) {
       ) : (
         <Sun className="h-4 w-4 !min-w-[1rem] !min-h-[1rem]" />
       )}
-      {!collapsed && <span className="text-sm ml-2">{theme === 'light' ? 'Dark Mode' : 'Light Mode'}</span>}
+      {!collapsed && <span className="text-sm ml-3">{theme === 'light' ? 'Dark Mode' : 'Light Mode'}</span>}
     </Button>
   );
 } 

@@ -9,7 +9,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
 
 const sidebarVariants = cva(
-  "group relative flex h-full w-full flex-col gap-4 border-r bg-background p-4 transition-all duration-300",
+  "group relative flex h-full w-full flex-col gap-4 border-r bg-background p-4 transition-all duration-500 ease-in-out",
   {
     variants: {
       variant: {
@@ -141,7 +141,7 @@ const SidebarNavLink = React.forwardRef<
   <a
     ref={ref}
     className={cn(
-      "group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-gray-200/80 dark:hover:bg-gray-700/80 hover:text-gray-900 dark:hover:text-gray-100",
+      "group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-all duration-300 ease-in-out hover:bg-gray-200/80 dark:hover:bg-gray-700/80 hover:text-gray-900 dark:hover:text-gray-100",
       active && "bg-accent text-accent-foreground",
       collapsed && "justify-center",
       className
@@ -149,7 +149,7 @@ const SidebarNavLink = React.forwardRef<
     {...props}
   >
     {icon && <span className="flex h-4 w-4 items-center justify-center">{icon}</span>}
-    {!collapsed && <span className="truncate">{children}</span>}
+    {!collapsed && <span className="truncate transition-opacity duration-300">{children}</span>}
   </a>
 ))
 SidebarNavLink.displayName = "SidebarNavLink"
