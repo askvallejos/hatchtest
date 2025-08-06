@@ -1,4 +1,3 @@
-// electron.js
 import { app, BrowserWindow } from 'electron';
 import path from 'path';
 
@@ -12,16 +11,11 @@ function createWindow() {
       enableRemoteModule: false,
       webSecurity: true,
       allowRunningInsecureContent: false,
-      // Ensure proper theme handling
       backgroundThrottling: false
     }
   });
 
-  // For development - use Vite's default port
   win.loadURL('http://localhost:5173');
-
-  // For production (when bundled)
-  // win.loadFile(path.join(__dirname, 'build', 'index.html'));
 }
 
 app.whenReady().then(createWindow);
