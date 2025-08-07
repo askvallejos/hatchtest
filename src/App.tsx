@@ -14,6 +14,12 @@ import {
   SidebarScrollArea,
   SidebarFooter,
 } from '@/components/ui/sidebar';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { useState } from 'react';
 import { Home, Settings, Code } from 'lucide-react';
 
@@ -35,61 +41,97 @@ const Navigation = () => {
   ];
 
   return (
-    <Sidebar 
-      collapsed={sidebarCollapsed} 
-      onCollapsedChange={setSidebarCollapsed}
-      className="h-screen border-r border-gray-300/50 dark:border-gray-600/50 bg-gray-100/90 dark:bg-gray-800 hover:bg-gray-150/95 dark:hover:bg-gray-750/95 backdrop-blur-xl"
-    >
-      <SidebarHeader collapsed={sidebarCollapsed}>
-        <SidebarHeaderTitle>
-          {!sidebarCollapsed && (
-            <img 
-              src="/logo/logo.png" 
-              alt="Hatchit Solutions Logo" 
-              className="h-8 w-auto object-contain"
-            />
-          )}
-        </SidebarHeaderTitle>
-        <SidebarToggle 
-          collapsed={sidebarCollapsed} 
-          onCollapsedChange={setSidebarCollapsed} 
-        />
-      </SidebarHeader>
-      
-      <SidebarScrollArea>
-        <SidebarNav>
-                    {navItems.map((item) => (
-            <SidebarNavItem key={item.path}>
-              <Link to={item.path} className="w-full">
-                <SidebarNavLink 
-                  icon={item.icon} 
-                  collapsed={sidebarCollapsed}
-                  active={location.pathname === item.path}
-                >
-                  {item.label}
-                </SidebarNavLink>
+    <TooltipProvider>
+      <Sidebar 
+        collapsed={sidebarCollapsed} 
+        onCollapsedChange={setSidebarCollapsed}
+        className="h-screen border-r border-gray-300/50 dark:border-gray-600/50 bg-gray-100/90 dark:bg-gray-800 hover:bg-gray-150/95 dark:hover:bg-gray-750/95 backdrop-blur-xl"
+      >
+        <SidebarHeader collapsed={sidebarCollapsed}>
+          <SidebarHeaderTitle>
+            {!sidebarCollapsed && (
+              <img 
+                src="/logo/logo.png" 
+                alt="Hatchit Solutions Logo" 
+                className="h-8 w-auto object-contain"
+              />
+            )}
+          </SidebarHeaderTitle>
+          <SidebarToggle 
+            collapsed={sidebarCollapsed} 
+            onCollapsedChange={setSidebarCollapsed} 
+          />
+        </SidebarHeader>
+        
+        <SidebarScrollArea>
+          <SidebarNav>
+            {navItems.map((item) => (
+              <SidebarNavItem key={item.path}>
+                <Link to={item.path} className="w-full">
+                  {sidebarCollapsed ? (
+                    <Tooltip delayDuration={100}>
+                      <TooltipTrigger asChild>
+                        <SidebarNavLink 
+                          icon={item.icon} 
+                          collapsed={sidebarCollapsed}
+                          active={location.pathname === item.path}
+                        >
+                          {item.label}
+                        </SidebarNavLink>
+                      </TooltipTrigger>
+                      <TooltipContent side="right" className="ml-2 font-medium">
+                        {item.label}
+                      </TooltipContent>
+                    </Tooltip>
+                  ) : (
+                    <SidebarNavLink 
+                      icon={item.icon} 
+                      collapsed={sidebarCollapsed}
+                      active={location.pathname === item.path}
+                    >
+                      {item.label}
+                    </SidebarNavLink>
+                  )}
+                </Link>
+              </SidebarNavItem>
+            ))}
+          </SidebarNav>
+        </SidebarScrollArea>
+        
+        <SidebarFooter>
+          <SidebarNav>
+            <SidebarNavItem>
+              <Link to="/preferences" className="w-full">
+                {sidebarCollapsed ? (
+                  <Tooltip delayDuration={100}>
+                    <TooltipTrigger asChild>
+                      <SidebarNavLink 
+                        icon={<Settings className="h-4 w-4" />} 
+                        collapsed={sidebarCollapsed}
+                        active={location.pathname === '/preferences'}
+                      >
+                        Preferences
+                      </SidebarNavLink>
+                    </TooltipTrigger>
+                    <TooltipContent side="right" className="ml-2 font-medium">
+                      Preferences
+                    </TooltipContent>
+                  </Tooltip>
+                ) : (
+                  <SidebarNavLink 
+                    icon={<Settings className="h-4 w-4" />} 
+                    collapsed={sidebarCollapsed}
+                    active={location.pathname === '/preferences'}
+                  >
+                    Preferences
+                  </SidebarNavLink>
+                )}
               </Link>
             </SidebarNavItem>
-          ))}
-        </SidebarNav>
-      </SidebarScrollArea>
-      
-      <SidebarFooter>
-        <SidebarNav>
-          <SidebarNavItem>
-            <Link to="/preferences" className="w-full">
-              <SidebarNavLink 
-                icon={<Settings className="h-4 w-4" />} 
-                collapsed={sidebarCollapsed}
-                active={location.pathname === '/preferences'}
-              >
-                Preferences
-              </SidebarNavLink>
-            </Link>
-          </SidebarNavItem>
-        </SidebarNav>
-      </SidebarFooter>
-    </Sidebar>
+          </SidebarNav>
+        </SidebarFooter>
+      </Sidebar>
+    </TooltipProvider>
   );
 };
 
