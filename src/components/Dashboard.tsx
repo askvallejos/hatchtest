@@ -18,7 +18,7 @@ const Dashboard = () => {
       {/* Header */}
       <div className="space-y-2">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-          Welcome to Hatchit DevTools
+          Hatchit DevTools
         </h1>
       </div>
 
@@ -30,7 +30,7 @@ const Dashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {quickActions.map((action, index) => (
             <Link key={index} to={action.href} className="block">
-              <Card className="p-6 bg-white/40 dark:bg-gray-900/40 backdrop-blur-xl border-white/30 dark:border-gray-700/30 hover:shadow-lg transition-all duration-200 cursor-pointer">
+              <Card className="p-6 bg-white/40 dark:bg-gray-800/40 backdrop-blur-xl border-gray-300/50 dark:border-gray-700/30 hover:shadow-lg transition-all duration-200 cursor-pointer">
                 <div className="flex items-center space-x-4">
                   <div className={`p-3 rounded-xs ${action.color} text-white`}>
                     {action.icon}

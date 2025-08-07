@@ -126,7 +126,7 @@ const TestConverter = () => {
       </div>
 
       <div className="flex w-full flex-1 gap-x-4 min-h-0">
-        <Card className="w-1/2 flex flex-col p-6 bg-white/40 dark:bg-gray-900/40 backdrop-blur-xl border-white/30 dark:border-gray-700/30 shadow-2xl rounded-xs">
+        <Card className="w-1/2 flex flex-col p-6 bg-white/40 dark:bg-gray-800/40 backdrop-blur-xl border-white/30 dark:border-gray-700/30 shadow-2xl rounded-xs">
           <div className="flex flex-col flex-1 space-y-4 min-h-0">
             <div className="flex items-center gap-3 flex-shrink-0">
               <div className="w-3 h-3 rounded-full bg-orange-500"></div>
@@ -157,7 +157,7 @@ const TestConverter = () => {
           </div>
         </Card>
 
-        <Card className="w-1/2 flex flex-col p-6 bg-white/40 dark:bg-gray-900/40 backdrop-blur-xl border-white/30 dark:border-gray-700/30 shadow-2xl rounded-xs">
+        <Card className="w-1/2 flex flex-col p-6 bg-white/40 dark:bg-gray-800/40 backdrop-blur-xl border-white/30 dark:border-gray-700/30 shadow-2xl rounded-xs">
           <div className="flex flex-col flex-1 space-y-4 min-h-0">
             <div className="flex items-center gap-3 flex-shrink-0">
               <div className={`w-3 h-3 rounded-full transition-colors duration-300 ${

@@ -143,7 +143,8 @@ const SidebarNavLink = React.forwardRef<
   <a
     ref={ref}
     className={cn(
-      "group flex items-center gap-3 rounded-xs px-3 py-2 text-sm font-medium transition-all duration-300 ease-in-out hover:bg-gray-200/80 dark:hover:bg-gray-700/80 hover:text-gray-900 dark:hover:text-gray-100 h-10 w-full",
+      "group flex items-center gap-3 rounded-xs px-3 py-2 text-sm font-medium transition-all duration-300 ease-in-out h-10 w-full",
+      !active && "hover:bg-gray-300/80 dark:hover:bg-gray-700/80 hover:text-gray-900 dark:hover:text-gray-100",
       active && "bg-orange-500 text-white dark:bg-orange-500",
       className
     )}
