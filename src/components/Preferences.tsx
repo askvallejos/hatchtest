@@ -1,6 +1,7 @@
 import { Card } from '@/components/ui/card';
 import { ThemeToggle } from '@/components/ThemeToggle';
-import { Settings, Palette } from 'lucide-react';
+import { TooltipToggle } from '@/components/TooltipToggle';
+import { Settings, Palette, HelpCircle, SquareMousePointer } from 'lucide-react';
 
 const Preferences = () => {
   return (
@@ -45,6 +46,45 @@ const Preferences = () => {
                 </div>
               </div>
               <ThemeToggle />
+            </div>
+          </div>
+        </Card>
+      </div>
+
+      <div className="space-y-4">
+        <div className="flex items-center space-x-2">
+          <SquareMousePointer className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+            Interface
+          </h2>
+        </div>
+        
+        <Card className="p-6 bg-white/40 dark:bg-gray-800/40 backdrop-blur-xl border-gray-300/50 dark:border-gray-700/30">
+          <div className="space-y-4">
+            <div>
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                Tooltips
+              </h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                Enable or disable tooltip hints throughout the application interface.
+              </p>
+            </div>
+            
+            <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-xs">
+              <div className="flex items-center space-x-3">
+                <div className="p-2 bg-gray-200 dark:bg-gray-600 rounded-xs">
+                  <HelpCircle className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-900 dark:text-white">
+                    Show Tooltips
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Display helpful hints and information
+                  </p>
+                </div>
+              </div>
+              <TooltipToggle />
             </div>
           </div>
         </Card>

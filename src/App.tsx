@@ -20,12 +20,14 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { useTooltip } from '@/contexts/TooltipContext';
 import { useState } from 'react';
 import { Home, Settings, Code } from 'lucide-react';
 
 const Navigation = () => {
   const location = useLocation();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const { tooltipEnabled } = useTooltip();
 
   const navItems = [
     {
@@ -68,7 +70,7 @@ const Navigation = () => {
             {navItems.map((item) => (
               <SidebarNavItem key={item.path}>
                 <Link to={item.path} className="w-full">
-                  {sidebarCollapsed ? (
+                  {sidebarCollapsed && tooltipEnabled ? (
                     <Tooltip delayDuration={100}>
                       <TooltipTrigger asChild>
                         <SidebarNavLink 
@@ -102,7 +104,7 @@ const Navigation = () => {
           <SidebarNav>
             <SidebarNavItem>
               <Link to="/preferences" className="w-full">
-                {sidebarCollapsed ? (
+                {sidebarCollapsed && tooltipEnabled ? (
                   <Tooltip delayDuration={100}>
                     <TooltipTrigger asChild>
                       <SidebarNavLink 

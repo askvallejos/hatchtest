@@ -137,7 +137,7 @@ const TestConverter = () => {
         <Card className="w-1/2 flex flex-col p-6 bg-white/40 dark:bg-gray-800/40 backdrop-blur-xl border-white/30 dark:border-gray-700/30 shadow-2xl rounded-xs">
           <div className="flex flex-col flex-1 space-y-4 min-h-0">
             <div className="flex items-center gap-3 flex-shrink-0">
-              <div className="w-3 h-3 rounded-full bg-orange-500"></div>
+              <div className={`w-3 h-3 rounded-full transition-colors duration-300 ${input.trim() ? 'bg-green-500' : 'bg-gray-500'}`}></div>
               <h2 className="text-xl font-semibold text-gray-800 dark:text-white tracking-wide">Input</h2>
             </div>
             <Textarea
