@@ -120,12 +120,9 @@ const TestConverter = () => {
   return (
     <div className="h-full flex flex-col p-6">
       <div className="mb-6 flex-shrink-0">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
           Test Converter
         </h1>
-        <p className="text-gray-600 dark:text-gray-400">
-          Convert your test scripts to Cypress format
-        </p>
       </div>
 
       <div className="flex w-full flex-1 gap-x-4 min-h-0">
