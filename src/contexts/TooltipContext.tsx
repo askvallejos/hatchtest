@@ -1,6 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-
-type TooltipVisibility = 'enabled' | 'disabled';
+import React, { createContext, useContext, useState } from 'react';
 
 interface TooltipContextType {
   tooltipEnabled: boolean;
@@ -16,7 +14,7 @@ export function TooltipProvider({ children }: { children: React.ReactNode }) {
     if (saved !== null) {
       return saved === 'true';
     }
-    return true; // Default to enabled
+    return true;
   });
 
   const setTooltipEnabled = (enabled: boolean) => {
