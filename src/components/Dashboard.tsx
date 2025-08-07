@@ -32,7 +32,7 @@ const Dashboard = () => {
             <Link key={index} to={action.href} className="block">
               <Card className="p-6 bg-white/40 dark:bg-gray-900/40 backdrop-blur-xl border-white/30 dark:border-gray-700/30 hover:shadow-lg transition-all duration-200 cursor-pointer">
                 <div className="flex items-center space-x-4">
-                  <div className={`p-3 rounded-lg ${action.color} text-white`}>
+                  <div className={`p-3 rounded-xs ${action.color} text-white`}>
                     {action.icon}
                   </div>
                   <div className="flex-1">
@@ -57,7 +57,7 @@ const Dashboard = () => {
         </h2>
         <Card className="p-6 bg-white/40 dark:bg-gray-900/40 backdrop-blur-xl border-white/30 dark:border-gray-700/30">
           <div className="space-y-4">
-            <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+            <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-xs">
               <div className="flex items-center space-x-3">
                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                 <span className="text-sm text-gray-600 dark:text-gray-400">
@@ -68,7 +68,7 @@ const Dashboard = () => {
                 2 minutes ago
               </span>
             </div>
-            <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+            <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-xs">
               <div className="flex items-center space-x-3">
                 <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                 <span className="text-sm text-gray-600 dark:text-gray-400">
@@ -79,7 +79,7 @@ const Dashboard = () => {
                 5 minutes ago
               </span>
             </div>
-            <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+            <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-xs">
               <div className="flex items-center space-x-3">
                 <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
                 <span className="text-sm text-gray-600 dark:text-gray-400">
