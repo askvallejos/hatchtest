@@ -31,7 +31,7 @@ const Preferences = () => {
               </p>
             </div>
             
-            <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-xs">
+            <div className="flex items-center justify-between p-4 bg-gray-100 dark:bg-gray-700 rounded-xs">
               <div className="flex items-center space-x-3">
                 <div className="p-2 bg-gray-200 dark:bg-gray-600 rounded-xs">
                   <Settings className="h-4 w-4 text-gray-600 dark:text-gray-400" />
@@ -70,7 +70,7 @@ const Preferences = () => {
               </p>
             </div>
             
-            <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-xs">
+            <div className="flex items-center justify-between p-4 bg-gray-100 dark:bg-gray-700 rounded-xs">
               <div className="flex items-center space-x-3">
                 <div className="p-2 bg-gray-200 dark:bg-gray-600 rounded-xs">
                   <HelpCircle className="h-4 w-4 text-gray-600 dark:text-gray-400" />
