@@ -13,6 +13,7 @@ const TestConverter = () => {
   const [isConverting, setIsConverting] = useState(false);
   const [showProcessing, setShowProcessing] = useState(false);
   const [conversionStatus, setConversionStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [hasWarnings, setHasWarnings] = useState(false);
   const [showKeywordGuide, setShowKeywordGuide] = useState(false);
   const { toast } = useToast();
 
@@ -20,6 +21,7 @@ const TestConverter = () => {
     setIsConverting(true);
     setShowProcessing(true);
     setConversionStatus('idle');
+    setHasWarnings(false);
 
     setTimeout(async () => {
       try {
@@ -67,9 +69,10 @@ const TestConverter = () => {
         setCypressCode(converted);
         setConversionStatus('success');
 
-        const hasWarnings = converted.includes('❌ Warning: The following commands were not recognized:');
+        const warningsDetected = converted.includes('❌ Warning: The following commands were not recognized:');
+        setHasWarnings(warningsDetected);
 
-        if (hasWarnings) {
+        if (warningsDetected) {
           toast({
             title: "Conversion Completed with Warnings",
             description: "Some commands were not recognized.",
@@ -84,6 +87,7 @@ const TestConverter = () => {
         }
       } catch (error) {
         setConversionStatus('error');
+        setHasWarnings(false);
         const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred during conversion.';
 
         toast({
@@ -112,6 +116,7 @@ const TestConverter = () => {
   const clearOutput = () => {
     setCypressCode('');
     setConversionStatus('idle');
+    setHasWarnings(false);
     toast({
       title: "Output Cleared",
       description: "The output has been cleared.",
@@ -163,7 +168,7 @@ const TestConverter = () => {
         <Card className="w-1/2 flex flex-col p-6 bg-white/40 dark:bg-gray-800/40 backdrop-blur-xl border-white/30 dark:border-gray-700/30 shadow-2xl rounded-xs">
           <div className="flex flex-col flex-1 space-y-4 min-h-0">
             <div className="flex items-center gap-3 flex-shrink-0">
-              <div className={`w-3 h-3 rounded-full transition-colors duration-300 ${conversionStatus === 'success' ? 'bg-green-500' :
+              <div className={`w-3 h-3 rounded-full transition-colors duration-300 ${conversionStatus === 'success' ? (hasWarnings ? 'bg-yellow-500' : 'bg-green-500') :
                   conversionStatus === 'error' ? 'bg-red-500' :
                     'bg-gray-500'
                 }`}></div>
