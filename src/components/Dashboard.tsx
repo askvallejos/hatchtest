@@ -1,5 +1,4 @@
 import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { BarChart3, Zap, Code, Users, TrendingUp, Activity } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
