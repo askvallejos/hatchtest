@@ -16,7 +16,7 @@ const Dashboard = () => {
   return (
     <div className="p-4 space-y-6">
       {/* Header */}
-      <div className="space-y-2">
+      <div>
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
           Hatchit DevTools
         </h1>

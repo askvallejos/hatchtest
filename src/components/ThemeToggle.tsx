@@ -2,11 +2,7 @@ import { Moon, Sun } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/contexts/ThemeContext';
 
-interface ThemeToggleProps {
-  collapsed?: boolean;
-}
-
-export function ThemeToggle({ collapsed = false }: ThemeToggleProps) {
+export function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();
 
   return (
@@ -14,14 +10,14 @@ export function ThemeToggle({ collapsed = false }: ThemeToggleProps) {
       variant="ghost"
       size="default"
       onClick={toggleTheme}
-      className={`w-full justify-start bg-transparent hover:bg-gray-200/80 dark:hover:bg-gray-700/80 hover:text-gray-900 dark:hover:text-gray-100 transition-all duration-200 border-0 h-10 px-3 rounded-xs`}
+      className="flex items-center space-x-2 px-3 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-200 border border-gray-300 dark:border-gray-600 rounded-xs"
     >
       {theme === 'light' ? (
-        <Moon className="h-4 w-4 !min-w-[1rem] !min-h-[1rem]" />
+        <Moon className="h-4 w-4" />
       ) : (
-        <Sun className="h-4 w-4 !min-w-[1rem] !min-h-[1rem]" />
+        <Sun className="h-4 w-4" />
       )}
-      {!collapsed && <span className="text-sm ml-3">{theme === 'light' ? 'Dark Mode' : 'Light Mode'}</span>}
+      <span className="text-sm font-medium">{theme === 'light' ? 'Dark Mode' : 'Light Mode'}</span>
     </Button>
   );
 } 

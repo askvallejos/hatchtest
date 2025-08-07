@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, useLocation, Link } from 'react-router-dom';
 import { Toaster } from '@/components/ui/toaster';
-import { ThemeToggle } from '@/components/ThemeToggle';
 import Dashboard from '@/components/Dashboard';
 import TestConverter from '@/components/TestConverter';
+import Preferences from '@/components/Preferences';
 import {
   Sidebar,
   SidebarHeader,
@@ -72,19 +72,21 @@ const Navigation = () => {
               </Link>
             </SidebarNavItem>
           ))}
-          
-          <SidebarNavItem>
-            <ThemeToggle collapsed={sidebarCollapsed} />
-          </SidebarNavItem>
         </SidebarNav>
       </SidebarScrollArea>
       
       <SidebarFooter>
         <SidebarNav>
           <SidebarNavItem>
-            <SidebarNavLink href="#" icon={<Settings className="h-4 w-4" />} collapsed={sidebarCollapsed}>
-              Preferences
-            </SidebarNavLink>
+            <Link to="/preferences" className="w-full">
+              <SidebarNavLink 
+                icon={<Settings className="h-4 w-4" />} 
+                collapsed={sidebarCollapsed}
+                active={location.pathname === '/preferences'}
+              >
+                Preferences
+              </SidebarNavLink>
+            </Link>
           </SidebarNavItem>
         </SidebarNav>
       </SidebarFooter>
@@ -101,6 +103,7 @@ const MainContent = () => {
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/converter" element={<TestConverter />} />
+          <Route path="/preferences" element={<Preferences />} />
         </Routes>
       </div>
     </div>
