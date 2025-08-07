@@ -36,8 +36,8 @@ const Navigation = () => {
       icon: <Home className="h-4 w-4" />
     },
     {
-      path: '/converter',
-      label: 'Test Converter',
+      path: '/cypress-converter',
+      label: 'Cypress Converter',
       icon: <Code className="h-4 w-4" />
     }
   ];
@@ -144,7 +144,7 @@ const MainContent = () => {
       <div className="flex-1 overflow-auto">
         <Routes>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/converter" element={<TestConverter />} />
+          <Route path="/cypress-converter" element={<TestConverter />} />
           <Route path="/preferences" element={<Preferences />} />
         </Routes>
       </div>

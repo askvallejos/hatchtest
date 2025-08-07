@@ -128,7 +128,7 @@ const TestConverter = () => {
     <div className="h-full flex flex-col p-4">
       <div className="mb-6 flex-shrink-0 flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-          Test Converter
+          Cypress Converter
         </h1>
         <HelpCircle className="w-6 h-6 cursor-pointer text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-300 transition-all duration-200 hover:scale-110 hover:drop-shadow-lg" onClick={() => setShowKeywordGuide(true)} />
       </div>

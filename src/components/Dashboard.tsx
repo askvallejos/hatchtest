@@ -5,10 +5,10 @@ import { Link } from 'react-router-dom';
 const Dashboard = () => {
   const quickActions = [
     {
-      title: "Test Converter",
+      title: "Cypress Converter",
       description: "Convert your test scripts to Cypress format",
       icon: <Code className="h-6 w-6" />,
-      href: "/converter",
+      href: "/cypress-converter",
       color: "bg-orange-500 hover:bg-orange-600"
     },
   ];
