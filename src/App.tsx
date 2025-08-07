@@ -148,7 +148,7 @@ function App() {
               {!sidebarCollapsed && (
                 <img 
                   src="/logo/logo.png" 
-                  alt="HatchTestConverter Logo" 
+                  alt="Hatchit Solutions Logo" 
                   className="h-8 w-auto object-contain"
                 />
               )}
