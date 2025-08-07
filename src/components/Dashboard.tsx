@@ -15,14 +15,12 @@ const Dashboard = () => {
 
   return (
     <div className="p-4 space-y-6">
-      {/* Header */}
       <div>
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
           Hatchit DevTools
         </h1>
       </div>
 
-      {/* Quick Actions */}
       <div className="space-y-4">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
           Quick Actions

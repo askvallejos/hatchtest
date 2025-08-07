@@ -210,7 +210,7 @@ const TestConverter = () => {
             <div className="space-y-4">
               <div className="space-y-2">
                 <h4 className="font-medium text-gray-800 dark:text-gray-200">Navigation</h4>
-                <div className="bg-gray-200/80 dark:bg-gray-700/50 p-4 rounded-md space-y-3 border border-gray-300/50 dark:border-gray-600/50">
+                <div className="bg-gray-200/80 dark:bg-gray-700/50 p-4 rounded-xs space-y-3 border border-gray-300/50 dark:border-gray-600/50">
                   <div>
                     <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">go to [url]</code>
                     <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Navigate to a specific URL</p>
@@ -232,7 +232,7 @@ const TestConverter = () => {
 
               <div className="space-y-2">
                 <h4 className="font-medium text-gray-800 dark:text-gray-200">Element Interaction</h4>
-                <div className="bg-gray-200/80 dark:bg-gray-700/50 p-4 rounded-md space-y-3 border border-gray-300/50 dark:border-gray-600/50">
+                <div className="bg-gray-200/80 dark:bg-gray-700/50 p-4 rounded-xs space-y-3 border border-gray-300/50 dark:border-gray-600/50">
                   <div>
                     <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">click [selector]</code>
                     <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Click on an element</p>
@@ -282,7 +282,7 @@ const TestConverter = () => {
 
               <div className="space-y-2">
                 <h4 className="font-medium text-gray-800 dark:text-gray-200">Assertions</h4>
-                <div className="bg-gray-200/80 dark:bg-gray-700/50 p-4 rounded-md space-y-3 border border-gray-300/50 dark:border-gray-600/50">
+                <div className="bg-gray-200/80 dark:bg-gray-700/50 p-4 rounded-xs space-y-3 border border-gray-300/50 dark:border-gray-600/50">
                   <div>
                     <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">should be visible [selector]</code>
                     <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Assert element is visible</p>
@@ -348,7 +348,7 @@ const TestConverter = () => {
 
               <div className="space-y-2">
                 <h4 className="font-medium text-gray-800 dark:text-gray-200">Wait & Control</h4>
-                <div className="bg-gray-200/80 dark:bg-gray-700/50 p-4 rounded-md space-y-3 border border-gray-300/50 dark:border-gray-600/50">
+                <div className="bg-gray-200/80 dark:bg-gray-700/50 p-4 rounded-xs space-y-3 border border-gray-300/50 dark:border-gray-600/50">
                   <div>
                     <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">wait [milliseconds]</code>
                     <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Wait for specified milliseconds</p>
@@ -362,7 +362,7 @@ const TestConverter = () => {
 
               <div className="space-y-2">
                 <h4 className="font-medium text-gray-800 dark:text-gray-200">Scrolling & Viewport</h4>
-                <div className="bg-gray-200/80 dark:bg-gray-700/50 p-4 rounded-md space-y-3 border border-gray-300/50 dark:border-gray-600/50">
+                <div className="bg-gray-200/80 dark:bg-gray-700/50 p-4 rounded-xs space-y-3 border border-gray-300/50 dark:border-gray-600/50">
                   <div>
                     <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">scroll to top</code>
                     <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Scroll to top of page</p>
@@ -384,7 +384,7 @@ const TestConverter = () => {
 
               <div className="space-y-2">
                 <h4 className="font-medium text-gray-800 dark:text-gray-200">Advanced</h4>
-                <div className="bg-gray-200/80 dark:bg-gray-700/50 p-4 rounded-md space-y-3 border border-gray-300/50 dark:border-gray-600/50">
+                <div className="bg-gray-200/80 dark:bg-gray-700/50 p-4 rounded-xs space-y-3 border border-gray-300/50 dark:border-gray-600/50">
                   <div>
                     <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">trigger [event] [selector]</code>
                     <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Trigger custom event on element</p>
@@ -408,7 +408,7 @@ const TestConverter = () => {
 
           <div className="space-y-3">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Examples</h3>
-            <div className="bg-gray-300/80 dark:bg-gray-800/50 p-4 rounded-md border border-gray-400/50 dark:border-gray-600/50">
+            <div className="bg-gray-300/80 dark:bg-gray-800/50 p-4 rounded-xs border border-gray-400/50 dark:border-gray-600/50">
               <pre className="text-sm text-gray-900 dark:text-gray-300 font-mono whitespace-pre-wrap">
                 {
                 `it complete login test
@@ -436,7 +436,7 @@ it page navigation test
             </div>
           </div>
 
-          <div className="text-sm text-gray-700 dark:text-gray-400 bg-gray-100/80 dark:bg-gray-700/50 p-3 rounded-md border border-gray-300/50 dark:border-gray-600/50">
+          <div className="text-sm text-gray-700 dark:text-gray-400 bg-gray-100/80 dark:bg-gray-700/50 p-3 rounded-xs border border-gray-300/50 dark:border-gray-600/50">
             <p><strong>Note:</strong> Selectors can be CSS selectors like <code className="text-blue-700 dark:text-blue-400 font-semibold">#id</code>, <code className="text-blue-700 dark:text-blue-400 font-semibold">.class</code>, or <code className="text-blue-700 dark:text-blue-400 font-semibold">[attribute=value]</code></p>
           </div>
         </div>

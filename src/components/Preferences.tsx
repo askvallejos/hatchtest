@@ -5,14 +5,12 @@ import { Settings, Palette } from 'lucide-react';
 const Preferences = () => {
   return (
     <div className="p-4 space-y-6">
-      {/* Header */}
       <div>
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
           Preferences
         </h1>
       </div>
 
-      {/* Theme Settings */}
       <div className="space-y-4">
         <div className="flex items-center space-x-2">
           <Palette className="h-5 w-5 text-gray-600 dark:text-gray-400" />

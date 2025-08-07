@@ -17,7 +17,6 @@ import {
 import { useState } from 'react';
 import { Home, Settings, Code } from 'lucide-react';
 
-// Navigation component that uses the current location
 const Navigation = () => {
   const location = useLocation();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -94,7 +93,6 @@ const Navigation = () => {
   );
 };
 
-// Main content area component
 const MainContent = () => {
   return (
     <div className="flex-1 flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900">
