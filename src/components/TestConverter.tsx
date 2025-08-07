@@ -361,6 +361,24 @@ const TestConverter = () => {
               </div>
 
               <div className="space-y-2">
+                <h4 className="font-medium text-gray-800 dark:text-gray-200">Cookies & Network</h4>
+                <div className="bg-gray-200/80 dark:bg-gray-700/50 p-4 rounded-xs space-y-3 border border-gray-300/50 dark:border-gray-600/50">
+                  <div>
+                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">cookie [name] should exist</code>
+                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Assert cookie exists</p>
+                  </div>
+                  <div>
+                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">cookie [name] should not exist</code>
+                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Assert cookie does not exist</p>
+                  </div>
+                  <div>
+                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">cookie [name] should have value [value]</code>
+                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Assert cookie has specific value</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-2">
                 <h4 className="font-medium text-gray-800 dark:text-gray-200">Scrolling & Viewport</h4>
                 <div className="bg-gray-200/80 dark:bg-gray-700/50 p-4 rounded-xs space-y-3 border border-gray-300/50 dark:border-gray-600/50">
                   <div>
@@ -401,6 +419,19 @@ const TestConverter = () => {
                     <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">use alias [name]</code>
                     <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Use previously created alias</p>
                   </div>
+                  <div>
+                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">intercept [method] [url] [alias]</code>
+                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Intercept network requests</p>
+                  </div>
+                  <div>
+                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">wait for [alias]</code>
+                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Wait for intercepted request</p>
+                  </div>
+                  <div>
+                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">force click [selector]</code>
+                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Force click on element</p>
+                  </div>
+
                 </div>
               </div>
             </div>
@@ -430,7 +461,16 @@ it page navigation test
   click profile_link
   profile_page should be visible
   go back
-  home_page should be visible`
+  home_page should be visible
+
+it login with intercept test
+  intercept(POST, /api/login, login)
+  go to http://localhost:3000/?isManual=true
+  type kpxResourceIdNum into input[data-testid=login-input]
+  force click button[data-testid=login-button]
+  wait for login
+  url should include /selection
+  cookie token should exist`
                 }
               </pre>
             </div>

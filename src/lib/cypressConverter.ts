@@ -47,6 +47,13 @@ const mappingDictionary: Record<string, (...args: string[]) => string> = {
   "attach file": (file, selector) => `cy.get(${selector}).attachFile(${file});`,
   "alias as": (selector, name) => `cy.get(${selector}).as(${name});`,
   "use alias": (name) => `cy.get(@${name});`,
+  // New patterns for intercept, wait for aliases, and cookie assertions
+  "intercept": (method, url, alias) => `cy.intercept({\n    method: ${method},\n    url: ${url},\n}).as(${alias});`,
+  "wait for": (alias) => `cy.wait('@${alias.replace(/['"]/g, '')}');`,
+  "cookie should exist": (name) => `cy.getCookie(${name}).should('exist');`,
+  "cookie should not exist": (name) => `cy.getCookie(${name}).should('not.exist');`,
+  "cookie should have value": (name, value) => `cy.getCookie(${name}).should('have.property', 'value', ${value});`,
+  "force click": (selector) => `cy.get(${selector}).click({ force: true });`,
 };
 
 function tokenizeLine(line: string): Token | null {
@@ -94,6 +101,36 @@ function tokenizeLine(line: string): Token | null {
       args: [selector, text],
       line: trimmedLine
     };
+  }
+
+  // Handle "url should include" and "title should be" - must come before general "should be" pattern
+  const urlTitleMatch = trimmedLine.match(/^(url|title)\s+should\s+(.+)$/);
+  if (urlTitleMatch) {
+    const type = urlTitleMatch[1];
+    const assertion = urlTitleMatch[2].trim();
+    
+    // Extract the value for "include" and "be" assertions
+    if (assertion.startsWith('include ')) {
+      const value = assertion.substring(8).trim(); // Remove "include "
+      return {
+        command: `${type} should include`,
+        args: [value],
+        line: trimmedLine
+      };
+    } else if (assertion.startsWith('be ')) {
+      const value = assertion.substring(3).trim(); // Remove "be "
+      return {
+        command: `${type} should be`,
+        args: [value],
+        line: trimmedLine
+      };
+    } else {
+      return {
+        command: `${type} should ${assertion}`,
+        args: [],
+        line: trimmedLine
+      };
+    }
   }
 
   // Handle "should be visible" and similar assertions
@@ -146,18 +183,6 @@ function tokenizeLine(line: string): Token | null {
     return {
       command,
       args,
-      line: trimmedLine
-    };
-  }
-
-  // Handle "url should include" and "title should be"
-  const urlTitleMatch = trimmedLine.match(/^(url|title)\s+should\s+(.+)$/);
-  if (urlTitleMatch) {
-    const type = urlTitleMatch[1];
-    const assertion = urlTitleMatch[2].trim();
-    return {
-      command: `${type} should ${assertion}`,
-      args: [],
       line: trimmedLine
     };
   }
@@ -221,6 +246,60 @@ function tokenizeLine(line: string): Token | null {
       line: trimmedLine
     };
   }
+
+  // Handle "intercept" command
+  const interceptMatch = trimmedLine.match(/^intercept\(([^,]+),\s*([^,]+),\s*([^)]+)\)$/);
+  if (interceptMatch) {
+    return {
+      command: 'intercept',
+      args: [interceptMatch[1].trim(), interceptMatch[2].trim(), interceptMatch[3].trim()],
+      line: trimmedLine
+    };
+  }
+
+  // Handle "wait for" command
+  const waitForMatch = trimmedLine.match(/^wait for\s+(.+)$/);
+  if (waitForMatch) {
+    return {
+      command: 'wait for',
+      args: [waitForMatch[1].trim()],
+      line: trimmedLine
+    };
+  }
+
+  // Handle "cookie [name] should [assertion]" pattern
+  const cookieShouldMatch = trimmedLine.match(/^cookie\s+(.+?)\s+should\s+(exist|not exist|have value)\s*(.+)?$/);
+  if (cookieShouldMatch) {
+    const name = cookieShouldMatch[1].trim();
+    const assertion = cookieShouldMatch[2];
+    const value = cookieShouldMatch[3]?.trim();
+    
+    if (assertion === 'have value' && value) {
+      return {
+        command: 'cookie should have value',
+        args: [name, value],
+        line: trimmedLine
+      };
+    } else {
+      return {
+        command: `cookie should ${assertion}`,
+        args: [name],
+        line: trimmedLine
+      };
+    }
+  }
+
+  // Handle "force click" command
+  const forceClickMatch = trimmedLine.match(/^force click\s+(.+)$/);
+  if (forceClickMatch) {
+    return {
+      command: 'force click',
+      args: [forceClickMatch[1].trim()],
+      line: trimmedLine
+    };
+  }
+
+
 
   return null;
 }
