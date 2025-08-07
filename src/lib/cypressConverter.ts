@@ -47,7 +47,6 @@ const mappingDictionary: Record<string, (...args: string[]) => string> = {
   "attach file": (file, selector) => `cy.get(${selector}).attachFile(${file});`,
   "alias as": (selector, name) => `cy.get(${selector}).as(${name});`,
   "use alias": (name) => `cy.get(@${name});`,
-  // New patterns for intercept, wait for aliases, and cookie assertions
   "intercept": (method, url, alias) => `cy.intercept({\n    method: ${method},\n    url: ${url},\n}).as(${alias});`,
   "wait for": (alias) => `cy.wait('@${alias.replace(/['"]/g, '')}');`,
   "cookie should exist": (name) => `cy.getCookie(${name}).should('exist');`,
