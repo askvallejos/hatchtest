@@ -118,7 +118,7 @@ const TestConverter = () => {
   };
 
   return (
-    <div className="h-full flex flex-col p-6">
+    <div className="h-full flex flex-col p-4">
       <div className="mb-6 flex-shrink-0">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
           Test Converter

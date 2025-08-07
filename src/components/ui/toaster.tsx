@@ -30,7 +30,7 @@ export function Toaster() {
         style={{
           position: 'fixed',
           top: '0',
-          right: '0',
+          right: '-3rem',
           zIndex: 9999
         }}
       />
