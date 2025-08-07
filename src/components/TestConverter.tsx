@@ -127,7 +127,7 @@ const TestConverter = () => {
   return (
     <div className="h-full flex flex-col p-4">
       <div className="mb-6 flex-shrink-0 flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
           Test Converter
         </h1>
         <HelpCircle className="w-6 h-6 cursor-pointer text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-300 transition-all duration-200 hover:scale-110 hover:drop-shadow-lg" onClick={() => setShowKeywordGuide(true)} />
@@ -144,7 +144,7 @@ const TestConverter = () => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Input your test here."
-              className="flex-1 min-h-0 bg-gray-200/90 dark:bg-gray-950/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 resize-none font-mono text-sm leading-relaxed placeholder:text-gray-400 focus:bg-gray-200/90 dark:focus:bg-gray-950/70 rounded-xs"
+              className="flex-1 min-h-0 bg-gray-200/90 dark:bg-gray-950/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 resize-none font-mono text-sm leading-relaxed placeholder:text-gray-400 rounded-xs"
             />
             <Button
               onClick={convertToCypressHandler}
