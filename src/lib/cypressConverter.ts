@@ -324,9 +324,10 @@ export function convertToCypress(input: string): string {
   
   // Add warning about unrecognized commands if any
   if (unrecognizedCommands.length > 0) {
-    output += '\n// Warning: The following commands were not recognized:\n';
+    output += '\n------------------------------------------------------------------\n';
+    output += '❌ Warning: The following commands were not recognized:\n';
     unrecognizedCommands.forEach(cmd => {
-      output += `// ${cmd}\n`;
+      output += `❌ ${cmd}\n`;
     });
   }
   

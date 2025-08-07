@@ -79,7 +79,7 @@ function App() {
         setCypressCode(converted);
         setConversionStatus('success');
         
-        const hasWarnings = converted.includes('// Warning: The following commands were not recognized:');
+        const hasWarnings = converted.includes('❌ Warning: The following commands were not recognized:');
         
         if (hasWarnings) {
           toast({
