@@ -35,20 +35,72 @@ function App() {
     
     setTimeout(async () => {
       try {
+        if (!input.trim()) {
+          throw new Error('Input is empty. Please enter some test code to convert.');
+        }
+
+        const lines = input.split('\n');
+        const syntaxErrors: string[] = [];
+        
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i].trim();
+          if (line && !line.startsWith('//') && !line.startsWith('#')) {
+            if (line.includes('(') && !line.includes(')')) {
+              syntaxErrors.push(`Line ${i + 1}: Unclosed parentheses`);
+            }
+            if (line.includes('"') && (line.match(/"/g) || []).length % 2 !== 0) {
+              syntaxErrors.push(`Line ${i + 1}: Unclosed quotes`);
+            }
+            if (line.includes("'") && (line.match(/'/g) || []).length % 2 !== 0) {
+              syntaxErrors.push(`Line ${i + 1}: Unclosed single quotes`);
+            }
+            if (line.startsWith('type ') && !line.includes(' into ')) {
+              syntaxErrors.push(`Line ${i + 1}: "type" command requires "into" (e.g., "type hello into #input")`);
+            }
+            if (line.startsWith('click ') && line.trim().split(' ').length < 2) {
+              syntaxErrors.push(`Line ${i + 1}: "click" command requires a selector`);
+            }
+            if (line.startsWith('go to ') && line.trim().split(' ').length < 3) {
+              syntaxErrors.push(`Line ${i + 1}: "go to" command requires a URL`);
+            }
+          }
+        }
+
+        if (syntaxErrors.length > 0) {
+          throw new Error(`Syntax errors found:\n${syntaxErrors.join('\n')}`);
+        }
+
         const converted = convertToCypress(input);
+        
+        if (!converted.trim()) {
+          throw new Error('Conversion failed. No valid commands found in the input.');
+        }
         
         setCypressCode(converted);
         setConversionStatus('success');
-        toast({
-          title: "Conversion Successful",
-          description: "Your test has been converted.",
-          variant: "success",
-        });
+        
+        const hasWarnings = converted.includes('// Warning: The following commands were not recognized:');
+        
+        if (hasWarnings) {
+          toast({
+            title: "Conversion Completed with Warnings",
+            description: "Some commands were not recognized. Check the output for details.",
+            variant: "default",
+          });
+        } else {
+          toast({
+            title: "Conversion Successful",
+            description: "Your test has been converted to Cypress format.",
+            variant: "success",
+          });
+        }
       } catch (error) {
         setConversionStatus('error');
+        const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred during conversion.';
+        
         toast({
           title: "Conversion Failed", 
-          description: "There was an error converting your test.",
+          description: errorMessage,
           variant: "destructive",
         });
       }

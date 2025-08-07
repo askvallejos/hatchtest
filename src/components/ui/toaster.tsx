@@ -4,6 +4,7 @@ import {
   ToastClose,
   ToastProvider,
   ToastTitle,
+  ToastDescription,
   ToastViewport,
 } from '@/components/ui/toast';
 
@@ -12,11 +13,12 @@ export function Toaster() {
 
   return (
     <ToastProvider>
-      {toasts.map(function ({ id, title, action, ...props }) {
+      {toasts.map(function ({ id, title, description, action, ...props }) {
         return (
           <Toast key={id} {...props}>
-            <div className="flex items-center justify-start flex-1">
+            <div className="flex flex-col items-start justify-start flex-1 gap-1 pr-8">
               {title && <ToastTitle>{title}</ToastTitle>}
+              {description && <ToastDescription>{description}</ToastDescription>}
             </div>
             {action}
             <ToastClose />

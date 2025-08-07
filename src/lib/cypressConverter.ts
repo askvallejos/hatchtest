@@ -254,15 +254,26 @@ function wrapValue(value: string): string {
 export function convertToCypress(input: string): string {
   const lines = input.split('\n');
   const tokens: Token[] = [];
+  const unrecognizedCommands: string[] = [];
   
   // Tokenize all lines
-  for (const line of lines) {
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
     const token = tokenizeLine(line);
     if (token) {
       tokens.push(token);
+    } else if (line.trim() && !line.trim().startsWith('//') && !line.trim().startsWith('#')) {
+      // Track unrecognized commands
+      unrecognizedCommands.push(`Line ${i + 1}: "${line.trim()}"`);
     }
   }
   
+  // If no valid tokens found, throw error
+  if (tokens.length === 0) {
+    throw new Error('No valid commands found in the input. Please check your syntax.');
+  }
+  
+  // If there are unrecognized commands, include them in the output as comments
   let output = '';
   let currentItBlock = false;
   let indentLevel = 0;
@@ -301,7 +312,7 @@ export function convertToCypress(input: string): string {
       const cypressCode = mapper(...args);
       output += '  '.repeat(indentLevel) + cypressCode + '\n';
     } else {
-      // Unknown command
+      // Unknown command - add as comment
       output += '  '.repeat(indentLevel) + `// Unknown command: ${token.line}\n`;
     }
   }
@@ -309,6 +320,14 @@ export function convertToCypress(input: string): string {
   // Close any remaining it block
   if (currentItBlock) {
     output += '  '.repeat(indentLevel) + '});\n';
+  }
+  
+  // Add warning about unrecognized commands if any
+  if (unrecognizedCommands.length > 0) {
+    output += '\n// Warning: The following commands were not recognized:\n';
+    unrecognizedCommands.forEach(cmd => {
+      output += `// ${cmd}\n`;
+    });
   }
   
   return output.trim();
