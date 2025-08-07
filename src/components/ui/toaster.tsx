@@ -15,7 +15,7 @@ export function Toaster() {
       {toasts.map(function ({ id, title, action, ...props }) {
         return (
           <Toast key={id} {...props}>
-            <div className="flex items-center justify-center flex-1">
+            <div className="flex items-center justify-start flex-1">
               {title && <ToastTitle>{title}</ToastTitle>}
             </div>
             {action}
@@ -28,8 +28,7 @@ export function Toaster() {
         style={{
           position: 'fixed',
           top: '0',
-          left: '50%',
-          transform: 'translateX(-50%)',
+          right: '0',
           zIndex: 9999
         }}
       />
