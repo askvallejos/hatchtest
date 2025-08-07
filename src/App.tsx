@@ -84,8 +84,8 @@ function App() {
         if (hasWarnings) {
           toast({
             title: "Conversion Completed with Warnings",
-            description: "Some commands were not recognized. Check the output for details.",
-            variant: "default",
+            description: "Some commands were not recognized.",
+            variant: "warning",
           });
         } else {
           toast({
