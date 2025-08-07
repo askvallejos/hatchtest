@@ -11,6 +11,13 @@ const Dashboard = () => {
       href: "/cypress-converter",
       color: "bg-orange-500 hover:bg-orange-600"
     },
+    {
+      title: "Cypress Converter AI",
+      description: "Convert English descriptions to Cypress tests using AI",
+      icon: <Code className="h-6 w-6" />,
+      href: "/cypress-converter-ai",
+      color: "bg-blue-500 hover:bg-blue-600"
+    },
   ];
 
   return (
