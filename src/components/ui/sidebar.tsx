@@ -133,14 +133,14 @@ const SidebarNavItem = React.forwardRef<
 SidebarNavItem.displayName = "SidebarNavItem"
 
 const SidebarNavLink = React.forwardRef<
-  HTMLAnchorElement,
-  React.AnchorHTMLAttributes<HTMLAnchorElement> & {
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement> & {
     active?: boolean
     icon?: React.ReactNode
     collapsed?: boolean
   }
 >(({ className, active, icon, children, collapsed = false, ...props }, ref) => (
-  <a
+  <div
     ref={ref}
     className={cn(
       "group flex items-center gap-3 rounded-xs px-3 py-2 text-sm font-medium transition-all duration-300 ease-in-out h-10 w-full",
@@ -152,7 +152,7 @@ const SidebarNavLink = React.forwardRef<
   >
     {icon && <span className="flex h-4 w-4 items-center justify-center">{icon}</span>}
     {!collapsed && <span className="truncate transition-opacity duration-300">{children}</span>}
-  </a>
+  </div>
 ))
 SidebarNavLink.displayName = "SidebarNavLink"
 
