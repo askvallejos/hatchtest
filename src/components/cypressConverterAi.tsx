@@ -111,16 +111,16 @@ Input: ${input}`;
       setProcessingStatus('success');
 
       toast({
-        title: "AI Processing Completed",
+        title: "Processing Completed",
         description: "Your test description has been converted to Cypress code.",
         variant: "success",
       });
     } catch (error) {
       setProcessingStatus('error');
-      const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred during AI processing.';
+      const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred during processing.';
 
       toast({
-        title: "AI Processing Failed",
+        title: "Processing Failed",
         description: errorMessage,
         variant: "destructive",
       });
@@ -233,7 +233,7 @@ Input: ${input}`;
       <Dialog
         isOpen={showKeywordGuide}
         onClose={() => setShowKeywordGuide(false)}
-        title="AI Processing Guide"
+        title="Processing Guide"
       >
         <div className="space-y-6">
           <div className="space-y-4">
