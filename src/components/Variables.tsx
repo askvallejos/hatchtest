@@ -1,12 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import type React from 'react';
 import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog } from '@/components/ui/dialog';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { ScrollArea } from '@/components/ui/scrollArea';
-import { Plus, Edit, Trash2, Database } from 'lucide-react';
+import { Plus, Edit, Trash2, Database, Upload, Download } from 'lucide-react';
 import { useToast } from '@/hooks/useToast';
 import { variablesDB, Variable } from '@/lib/variablesDB';
 
@@ -21,6 +22,11 @@ const Variables = () => {
   const [addRows, setAddRows] = useState<Array<{ name: string; value: string }>>([
     { name: '', value: '' },
   ]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isImportDialogOpen, setIsImportDialogOpen] = useState(false);
+  const [isExportDialogOpen, setIsExportDialogOpen] = useState(false);
+  const [importJsonText, setImportJsonText] = useState('');
+  const [exportJsonText, setExportJsonText] = useState('');
   const { toast } = useToast();
 
   useEffect(() => {
@@ -217,6 +223,184 @@ const Variables = () => {
   const lastRow = addRows[addRows.length - 1];
   const canAddAnother = Boolean(lastRow?.name?.trim()) && Boolean(lastRow?.value?.trim());
 
+  const handleExportJson = () => {
+    try {
+      const payload = variables.map((v) => ({
+        variable_name: v.name,
+        variable_value: v.value,
+      }));
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `variables-${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+
+      toast({
+        title: 'Exported',
+        description: `Exported ${payload.length} ${payload.length === 1 ? 'variable' : 'variables'}.`,
+        variant: 'success',
+      });
+    } catch {
+      toast({
+        title: 'Error',
+        description: 'Failed to export variables.',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const handleImportClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleImportFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file) return;
+
+    try {
+      const text = await file.text();
+      const data = JSON.parse(text);
+
+      if (!Array.isArray(data)) {
+        throw new Error('Invalid JSON: expected an array of objects.');
+      }
+
+      const normalized = data.map((item: any) => {
+        const name = typeof item?.variable_name === 'string' ? item.variable_name.trim() : '';
+        const value = typeof item?.variable_value === 'string' ? item.variable_value.trim() : '';
+        return { name, value };
+      });
+
+      if (normalized.some((n) => !n.name || !n.value)) {
+        throw new Error('Each item must have non-empty "variable_name" and "variable_value".');
+      }
+
+      const nameCounts = new Map<string, number>();
+      normalized.forEach((n) => nameCounts.set(n.name, (nameCounts.get(n.name) ?? 0) + 1));
+      const dupInFile = Array.from(nameCounts.entries())
+        .filter(([, c]) => c > 1)
+        .map(([n]) => n);
+      if (dupInFile.length > 0) {
+        throw new Error(`Duplicate names in file: ${dupInFile.join(', ')}`);
+      }
+
+      const existing = await variablesDB.getAllVariables();
+      const existingByName = new Map(existing.map((v) => [v.name, v] as const));
+
+      let added = 0;
+      let updated = 0;
+
+      for (const n of normalized) {
+        const existingVar = existingByName.get(n.name);
+        if (existingVar) {
+          await variablesDB.updateVariable(existingVar.id, { value: n.value });
+          updated += 1;
+        } else {
+          await variablesDB.addVariable({ name: n.name, value: n.value });
+          added += 1;
+        }
+      }
+
+      toast({
+        title: 'Import complete',
+        description: `${added} added, ${updated} updated.`,
+        variant: 'success',
+      });
+
+      loadVariables();
+      setIsImportDialogOpen(false);
+    } catch (err: any) {
+      toast({
+        title: 'Import failed',
+        description: err?.message ?? 'Could not import JSON.',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const handleImportFromText = async () => {
+    if (!importJsonText.trim()) {
+      toast({
+        title: 'No JSON provided',
+        description: 'Paste JSON into the input box or upload a file.',
+        variant: 'destructive',
+      });
+      return;
+    }
+    try {
+      const data = JSON.parse(importJsonText);
+      if (!Array.isArray(data)) {
+        throw new Error('Invalid JSON: expected an array of objects.');
+      }
+
+      const normalized = data.map((item: any) => {
+        const name = typeof item?.variable_name === 'string' ? item.variable_name.trim() : '';
+        const value = typeof item?.variable_value === 'string' ? item.variable_value.trim() : '';
+        return { name, value };
+      });
+
+      if (normalized.some((n) => !n.name || !n.value)) {
+        throw new Error('Each item must have non-empty "variable_name" and "variable_value".');
+      }
+
+      const nameCounts = new Map<string, number>();
+      normalized.forEach((n) => nameCounts.set(n.name, (nameCounts.get(n.name) ?? 0) + 1));
+      const dupInFile = Array.from(nameCounts.entries())
+        .filter(([, c]) => c > 1)
+        .map(([n]) => n);
+      if (dupInFile.length > 0) {
+        throw new Error(`Duplicate names in input: ${dupInFile.join(', ')}`);
+      }
+
+      const existing = await variablesDB.getAllVariables();
+      const existingByName = new Map(existing.map((v) => [v.name, v] as const));
+
+      let added = 0;
+      let updated = 0;
+
+      for (const n of normalized) {
+        const existingVar = existingByName.get(n.name);
+        if (existingVar) {
+          await variablesDB.updateVariable(existingVar.id, { value: n.value });
+          updated += 1;
+        } else {
+          await variablesDB.addVariable({ name: n.name, value: n.value });
+          added += 1;
+        }
+      }
+
+      toast({
+        title: 'Import complete',
+        description: `${added} added, ${updated} updated.`,
+        variant: 'success',
+      });
+
+      setIsImportDialogOpen(false);
+      setImportJsonText('');
+      loadVariables();
+    } catch (err: any) {
+      toast({
+        title: 'Import failed',
+        description: err?.message ?? 'Could not import JSON.',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const openExportDialog = () => {
+    const payload = variables.map((v) => ({
+      variable_name: v.name,
+      variable_value: v.value,
+    }));
+    setExportJsonText(JSON.stringify(payload, null, 2));
+    setIsExportDialogOpen(true);
+  };
+
   return (
     <div className="p-4 space-y-6">
       <div className="flex items-center justify-between">
@@ -227,6 +411,26 @@ const Variables = () => {
           </p>
         </div>
         <div className="flex items-center gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            className="bg-gray-200/90 dark:bg-gray-950/60 hover:bg-gray-300/70 dark:hover:opacity-80 border-none"
+            onClick={() => { setImportJsonText(''); setIsImportDialogOpen(true); }}
+            title="Import variables from JSON"
+          >
+            <Upload className="h-4 w-4 mr-2" />
+            Import JSON
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            className="bg-gray-200/90 dark:bg-gray-950/60 hover:bg-gray-300/70 dark:hover:opacity-80 border-none"
+            onClick={openExportDialog}
+            title="Export variables to JSON"
+          >
+            <Download className="h-4 w-4 mr-2" />
+            Export JSON
+          </Button>
           <Button onClick={() => { setAddRows([{ name: '', value: '' }]); setIsAddDialogOpen(true); }}>
             <Plus className="h-4 w-4 mr-2" />
             Add Variable(s)
@@ -377,6 +581,93 @@ const Variables = () => {
           )}
         </CardContent>
       </Card>
+
+      {/* Import Dialog */}
+      <Dialog
+        isOpen={isImportDialogOpen}
+        onClose={() => setIsImportDialogOpen(false)}
+        title="Import Variables"
+      >
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <p className="text-md text-muted-foreground">Upload a JSON file in the required structure.</p>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="application/json"
+              className="hidden"
+              onChange={handleImportFileChange}
+            />
+            <Button
+              type="button"
+              variant="outline"
+              className="bg-gray-200/90 dark:bg-gray-950/60 hover:bg-gray-300/70 dark:hover:opacity-80 border-none"
+              onClick={handleImportClick}
+            >
+              <Upload className="h-4 w-4 mr-2" />
+              Upload JSON file
+            </Button>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="manual-json" className='text-muted-foreground'>Or paste JSON manually</Label>
+            <Textarea
+              id="manual-json"
+              placeholder='[
+  { "variable_name": "login-input", "variable_value": "input[data-testid=login-input]" }
+]'
+              className="bg-gray-200/90 dark:bg-gray-950/60 min-h-[200px]"
+              value={importJsonText}
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setImportJsonText(e.target.value)}
+            />
+          </div>
+
+          <div className="flex items-center justify-end gap-2 pt-2">
+            <Button size="default" className="h-10 bg-gray-200/90 dark:bg-gray-950/60 hover:bg-gray-300/70 dark:hover:opacity-80 border-none" variant="outline" onClick={() => setIsImportDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button size="default" className="h-10" onClick={handleImportFromText}>Import</Button>
+          </div>
+        </div>
+      </Dialog>
+
+      {/* Export Dialog */}
+      <Dialog
+        isOpen={isExportDialogOpen}
+        onClose={() => setIsExportDialogOpen(false)}
+        title="Export Variables"
+      >
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <p className="text-md text-muted-foreground">Download the variables as a JSON file.</p>
+            <Button
+              type="button"
+              variant="outline"
+              className="bg-gray-200/90 dark:bg-gray-950/60 hover:bg-gray-300/70 dark:hover:opacity-80 border-none"
+              onClick={handleExportJson}
+            >
+              <Download className="h-4 w-4 mr-2" />
+              Download JSON file
+            </Button>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="export-json" className='text-muted-foreground'>Or copy JSON below</Label>
+            <Textarea
+              id="export-json"
+              className="bg-gray-200/90 dark:bg-gray-950/60 min-h-[200px]"
+              value={exportJsonText}
+              readOnly
+            />
+          </div>
+
+          <div className="flex items-center justify-end gap-2 pt-2">
+            <Button size="default" className="h-10 bg-gray-200/90 dark:bg-gray-950/60 hover:bg-gray-300/70 dark:hover:opacity-80 border-none" variant="outline" onClick={() => setIsExportDialogOpen(false)}>
+              Close
+            </Button>
+          </div>
+        </div>
+      </Dialog>
 
       <Dialog
         isOpen={isEditDialogOpen}
