@@ -7,7 +7,7 @@ import { Dialog } from '@/components/ui/dialog';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { ScrollArea } from '@/components/ui/scrollArea';
-import { Plus, Edit, Trash2, Database, Upload, Download } from 'lucide-react';
+import { Plus, Edit, Trash2, Database, Upload, Download, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useToast } from '@/hooks/useToast';
 import { variablesDB, Variable } from '@/lib/variablesDB';
 
@@ -27,6 +27,9 @@ const Variables = () => {
   const [isExportDialogOpen, setIsExportDialogOpen] = useState(false);
   const [importJsonText, setImportJsonText] = useState('');
   const [exportJsonText, setExportJsonText] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
   const { toast } = useToast();
 
   useEffect(() => {
@@ -401,6 +404,34 @@ const Variables = () => {
     setIsExportDialogOpen(true);
   };
 
+  // Derived data for search + pagination
+  const normalizedQuery = searchQuery.trim().toLowerCase();
+  const filteredVariables = variables.filter((v) => {
+    if (!normalizedQuery) return true;
+    return (
+      v.name.toLowerCase().includes(normalizedQuery) ||
+      v.value.toLowerCase().includes(normalizedQuery)
+    );
+  });
+
+  const totalPages = Math.max(1, Math.ceil(filteredVariables.length / pageSize));
+  const clampedCurrentPage = Math.min(currentPage, totalPages);
+  const startIndex = (clampedCurrentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const paginatedVariables = filteredVariables.slice(startIndex, endIndex);
+
+  useEffect(() => {
+    // Reset to first page when search query changes
+    setCurrentPage(1);
+  }, [searchQuery]);
+
+  useEffect(() => {
+    // Clamp current page when total pages shrink (e.g., after deletion)
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages);
+    }
+  }, [totalPages, currentPage]);
+
   return (
     <div className="p-4 space-y-6">
       <div className="flex items-center justify-between">
@@ -507,12 +538,22 @@ const Variables = () => {
         </div>
       </Dialog>
 
-      <Card className="bg-white/40 dark:bg-gray-800/40 backdrop-blur-xl border-none rounded-xs shadow-2xl">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Database className="h-5 w-5" />
-            Stored Variables
-          </CardTitle>
+      <Card className="h-full bg-white/40 dark:bg-gray-800/40 backdrop-blur-xl border-none rounded-xs shadow-2xl">
+        <CardHeader className="pb-2">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-2">
+              <Database className="h-5 w-5" />
+              <CardTitle>Stored Variables</CardTitle>
+            </div>
+            <div className="flex items-center gap-2">
+              <Input
+                value={searchQuery}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
+                placeholder="Search by name or value..."
+                className="w-64 bg-gray-200/90 dark:bg-gray-950/60"
+              />
+            </div>
+          </div>
           <CardDescription>
             Variables are automatically replaced in Cypress converters. Use the variable name in your tests and it will be replaced with the corresponding value.
           </CardDescription>
@@ -531,9 +572,10 @@ const Variables = () => {
               </p>
             </div>
           ) : (
-            <ScrollArea className="h-[600px]">
+            <>
+              <ScrollArea className="h-[71.5vh]">
               <div className="space-y-4">
-                {variables.map((variable) => (
+                {paginatedVariables.map((variable) => (
                   <Card
                     key={variable.id}
                     className="p-4 bg-gray-100 dark:bg-gray-700 border-gray-300/50 dark:border-gray-700/30 rounded-xs"
@@ -577,7 +619,39 @@ const Variables = () => {
                   </Card>
                 ))}
               </div>
-            </ScrollArea>
+              </ScrollArea>
+              <div className="flex items-center justify-between pt-4">
+                <div className="text-sm text-muted-foreground">
+                  Showing {filteredVariables.length === 0 ? 0 : startIndex + 1}
+                  -{Math.min(endIndex, filteredVariables.length)} of {filteredVariables.length}
+                </div>
+                <div className="flex items-center gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="h-8 px-2 bg-gray-200/90 dark:bg-gray-950/60 hover:bg-gray-300/70 dark:hover:opacity-80 border-none"
+                    disabled={clampedCurrentPage <= 1}
+                    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                    title="Previous page"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </Button>
+                  <div className="text-sm">
+                    Page {clampedCurrentPage} of {totalPages}
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="h-8 px-2 bg-gray-200/90 dark:bg-gray-950/60 hover:bg-gray-300/70 dark:hover:opacity-80 border-none"
+                    disabled={clampedCurrentPage >= totalPages}
+                    onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                    title="Next page"
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </>
           )}
         </CardContent>
       </Card>
