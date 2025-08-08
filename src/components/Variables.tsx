@@ -18,6 +18,9 @@ const Variables = () => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [selectedVariable, setSelectedVariable] = useState<Variable | null>(null);
   const [formData, setFormData] = useState({ name: '', value: '' });
+  const [addRows, setAddRows] = useState<Array<{ name: string; value: string }>>([
+    { name: '', value: '' },
+  ]);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -32,7 +35,7 @@ const Variables = () => {
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to load variables",
+        description: "Failed to load variables.",
         variant: "destructive",
       });
     } finally {
@@ -42,43 +45,76 @@ const Variables = () => {
 
   const handleAddVariable = async () => {
     try {
-      if (!formData.name.trim() || !formData.value.trim()) {
+      const trimmedRows = addRows.map((row) => ({
+        name: row.name.trim(),
+        value: row.value.trim(),
+      }));
+
+      const allFilled = trimmedRows.every((r) => r.name && r.value);
+      if (!allFilled) {
         toast({
           title: "Validation Error",
-          description: "Both name and value are required",
+          description: "Please provide both name and value for all fields.",
           variant: "destructive",
         });
         return;
       }
 
-      const existingVariable = await variablesDB.getVariableByName(formData.name);
-      if (existingVariable) {
+      const nameCounts = new Map<string, number>();
+      for (const r of trimmedRows) {
+        nameCounts.set(r.name, (nameCounts.get(r.name) ?? 0) + 1);
+      }
+      const duplicateNames = Array.from(nameCounts.entries())
+        .filter(([, count]) => count > 1)
+        .map(([name]) => name);
+
+      if (duplicateNames.length > 0) {
         toast({
-          title: "Error",
-          description: "A variable with this name already exists",
+          title: "Duplicate Names",
+          description: `These names are duplicated in your entries: ${duplicateNames.join(', ')}.`,
           variant: "destructive",
         });
         return;
       }
 
-      await variablesDB.addVariable({
-        name: formData.name.trim(),
-        value: formData.value.trim(),
-      });
+      const existing = await variablesDB.getAllVariables();
+      const existingNames = new Set(existing.map((v) => v.name));
+      const alreadyExists = trimmedRows
+        .filter((r) => existingNames.has(r.name))
+        .map((r) => r.name);
 
+      if (alreadyExists.length > 0) {
+        toast({
+          title: "Already Exists",
+          description: `Variables with these names already exist: ${alreadyExists.join(', ')}.`,
+          variant: "destructive",
+        });
+        return;
+      }
+
+      await Promise.all(
+        trimmedRows.map((r) =>
+          variablesDB.addVariable({
+            name: r.name,
+            value: r.value,
+          })
+        )
+      );
+
+      const count = trimmedRows.length;
       toast({
         title: "Success",
-        description: "Variable added successfully",
+        description: `${count} ${count === 1 ? 'variable' : 'variables'} added successfully.`,
         variant: "success",
       });
 
-      setFormData({ name: '', value: '' });
+      setAddRows([{ name: '', value: '' }]);
       setIsAddDialogOpen(false);
       loadVariables();
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to add variable",
+        description: "Failed to add variables.",
         variant: "destructive",
       });
     }
@@ -91,7 +127,7 @@ const Variables = () => {
       if (!formData.name.trim() || !formData.value.trim()) {
         toast({
           title: "Validation Error",
-          description: "Both name and value are required",
+          description: "Both name and value are required.",
           variant: "destructive",
         });
         return;
@@ -101,7 +137,7 @@ const Variables = () => {
       if (existingVariable && existingVariable.id !== selectedVariable.id) {
         toast({
           title: "Error",
-          description: "A variable with this name already exists",
+          description: "A variable with this name already exists.",
           variant: "destructive",
         });
         return;
@@ -114,7 +150,7 @@ const Variables = () => {
 
       toast({
         title: "Success",
-        description: "Variable updated successfully",
+        description: "Variable updated successfully.",
         variant: "success",
       });
 
@@ -125,7 +161,7 @@ const Variables = () => {
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to update variable",
+        description: "Failed to update variable.",
         variant: "destructive",
       });
     }
@@ -139,7 +175,7 @@ const Variables = () => {
 
       toast({
         title: "Success",
-        description: "Variable deleted successfully",
+        description: "Variable deleted successfully.",
         variant: "success",
       });
 
@@ -149,7 +185,7 @@ const Variables = () => {
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to delete variable",
+        description: "Failed to delete variable.",
         variant: "destructive",
       });
     }
@@ -175,9 +211,14 @@ const Variables = () => {
       minute: '2-digit',
     }).format(date);
   };
+  const addCount = addRows.length;
+  const addButtonLabel = `Add ${addCount} ${addCount === 1 ? 'Variable' : 'Variables'}`;
+  const addDisabled = addRows.some((r) => !r.name.trim() || !r.value.trim());
+  const lastRow = addRows[addRows.length - 1];
+  const canAddAnother = Boolean(lastRow?.name?.trim()) && Boolean(lastRow?.value?.trim());
 
   return (
-    <div className="container mx-auto p-4 space-y-6">
+    <div className="p-4 space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Variables</h1>
@@ -186,9 +227,9 @@ const Variables = () => {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button onClick={() => setIsAddDialogOpen(true)}>
+          <Button onClick={() => { setAddRows([{ name: '', value: '' }]); setIsAddDialogOpen(true); }}>
             <Plus className="h-4 w-4 mr-2" />
-            Add Variable
+            Add Variable(s)
           </Button>
         </div>
       </div>
@@ -196,37 +237,68 @@ const Variables = () => {
       <Dialog
         isOpen={isAddDialogOpen}
         onClose={() => setIsAddDialogOpen(false)}
-        title="Add New Variable"
+        title="Add New Variable(s)"
       >
         <div className="space-y-4">
           <p className="text-md text-muted-foreground">
-            Create a new variable that will be automatically replaced in your Cypress converters.
+            Create one or more variables. Use the plus icon to add another field.
           </p>
-          <div>
-            <Label htmlFor="name">Variable Name</Label>
-            <Input
-              className="bg-gray-200/90 dark:bg-gray-950/60"
-              id="name"
-              placeholder="e.g., login-input"
-              value={formData.name}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, name: e.target.value })}
-            />
+
+          <div className="space-y-3">
+            {addRows.map((row, idx) => (
+              <div key={idx} className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor={`name-${idx}`}>Variable Name</Label>
+                  <Input
+                    className="bg-gray-200/90 dark:bg-gray-950/60"
+                    id={`name-${idx}`}
+                    placeholder="e.g., login-input"
+                    value={row.name}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      const next = [...addRows];
+                      next[idx] = { ...next[idx], name: e.target.value };
+                      setAddRows(next);
+                    }}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor={`value-${idx}`}>Variable Value</Label>
+                  <Input
+                    className="bg-gray-200/90 dark:bg-gray-950/60"
+                    id={`value-${idx}`}
+                    placeholder="e.g., input[data-testid=login-input]"
+                    value={row.value}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      const next = [...addRows];
+                      next[idx] = { ...next[idx], value: e.target.value };
+                      setAddRows(next);
+                    }}
+                  />
+                </div>
+              </div>
+            ))}
           </div>
+
           <div>
-            <Label htmlFor="value">Variable Value</Label>
-            <Input
-              className="bg-gray-200/90 dark:bg-gray-950/60"
-              id="value"
-              placeholder="e.g., input[data-testid=login-input]"
-              value={formData.value}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, value: e.target.value })}
-            />
+            <Button
+              type="button"
+              variant="outline"
+              className="bg-gray-200/90 dark:bg-gray-950/60 hover:bg-gray-300/70 dark:hover:opacity-80 border-none"
+              onClick={() => setAddRows((rows) => [...rows, { name: '', value: '' }])}
+              disabled={!canAddAnother}
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Add another field
+            </Button>
           </div>
+
           <div className="flex items-center justify-end gap-2 pt-2">
-            <Button size="default" className="h-10 border-none" variant="outline" onClick={() => setIsAddDialogOpen(false)}>
+            <Button size="default" className="h-10 bg-gray-200/90 dark:bg-gray-950/60 hover:bg-gray-300/70 dark:hover:opacity-80 border-none" variant="outline" onClick={() => setIsAddDialogOpen(false)}>
               Cancel
             </Button>
-            <Button size="default" className="h-10" onClick={handleAddVariable}>Add Variable</Button>
+            <Button size="default" className="h-10" onClick={handleAddVariable} disabled={addDisabled}>
+              {addButtonLabel}
+            </Button>
           </div>
         </div>
       </Dialog>
@@ -334,7 +406,7 @@ const Variables = () => {
             />
           </div>
           <div className="flex items-center justify-end gap-2 pt-2">
-            <Button size="default" className="h-10 border-none" variant="outline" onClick={() => setIsEditDialogOpen(false)}>
+            <Button size="default" className="h-10 bg-gray-200/90 dark:bg-gray-950/60 hover:bg-gray-300/70 dark:hover:opacity-80 border-none" variant="outline" onClick={() => setIsEditDialogOpen(false)}>
               Cancel
             </Button>
             <Button size="default" className="h-10" onClick={handleEditVariable}>Update Variable</Button>
@@ -352,7 +424,7 @@ const Variables = () => {
             Are you sure you want to delete the variable "{selectedVariable?.name}"? This action cannot be undone.
           </p>
           <div className="flex items-center justify-end gap-2 pt-2">
-            <Button size="default" className="h-10 border-none" variant="outline" onClick={() => setIsDeleteDialogOpen(false)}>
+            <Button size="default" className="h-10 bg-gray-200/90 dark:bg-gray-950/60 hover:bg-gray-300/70 dark:hover:opacity-80 border-none" variant="outline" onClick={() => setIsDeleteDialogOpen(false)}>
               Cancel
             </Button>
             <Button size="default" className="h-10" variant="destructive" onClick={handleDeleteVariable}>
