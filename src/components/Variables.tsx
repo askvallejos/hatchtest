@@ -6,7 +6,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Dialog } from '@/components/ui/dialog';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
-import { ScrollArea } from '@/components/ui/scrollArea';
 import { Plus, Edit, Trash2, Database, Upload, Download, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useToast } from '@/hooks/useToast';
 import { variablesDB, Variable } from '@/lib/variablesDB';
@@ -29,7 +28,7 @@ const Variables = () => {
   const [exportJsonText, setExportJsonText] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 10;
+  const pageSize = 7;
   const { toast } = useToast();
 
   useEffect(() => {
@@ -421,19 +420,17 @@ const Variables = () => {
   const paginatedVariables = filteredVariables.slice(startIndex, endIndex);
 
   useEffect(() => {
-    // Reset to first page when search query changes
     setCurrentPage(1);
   }, [searchQuery]);
 
   useEffect(() => {
-    // Clamp current page when total pages shrink (e.g., after deletion)
     if (currentPage > totalPages) {
       setCurrentPage(totalPages);
     }
   }, [totalPages, currentPage]);
 
   return (
-    <div className="p-4 space-y-6">
+    <div className="p-4 space-y-6 min-h-screen flex flex-col">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Variables</h1>
@@ -538,7 +535,7 @@ const Variables = () => {
         </div>
       </Dialog>
 
-      <Card className="h-full bg-white/40 dark:bg-gray-800/40 backdrop-blur-xl border-none rounded-xs shadow-2xl">
+      <Card className="bg-white/40 dark:bg-gray-800/40 backdrop-blur-xl border-none rounded-xs shadow-2xl flex-1 flex flex-col min-h-0">
         <CardHeader className="pb-2">
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-2">
@@ -550,7 +547,7 @@ const Variables = () => {
                 value={searchQuery}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
                 placeholder="Search by name or value..."
-                className="w-64 bg-gray-200/90 dark:bg-gray-950/60"
+                className="w-72 bg-gray-200/90 dark:bg-gray-950/60"
               />
             </div>
           </div>
@@ -558,7 +555,7 @@ const Variables = () => {
             Variables are automatically replaced in Cypress converters. Use the variable name in your tests and it will be replaced with the corresponding value.
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="flex-1 overflow-auto mt-2">
           {loading ? (
             <div className="flex items-center justify-center py-8">
               <div className="text-muted-foreground">Loading variables...</div>
@@ -573,12 +570,11 @@ const Variables = () => {
             </div>
           ) : (
             <>
-              <ScrollArea className="h-[71.5vh]">
-              <div className="space-y-4">
+              <div className="space-y-2">
                 {paginatedVariables.map((variable) => (
-                  <Card
+                  <div
                     key={variable.id}
-                    className="p-4 bg-gray-100 dark:bg-gray-700 border-gray-300/50 dark:border-gray-700/30 rounded-xs"
+                    className="p-4 bg-gray-100 dark:bg-gray-700 border border-gray-300/50 dark:border-gray-700/30 rounded-xs"
                   >
                     <div className="flex items-start justify-between">
                       <div className="flex-1 space-y-2">
@@ -616,10 +612,9 @@ const Variables = () => {
                         </Button>
                       </div>
                     </div>
-                  </Card>
+                  </div>
                 ))}
               </div>
-              </ScrollArea>
               <div className="flex items-center justify-between pt-4">
                 <div className="text-sm text-muted-foreground">
                   Showing {filteredVariables.length === 0 ? 0 : startIndex + 1}
@@ -656,7 +651,6 @@ const Variables = () => {
         </CardContent>
       </Card>
 
-      {/* Import Dialog */}
       <Dialog
         isOpen={isImportDialogOpen}
         onClose={() => setIsImportDialogOpen(false)}
@@ -705,7 +699,6 @@ const Variables = () => {
         </div>
       </Dialog>
 
-      {/* Export Dialog */}
       <Dialog
         isOpen={isExportDialogOpen}
         onClose={() => setIsExportDialogOpen(false)}

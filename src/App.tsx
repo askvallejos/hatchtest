@@ -38,6 +38,11 @@ const Navigation = () => {
       icon: <Home className="h-4 w-4" />
     },
     {
+      path: '/variables',
+      label: 'Variables',
+      icon: <Database className="h-4 w-4" />
+    },
+    {
       path: '/cypress-converter',
       label: 'Cypress Converter',
       icon: <FlaskConical className="h-4 w-4" />
@@ -47,11 +52,6 @@ const Navigation = () => {
       label: 'Cypress Converter AI',
       icon: <Bot className="h-4 w-4" />
     },
-    {
-      path: '/variables',
-      label: 'Variables',
-      icon: <Database className="h-4 w-4" />
-    }
   ];
 
   return (

@@ -5,6 +5,13 @@ import { Link } from 'react-router-dom';
 const Dashboard = () => {
   const quickActions = [
     {
+      title: "Variables",
+      description: "Manage your test variables.",
+      icon: <Database className="h-5 w-5" />,
+      href: "/variables",
+      color: "bg-emerald-500 hover:bg-emerald-600"
+    },
+    {
       title: "Cypress Converter",
       description: "Convert your test scripts to Cypress format.",
       icon: <FlaskConical className="h-5 w-5" />,
@@ -17,13 +24,6 @@ const Dashboard = () => {
       icon: <Bot className="h-5 w-5" />,
       href: "/cypress-converter-ai",
       color: "bg-blue-500 hover:bg-blue-600"
-    },
-    {
-      title: "Variables",
-      description: "Manage your test variables.",
-      icon: <Database className="h-5 w-5" />,
-      href: "/variables",
-      color: "bg-emerald-500 hover:bg-emerald-600"
     },
   ];
 
