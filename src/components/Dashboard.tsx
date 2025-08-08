@@ -42,16 +42,16 @@ const Dashboard = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {quickActions.map((action, index) => (
             <Link key={index} to={action.href} className="block">
-              <Card className="p-4 bg-white/40 dark:bg-gray-800/40 backdrop-blur-xl border-gray-300/50 dark:border-gray-700/30 hover:shadow-lg transition-all duration-200 cursor-pointer">
-                <div className="flex items-center space-x-3">
-                  <div className={`p-2 rounded-xs ${action.color} text-white`}>
+              <Card className="h-[82px] p-4 bg-white/40 dark:bg-gray-800/40 backdrop-blur-xl border-gray-300/50 dark:border-gray-700/30 hover:shadow-lg transition-all duration-200 cursor-pointer">
+                <div className="flex items-center space-x-3 overflow-hidden">
+                  <div className={`p-2 rounded-xs ${action.color} text-white shrink-0`}>
                     {action.icon}
                   </div>
-                  <div className="flex-1">
+                  <div className="flex-1 min-w-0">
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                       {action.title}
                     </h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm">
+                    <p className="text-gray-600 dark:text-gray-400 text-sm truncate">
                       {action.description}
                     </p>
                   </div>
