@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
@@ -7,6 +7,73 @@ import { Copy, HelpCircle } from 'lucide-react';
 import { useToast } from '@/hooks/useToast';
 import { convertToCypress } from '@/lib/cypressConverter';
 import { replaceVariablesInText } from '@/lib/variablesUtils';
+import { variablesDB } from '@/lib/variablesDB';
+
+type Suggestion = {
+  type: 'keyword' | 'variable';
+  value: string;
+};
+
+const KEYWORDS: string[] = [
+  'it',
+  'end',
+  'go to',
+  'reload',
+  'go back',
+  'go forward',
+  'type',
+  'clear',
+  'click',
+  'double click',
+  'right click',
+  'hover',
+  'focus',
+  'blur',
+  'select',
+  'check',
+  'uncheck',
+  'should be visible',
+  'should not be visible',
+  'should exist',
+  'should not exist',
+  'should be enabled',
+  'should be disabled',
+  'should be checked',
+  'should not be checked',
+  'should contain',
+  'should not contain',
+  'should have value',
+  'should have text',
+  'should include text',
+  'url should include',
+  'title should be',
+  'wait',
+  'pause',
+  'scroll to top',
+  'scroll to bottom',
+  'scroll to',
+  'set viewport',
+  'trigger',
+  'attach file',
+  'alias as',
+  'use alias',
+  'intercept',
+  'wait for',
+  'cookie should exist',
+  'cookie should not exist',
+  'cookie should have value',
+  'force click',
+];
+
+function getTokenBounds(text: string, cursor: number): { start: number; end: number } {
+  let start = cursor;
+  while (start > 0) {
+    const ch = text[start - 1];
+    if (/[A-Za-z0-9_-]/.test(ch)) start -= 1;
+    else break;
+  }
+  return { start, end: cursor };
+}
 
 const TestConverter = () => {
   const [input, setInput] = useState('');
@@ -17,6 +84,179 @@ const TestConverter = () => {
   const [hasWarnings, setHasWarnings] = useState(false);
   const [showKeywordGuide, setShowKeywordGuide] = useState(false);
   const { toast } = useToast();
+
+  // Autocomplete state
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const [cursorPos, setCursorPos] = useState(0);
+  const [variableNames, setVariableNames] = useState<string[]>([]);
+  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [highlightIndex, setHighlightIndex] = useState(0);
+  const [isFocused, setIsFocused] = useState(false);
+  const [popupTop, setPopupTop] = useState(0);
+  const [popupLeft, setPopupLeft] = useState(0);
+
+  useEffect(() => {
+    variablesDB
+      .getAllVariables()
+      .then((vars) => setVariableNames(vars.map((v) => v.name)))
+      .catch(() => {
+      });
+  }, []);
+
+  const updateSuggestions = (text: string, caret: number) => {
+    const { start, end } = getTokenBounds(text, caret);
+    const prefix = text.slice(start, end);
+    const trimmed = prefix.trim();
+
+    if (!trimmed) {
+      setSuggestions([]);
+      setIsOpen(false);
+      setHighlightIndex(0);
+      updatePopupPosition();
+      return;
+    }
+
+    const lower = trimmed.toLowerCase();
+
+    const keywordMatches: Suggestion[] = KEYWORDS.filter((k) => k.toLowerCase().startsWith(lower)).map((k) => ({
+      type: 'keyword',
+      value: k,
+    }));
+
+    const variableMatches: Suggestion[] = variableNames
+      .filter((v) => v.toLowerCase().startsWith(lower))
+      .map((v) => ({ type: 'variable', value: v }));
+
+    const merged = [...keywordMatches, ...variableMatches].slice(0, 12);
+    setSuggestions(merged);
+    setIsOpen(merged.length > 0 && isFocused);
+    setHighlightIndex(0);
+    updatePopupPosition();
+  };
+
+  const insertSuggestionAtCaret = (s: Suggestion) => {
+    const el = textareaRef.current;
+    if (!el) return;
+
+    const caret = el.selectionStart ?? cursorPos;
+    const { start, end } = getTokenBounds(input, caret);
+
+    const before = input.slice(0, start);
+    const after = input.slice(end);
+    const replacement = s.value;
+
+    const next = before + replacement + after;
+    const nextCaret = before.length + replacement.length;
+
+    setInput(next);
+    requestAnimationFrame(() => {
+      if (textareaRef.current) {
+        textareaRef.current.focus();
+        textareaRef.current.setSelectionRange(nextCaret, nextCaret);
+      }
+    });
+
+    setIsOpen(false);
+  };
+
+  const updatePopupPosition = () => {
+    const ta = textareaRef.current;
+    const wrapper = wrapperRef.current;
+    if (!ta || !wrapper) return;
+
+    const caret = ta.selectionStart ?? 0;
+    // Build a mirror element to calculate caret position
+    const computed = window.getComputedStyle(ta);
+    const mirror = document.createElement('div');
+    mirror.style.position = 'absolute';
+    mirror.style.visibility = 'hidden';
+    mirror.style.whiteSpace = 'pre-wrap';
+    mirror.style.wordWrap = 'break-word';
+    mirror.style.overflow = 'hidden';
+    mirror.style.boxSizing = computed.boxSizing;
+    mirror.style.width = ta.clientWidth + 'px';
+    mirror.style.fontFamily = computed.fontFamily;
+    mirror.style.fontSize = computed.fontSize;
+    mirror.style.lineHeight = computed.lineHeight;
+    mirror.style.padding = computed.padding;
+    mirror.style.border = computed.border;
+
+    // Content up to caret
+    const before = (ta.value || '').substring(0, caret);
+    const after = (ta.value || '').substring(caret);
+    const marker = document.createElement('span');
+    marker.textContent = '\u200b'; // zero-width space
+
+    mirror.textContent = before;
+    mirror.appendChild(marker);
+    const tail = document.createTextNode(after);
+    mirror.appendChild(tail);
+
+    wrapper.appendChild(mirror);
+    // Position relative to wrapper/textarea, accounting for scroll
+    const markerRect = marker.getBoundingClientRect();
+    const wrapperRect = wrapper.getBoundingClientRect();
+
+    const top = markerRect.top - wrapperRect.top - ta.scrollTop + 20; // slight offset below caret
+    const left = markerRect.left - wrapperRect.left - ta.scrollLeft + 4;
+
+    setPopupTop(Math.max(0, top));
+    setPopupLeft(Math.max(0, left));
+
+    wrapper.removeChild(mirror);
+  };
+
+  const handleInputChange: React.ChangeEventHandler<HTMLTextAreaElement> = (e) => {
+    setInput(e.target.value);
+    const pos = e.target.selectionStart ?? 0;
+    setCursorPos(pos);
+    updateSuggestions(e.target.value, pos);
+    updatePopupPosition();
+  };
+
+  const handleKeyDown: React.KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
+    if (!isOpen || suggestions.length === 0) return;
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setHighlightIndex((i) => (i + 1) % suggestions.length);
+      return;
+    }
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setHighlightIndex((i) => (i - 1 + suggestions.length) % suggestions.length);
+      return;
+    }
+    if (e.key === 'Enter' || e.key === 'Tab') {
+      e.preventDefault();
+      insertSuggestionAtCaret(suggestions[highlightIndex]);
+      return;
+    }
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      setIsOpen(false);
+      return;
+    }
+  };
+
+  const handleFocus: React.FocusEventHandler<HTMLTextAreaElement> = (e) => {
+    setIsFocused(true);
+    const pos = e.currentTarget.selectionStart ?? 0;
+    setCursorPos(pos);
+    updateSuggestions(input, pos);
+    updatePopupPosition();
+  };
+
+  const handleBlur: React.FocusEventHandler<HTMLTextAreaElement> = () => {
+    setTimeout(() => setIsOpen(false), 120);
+    setIsFocused(false);
+  };
+
+  const handleClickSuggestion = (s: Suggestion) => {
+    insertSuggestionAtCaret(s);
+  };
 
   const convertToCypressHandler = async () => {
     setIsConverting(true);
@@ -144,12 +384,49 @@ const TestConverter = () => {
               <div className={`w-3 h-3 rounded-full transition-colors duration-300 ${input.trim() ? 'bg-green-500' : 'bg-gray-500'}`}></div>
               <h2 className="text-xl font-semibold text-gray-800 dark:text-white tracking-wide">Input</h2>
             </div>
-            <Textarea
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Input your test here."
-              className="flex-1 min-h-0 bg-gray-200/90 dark:bg-gray-950/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 resize-none font-mono text-sm leading-relaxed placeholder:text-gray-400 rounded-xs"
-            />
+            <div ref={wrapperRef} className="relative flex flex-col flex-1 min-h-0">
+              <Textarea
+                ref={textareaRef}
+                value={input}
+                onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                onScroll={updatePopupPosition}
+                placeholder="Input your test here."
+                className="flex-1 h-full min-h-0 bg-gray-200/90 dark:bg-gray-950/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 resize-none font-mono text-sm leading-relaxed placeholder:text-gray-400 rounded-xs"
+              />
+              {isOpen && suggestions.length > 0 && (
+                <div
+                  className="absolute z-10 max-h-64 w-[min(28rem,calc(100%-1rem))] overflow-auto rounded-xs border border-gray-300/60 dark:border-gray-600/60 bg-white dark:bg-gray-900 shadow-xl"
+                  style={{ top: popupTop, left: popupLeft }}
+                >
+                  <ul className="py-1">
+                    {suggestions.map((s, idx) => (
+                      <li
+                        key={`${s.type}-${s.value}-${idx}`}
+                        onMouseDown={(e) => e.preventDefault()}
+                        onClick={() => handleClickSuggestion(s)}
+                        className={`px-3 py-1.5 cursor-pointer text-sm flex items-center gap-2 ${
+                          idx === highlightIndex ? 'bg-gray-100 dark:bg-gray-800' : ''
+                        }`}
+                      >
+                        <span
+                          className={`inline-flex min-w-[2.2rem] justify-center rounded-xs px-1 py-0.5 text-[10px] font-semibold ${
+                            s.type === 'keyword'
+                              ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300'
+                              : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300'
+                          }`}
+                        >
+                          {s.type === 'keyword' ? 'KW' : 'VAR'}
+                        </span>
+                        <span className="text-gray-900 dark:text-gray-100">{s.value}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
             <Button
               onClick={convertToCypressHandler}
               disabled={isConverting || !input.trim()}
