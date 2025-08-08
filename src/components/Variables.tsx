@@ -193,7 +193,6 @@ const Variables = () => {
         </div>
       </div>
 
-      {/* Add Dialog */}
       <Dialog
         isOpen={isAddDialogOpen}
         onClose={() => setIsAddDialogOpen(false)}
