@@ -136,7 +136,7 @@ const Variables = () => {
 
     try {
       await variablesDB.deleteVariable(selectedVariable.id);
-      
+
       toast({
         title: "Success",
         description: "Variable deleted successfully",
@@ -200,32 +200,34 @@ const Variables = () => {
         title="Add New Variable"
       >
         <div className="space-y-4">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-md text-muted-foreground">
             Create a new variable that will be automatically replaced in your Cypress converters.
           </p>
           <div>
             <Label htmlFor="name">Variable Name</Label>
-                <Input
+            <Input
+              className="bg-gray-200/90 dark:bg-gray-950/60"
               id="name"
               placeholder="e.g., login-input"
-                  value={formData.name}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, name: e.target.value })}
+              value={formData.name}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, name: e.target.value })}
             />
           </div>
           <div>
             <Label htmlFor="value">Variable Value</Label>
-                <Input
+            <Input
+              className="bg-gray-200/90 dark:bg-gray-950/60"
               id="value"
               placeholder="e.g., input[data-testid=login-input]"
-                  value={formData.value}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, value: e.target.value })}
+              value={formData.value}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, value: e.target.value })}
             />
           </div>
           <div className="flex items-center justify-end gap-2 pt-2">
-            <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>
+            <Button size="default" className="h-10 border-none" variant="outline" onClick={() => setIsAddDialogOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={handleAddVariable}>Add Variable</Button>
+            <Button size="default" className="h-10" onClick={handleAddVariable}>Add Variable</Button>
           </div>
         </div>
       </Dialog>
@@ -284,6 +286,7 @@ const Variables = () => {
                       </div>
                       <div className="flex items-center gap-2 ml-4">
                         <Button
+                          className="bg-gray-200/90 dark:bg-gray-950/60 border-none"
                           variant="outline"
                           size="sm"
                           onClick={() => openEditDialog(variable)}
@@ -291,6 +294,7 @@ const Variables = () => {
                           <Edit className="h-4 w-4" />
                         </Button>
                         <Button
+                          className="bg-gray-200/90 dark:bg-gray-950/60 border-none"
                           variant="outline"
                           size="sm"
                           onClick={() => openDeleteDialog(variable)}
@@ -313,10 +317,11 @@ const Variables = () => {
         title="Edit Variable"
       >
         <div className="space-y-4">
-          <p className="text-sm text-muted-foreground">Update the variable name and value.</p>
+          <p className="text-md text-muted-foreground">Update the variable name and value.</p>
           <div>
             <Label htmlFor="edit-name">Variable Name</Label>
             <Input
+              className="bg-gray-200/90 dark:bg-gray-950/60"
               id="edit-name"
               placeholder="e.g., login-input"
               value={formData.name}
@@ -326,6 +331,7 @@ const Variables = () => {
           <div>
             <Label htmlFor="edit-value">Variable Value</Label>
             <Input
+              className="bg-gray-200/90 dark:bg-gray-950/60"
               id="edit-value"
               placeholder="e.g., input[data-testid=login-input]"
               value={formData.value}
@@ -333,10 +339,10 @@ const Variables = () => {
             />
           </div>
           <div className="flex items-center justify-end gap-2 pt-2">
-            <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>
+            <Button size="default" className="h-10 border-none" variant="outline" onClick={() => setIsEditDialogOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={handleEditVariable}>Update Variable</Button>
+            <Button size="default" className="h-10" onClick={handleEditVariable}>Update Variable</Button>
           </div>
         </div>
       </Dialog>
@@ -347,14 +353,14 @@ const Variables = () => {
         title="Delete Variable"
       >
         <div className="space-y-4">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-md text-muted-foreground">
             Are you sure you want to delete the variable "{selectedVariable?.name}"? This action cannot be undone.
           </p>
           <div className="flex items-center justify-end gap-2 pt-2">
-            <Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)}>
+            <Button size="default" className="h-10 border-none" variant="outline" onClick={() => setIsDeleteDialogOpen(false)}>
               Cancel
             </Button>
-            <Button variant="destructive" onClick={handleDeleteVariable}>
+            <Button size="default" className="h-10" variant="destructive" onClick={handleDeleteVariable}>
               Delete Variable
             </Button>
           </div>
