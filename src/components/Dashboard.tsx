@@ -7,14 +7,14 @@ const Dashboard = () => {
     {
       title: "Cypress Converter",
       description: "Convert your test scripts to Cypress format",
-      icon: <Code className="h-6 w-6" />,
+      icon: <Code className="h-5 w-5" />,
       href: "/cypress-converter",
       color: "bg-orange-500 hover:bg-orange-600"
     },
     {
       title: "Cypress Converter AI",
       description: "Convert English descriptions to Cypress tests using AI",
-      icon: <Code className="h-6 w-6" />,
+      icon: <Code className="h-5 w-5" />,
       href: "/cypress-converter-ai",
       color: "bg-blue-500 hover:bg-blue-600"
     },
@@ -32,12 +32,12 @@ const Dashboard = () => {
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
           Quick Actions
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {quickActions.map((action, index) => (
             <Link key={index} to={action.href} className="block">
-              <Card className="p-6 bg-white/40 dark:bg-gray-800/40 backdrop-blur-xl border-gray-300/50 dark:border-gray-700/30 hover:shadow-lg transition-all duration-200 cursor-pointer">
-                <div className="flex items-center space-x-4">
-                  <div className={`p-3 rounded-xs ${action.color} text-white`}>
+              <Card className="p-4 bg-white/40 dark:bg-gray-800/40 backdrop-blur-xl border-gray-300/50 dark:border-gray-700/30 hover:shadow-lg transition-all duration-200 cursor-pointer">
+                <div className="flex items-center space-x-3">
+                  <div className={`p-2 rounded-xs ${action.color} text-white`}>
                     {action.icon}
                   </div>
                   <div className="flex-1">

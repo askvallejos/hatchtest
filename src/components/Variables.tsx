@@ -251,13 +251,9 @@ const Variables = () => {
             <div className="text-center py-8">
               <Database className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
               <h3 className="text-lg font-semibold mb-2">No variables found</h3>
-              <p className="text-muted-foreground mb-4">
+              <p className="text-muted-foreground">
                 Create your first variable to get started with automatic replacements.
               </p>
-              <Button onClick={() => setIsAddDialogOpen(true)}>
-                <Plus className="h-4 w-4 mr-2" />
-                Add Your First Variable
-              </Button>
             </div>
           ) : (
             <ScrollArea className="h-[600px]">
