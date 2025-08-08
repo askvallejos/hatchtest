@@ -286,7 +286,7 @@ const Variables = () => {
                       </div>
                       <div className="flex items-center gap-2 ml-4">
                         <Button
-                          className="bg-gray-200/90 dark:bg-gray-950/60 border-none"
+                          className="bg-gray-200/90 dark:bg-gray-950/60 hover:bg-gray-300/70 dark:hover:opacity-80 border-none"
                           variant="outline"
                           size="sm"
                           onClick={() => openEditDialog(variable)}
@@ -294,7 +294,7 @@ const Variables = () => {
                           <Edit className="h-4 w-4" />
                         </Button>
                         <Button
-                          className="bg-gray-200/90 dark:bg-gray-950/60 border-none"
+                          className="bg-gray-200/90 dark:bg-gray-950/60 hover:bg-gray-300/70 dark:hover:opacity-80 border-none"
                           variant="outline"
                           size="sm"
                           onClick={() => openDeleteDialog(variable)}
