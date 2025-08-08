@@ -1,22 +1,29 @@
 import { Card } from '@/components/ui/card';
-import { Code } from 'lucide-react';
+import { FlaskConical, Bot, Database } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
   const quickActions = [
     {
       title: "Cypress Converter",
-      description: "Convert your test scripts to Cypress format",
-      icon: <Code className="h-5 w-5" />,
+      description: "Convert your test scripts to Cypress format.",
+      icon: <FlaskConical className="h-5 w-5" />,
       href: "/cypress-converter",
       color: "bg-orange-500 hover:bg-orange-600"
     },
     {
       title: "Cypress Converter AI",
-      description: "Convert English descriptions to Cypress tests using AI",
-      icon: <Code className="h-5 w-5" />,
+      description: "Convert English descriptions to Cypress tests using AI.",
+      icon: <Bot className="h-5 w-5" />,
       href: "/cypress-converter-ai",
       color: "bg-blue-500 hover:bg-blue-600"
+    },
+    {
+      title: "Variables",
+      description: "Manage your test variables.",
+      icon: <Database className="h-5 w-5" />,
+      href: "/variables",
+      color: "bg-emerald-500 hover:bg-emerald-600"
     },
   ];
 
@@ -44,7 +51,7 @@ const Dashboard = () => {
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                       {action.title}
                     </h3>
-                    <p className="text-gray-600 dark:text-gray-400">
+                    <p className="text-gray-600 dark:text-gray-400 text-sm">
                       {action.description}
                     </p>
                   </div>

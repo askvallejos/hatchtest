@@ -232,7 +232,7 @@ const Variables = () => {
         </div>
       </Dialog>
 
-      <Card className="bg-white/40 dark:bg-gray-800/40 backdrop-blur-xl border-gray-300/50 dark:border-gray-700/30 rounded-xs shadow-2xl">
+      <Card className="bg-white/40 dark:bg-gray-800/40 backdrop-blur-xl border-none rounded-xs shadow-2xl">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Database className="h-5 w-5" />

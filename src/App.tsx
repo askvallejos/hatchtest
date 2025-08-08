@@ -24,7 +24,7 @@ import {
 } from '@/components/ui/tooltip';
 import { useTooltip } from '@/contexts/TooltipContext';
 import { useState } from 'react';
-import { Home, Settings, Code, Bot, Database } from 'lucide-react';
+import { Home, Settings, FlaskConical, Bot, Database } from 'lucide-react';
 
 const Navigation = () => {
   const location = useLocation();
@@ -40,7 +40,7 @@ const Navigation = () => {
     {
       path: '/cypress-converter',
       label: 'Cypress Converter',
-      icon: <Code className="h-4 w-4" />
+      icon: <FlaskConical className="h-4 w-4" />
     },
     {
       path: '/cypress-converter-ai',
