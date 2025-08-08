@@ -6,6 +6,7 @@ import { Dialog } from '@/components/ui/dialog';
 import { Copy, HelpCircle } from 'lucide-react';
 import { useToast } from '@/hooks/useToast';
 import { convertToCypress } from '@/lib/cypressConverter';
+import { replaceVariablesInText } from '@/lib/variablesUtils';
 
 const TestConverter = () => {
   const [input, setInput] = useState('');
@@ -66,7 +67,10 @@ const TestConverter = () => {
           throw new Error('Conversion failed. No valid commands found in the input.');
         }
 
-        setCypressCode(converted);
+        // Replace variables in the converted code
+        const convertedWithVariables = await replaceVariablesInText(converted);
+
+        setCypressCode(convertedWithVariables);
         setConversionStatus('success');
 
         const warningsDetected = converted.includes('❌ Warning: The following commands were not recognized:');

@@ -5,6 +5,7 @@ import { Card } from '@/components/ui/card';
 import { Dialog } from '@/components/ui/dialog';
 import { Copy, HelpCircle } from 'lucide-react';
 import { useToast } from '@/hooks/useToast';
+import { replaceVariablesInText } from '@/lib/variablesUtils';
 
 const CypressConverterAi = () => {
   const [input, setInput] = useState('');
@@ -107,7 +108,10 @@ Input: ${input}`;
       // Remove markdown code block formatting
       aiResponse = aiResponse.replace(/^```javascript\s*/i, '').replace(/```\s*$/i, '');
       
-      setAiOutput(aiResponse);
+      // Replace variables in the AI response
+      const aiResponseWithVariables = await replaceVariablesInText(aiResponse);
+      
+      setAiOutput(aiResponseWithVariables);
       setProcessingStatus('success');
 
       toast({

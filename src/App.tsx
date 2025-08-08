@@ -4,6 +4,7 @@ import Dashboard from '@/components/Dashboard';
 import TestConverter from '@/components/TestConverter';
 import CypressConverterAi from '@/components/cypressConverterAi';
 import Preferences from '@/components/Preferences';
+import Variables from '@/components/Variables';
 import {
   Sidebar,
   SidebarHeader,
@@ -23,7 +24,7 @@ import {
 } from '@/components/ui/tooltip';
 import { useTooltip } from '@/contexts/TooltipContext';
 import { useState } from 'react';
-import { Home, Settings, Code, Bot } from 'lucide-react';
+import { Home, Settings, Code, Bot, Database } from 'lucide-react';
 
 const Navigation = () => {
   const location = useLocation();
@@ -45,6 +46,11 @@ const Navigation = () => {
       path: '/cypress-converter-ai',
       label: 'Cypress Converter AI',
       icon: <Bot className="h-4 w-4" />
+    },
+    {
+      path: '/variables',
+      label: 'Variables',
+      icon: <Database className="h-4 w-4" />
     }
   ];
 
@@ -152,6 +158,7 @@ const MainContent = () => {
           <Route path="/" element={<Dashboard />} />
           <Route path="/cypress-converter" element={<TestConverter />} />
           <Route path="/cypress-converter-ai" element={<CypressConverterAi />} />
+          <Route path="/variables" element={<Variables />} />
           <Route path="/preferences" element={<Preferences />} />
         </Routes>
       </div>
