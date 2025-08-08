@@ -42,7 +42,7 @@ const Dialog = ({ isOpen, onClose, title, children }: DialogProps) => {
         onClick={onClose}
       />
       
-      <div className={`relative w-[90%] h-[90%] bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl border border-white/30 dark:border-gray-700/30 shadow-2xl rounded-xs flex flex-col transition-all duration-300 ease-out ${
+      <div className={`relative w-[90%] h-auto max-h-[90vh] overflow-hidden bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl border border-white/30 dark:border-gray-700/30 shadow-2xl rounded-xs flex flex-col transition-all duration-300 ease-out ${
         isAnimating 
           ? 'opacity-0 scale-95 translate-y-4' 
           : 'opacity-100 scale-100 translate-y-0'
