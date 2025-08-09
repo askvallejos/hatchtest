@@ -403,7 +403,6 @@ const Variables = () => {
     setIsExportDialogOpen(true);
   };
 
-  // Derived data for search + pagination
   const normalizedQuery = searchQuery.trim().toLowerCase();
   const filteredVariables = variables.filter((v) => {
     if (!normalizedQuery) return true;

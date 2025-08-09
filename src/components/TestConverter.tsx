@@ -85,7 +85,6 @@ const TestConverter = () => {
   const [showKeywordGuide, setShowKeywordGuide] = useState(false);
   const { toast } = useToast();
 
-  // Autocomplete state
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const [cursorPos, setCursorPos] = useState(0);
@@ -167,7 +166,6 @@ const TestConverter = () => {
     if (!ta || !wrapper) return;
 
     const caret = ta.selectionStart ?? 0;
-    // Build a mirror element to calculate caret position
     const computed = window.getComputedStyle(ta);
     const mirror = document.createElement('div');
     mirror.style.position = 'absolute';
@@ -183,11 +181,10 @@ const TestConverter = () => {
     mirror.style.padding = computed.padding;
     mirror.style.border = computed.border;
 
-    // Content up to caret
     const before = (ta.value || '').substring(0, caret);
     const after = (ta.value || '').substring(caret);
     const marker = document.createElement('span');
-    marker.textContent = '\u200b'; // zero-width space
+    marker.textContent = '\u200b';
 
     mirror.textContent = before;
     mirror.appendChild(marker);
@@ -195,11 +192,10 @@ const TestConverter = () => {
     mirror.appendChild(tail);
 
     wrapper.appendChild(mirror);
-    // Position relative to wrapper/textarea, accounting for scroll
     const markerRect = marker.getBoundingClientRect();
     const wrapperRect = wrapper.getBoundingClientRect();
 
-    const top = markerRect.top - wrapperRect.top - ta.scrollTop + 20; // slight offset below caret
+    const top = markerRect.top - wrapperRect.top - ta.scrollTop + 20;
     const left = markerRect.left - wrapperRect.left - ta.scrollLeft + 4;
 
     setPopupTop(Math.max(0, top));
@@ -307,7 +303,6 @@ const TestConverter = () => {
           throw new Error('Conversion failed. No valid commands found in the input.');
         }
 
-        // Replace variables in the converted code
         const convertedWithVariables = await replaceVariablesInText(converted);
 
         setCypressCode(convertedWithVariables);
