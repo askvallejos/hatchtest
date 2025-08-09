@@ -1,11 +1,13 @@
 import { Card } from '@/components/ui/card';
+import { ScrollArea } from '@/components/ui/scrollArea';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { TooltipToggle } from '@/components/TooltipToggle';
 import { Settings, Palette, HelpCircle, SquareMousePointer } from 'lucide-react';
 
 const Preferences = () => {
   return (
-    <div className="p-4 space-y-6">
+    <ScrollArea className="h-full">
+      <div className="p-4 space-y-6">
       <div>
         <h1 className="text-2xl font-bold u-heading">
           Preferences
@@ -142,7 +144,8 @@ const Preferences = () => {
         </Card>
       </div> */}
 
-    </div>
+      </div>
+    </ScrollArea>
   );
 };
 
