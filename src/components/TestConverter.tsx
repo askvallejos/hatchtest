@@ -527,7 +527,7 @@ const TestConverter = () => {
                     <p className="text-sm u-text-muted mt-1">Right click on an element</p>
                   </div>
                   <div>
-                    <code className="text-sm u-code-emphasis font-semibold">type [text] [selector]</code>
+                    <code className="text-sm u-code-emphasis font-semibold">type [text] into [selector]</code>
                     <p className="text-sm u-text-muted mt-1">Type text into an input field</p>
                   </div>
                   <div>

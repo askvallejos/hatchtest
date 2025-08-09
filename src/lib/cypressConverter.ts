@@ -46,7 +46,7 @@ const mappingDictionary: Record<string, (...args: string[]) => string> = {
   "trigger": (event, selector) => `cy.get(${selector}).trigger(${event});`,
   "attach file": (file, selector) => `cy.get(${selector}).attachFile(${file});`,
   "alias as": (selector, name) => `cy.get(${selector}).as(${name});`,
-  "use alias": (name) => `cy.get(@${name});`,
+  "use alias": (name) => `cy.get('@${name.replace(/['"]/g, '')}');`,
   "intercept": (method, url, alias) => `cy.intercept({\n    method: ${method},\n    url: ${url},\n}).as(${alias});`,
   "wait for": (alias) => `cy.wait('@${alias.replace(/['"]/g, '')}');`,
   "cookie should exist": (name) => `cy.getCookie(${name}).should('exist');`,
@@ -55,252 +55,156 @@ const mappingDictionary: Record<string, (...args: string[]) => string> = {
   "force click": (selector) => `cy.get(${selector}).click({ force: true });`,
 };
 
-function tokenizeLine(line: string): Token | null {
-  const trimmedLine = line.trim();
-  if (!trimmedLine) return null;
+// Data-driven tokenizer rules for maintainability
+type Rule = {
+  id: string;
+  regex: RegExp;
+  toToken(match: RegExpMatchArray, line: string): Token;
+};
 
-  // Handle "it" command with description
-  if (trimmedLine.startsWith('it ')) {
-    const description = trimmedLine.substring(3).trim();
-    return {
-      command: 'it',
-      args: [description],
-      line: trimmedLine
-    };
-  }
+const tokenizerRules: Rule[] = [
+  // Test structure
+  { id: 'it', regex: /^it\s+(.+)$/i, toToken: (m, line) => ({ command: 'it', args: [m[1].trim()], line }) },
+  { id: 'end', regex: /^end$/i, toToken: (_m, line) => ({ command: 'end', args: [], line }) },
 
-  // Handle "end" command
-  if (trimmedLine === 'end') {
-    return {
-      command: 'end',
-      args: [],
-      line: trimmedLine
-    };
-  }
+  // Navigation
+  { id: 'go to', regex: /^go to\s+(.+)$/i, toToken: (m, line) => ({ command: 'go to', args: [m[1].trim()], line }) },
+  { id: 'reload', regex: /^reload$/i, toToken: (_m, line) => ({ command: 'reload', args: [], line }) },
+  { id: 'go back', regex: /^go back$/i, toToken: (_m, line) => ({ command: 'go back', args: [], line }) },
+  { id: 'go forward', regex: /^go forward$/i, toToken: (_m, line) => ({ command: 'go forward', args: [], line }) },
 
-  // Handle "type X into Y" pattern
-  const typeIntoMatch = trimmedLine.match(/^type\s+(.+?)\s+into\s+(.+)$/);
-  if (typeIntoMatch) {
-    const value = typeIntoMatch[1].trim();
-    const selector = typeIntoMatch[2].trim();
-    return {
-      command: 'type',
-      args: [value, selector],
-      line: trimmedLine
-    };
-  }
+  // Element interaction (single arg)
+  { id: 'click', regex: /^click\s+(.+)$/i, toToken: (m, line) => ({ command: 'click', args: [m[1].trim()], line }) },
+  { id: 'double click', regex: /^double click\s+(.+)$/i, toToken: (m, line) => ({ command: 'double click', args: [m[1].trim()], line }) },
+  { id: 'right click', regex: /^right click\s+(.+)$/i, toToken: (m, line) => ({ command: 'right click', args: [m[1].trim()], line }) },
+  { id: 'clear', regex: /^clear\s+(.+)$/i, toToken: (m, line) => ({ command: 'clear', args: [m[1].trim()], line }) },
+  { id: 'hover', regex: /^hover\s+(.+)$/i, toToken: (m, line) => ({ command: 'hover', args: [m[1].trim()], line }) },
+  { id: 'focus', regex: /^focus\s+(.+)$/i, toToken: (m, line) => ({ command: 'focus', args: [m[1].trim()], line }) },
+  { id: 'blur', regex: /^blur\s+(.+)$/i, toToken: (m, line) => ({ command: 'blur', args: [m[1].trim()], line }) },
+  { id: 'check', regex: /^check\s+(.+)$/i, toToken: (m, line) => ({ command: 'check', args: [m[1].trim()], line }) },
+  { id: 'uncheck', regex: /^uncheck\s+(.+)$/i, toToken: (m, line) => ({ command: 'uncheck', args: [m[1].trim()], line }) },
 
-  // Handle "should contain" with text
-  const shouldContainMatch = trimmedLine.match(/^(.+?)\s+should\s+contain\s+(.+)$/);
-  if (shouldContainMatch) {
-    const selector = shouldContainMatch[1].trim();
-    const text = shouldContainMatch[2].trim();
-    return {
-      command: 'should contain',
-      args: [selector, text],
-      line: trimmedLine
-    };
-  }
+  // Element interaction (two args)
+  { id: 'type into', regex: /^type\s+(.+?)\s+into\s+(.+)$/i, toToken: (m, line) => ({ command: 'type', args: [m[1].trim(), m[2].trim()], line }) },
+  { id: 'select', regex: /^select\s+(.+?)\s+(.+)$/i, toToken: (m, line) => ({ command: 'select', args: [m[1].trim(), m[2].trim()], line }) },
 
-  // Handle "url should include" and "title should be" - must come before general "should be" pattern
-  const urlTitleMatch = trimmedLine.match(/^(url|title)\s+should\s+(.+)$/);
-  if (urlTitleMatch) {
-    const type = urlTitleMatch[1];
-    const assertion = urlTitleMatch[2].trim();
-    
-    // Extract the value for "include" and "be" assertions
-    if (assertion.startsWith('include ')) {
-      const value = assertion.substring(8).trim(); // Remove "include "
-      return {
-        command: `${type} should include`,
-        args: [value],
-        line: trimmedLine
-      };
-    } else if (assertion.startsWith('be ')) {
-      const value = assertion.substring(3).trim(); // Remove "be "
-      return {
-        command: `${type} should be`,
-        args: [value],
-        line: trimmedLine
-      };
-    } else {
-      return {
-        command: `${type} should ${assertion}`,
-        args: [],
-        line: trimmedLine
-      };
-    }
-  }
+  // Assertions - contain variants
+  { id: 'should not contain', regex: /^(.+?)\s+should\s+not\s+contain\s+(.+)$/i, toToken: (m, line) => ({ command: 'should not contain', args: [m[1].trim(), m[2].trim()], line }) },
+  { id: 'should contain', regex: /^(.+?)\s+should\s+contain\s+(.+)$/i, toToken: (m, line) => ({ command: 'should contain', args: [m[1].trim(), m[2].trim()], line }) },
 
-  // Handle "should be visible" and similar assertions
-  const shouldBeMatch = trimmedLine.match(/^(.+?)\s+should\s+be\s+(.+)$/);
-  if (shouldBeMatch) {
-    const selector = shouldBeMatch[1].trim();
-    const assertion = shouldBeMatch[2].trim();
-    return {
-      command: `should be ${assertion}`,
-      args: [selector],
-      line: trimmedLine
-    };
-  }
+  // URL/title assertions
+  { id: 'url should include', regex: /^url\s+should\s+include\s+(.+)$/i, toToken: (m, line) => ({ command: 'url should include', args: [m[1].trim()], line }) },
+  { id: 'title should be', regex: /^title\s+should\s+be\s+(.+)$/i, toToken: (m, line) => ({ command: 'title should be', args: [m[1].trim()], line }) },
 
-  // Handle "go to" command
-  if (trimmedLine.startsWith('go to ')) {
-    const url = trimmedLine.substring(6).trim();
-    return {
-      command: 'go to',
-      args: [url],
-      line: trimmedLine
-    };
-  }
+  // Assertions - specific common variants
+  { id: 'should be X', regex: /^(.+?)\s+should\s+be\s+(.+)$/i, toToken: (m, line) => ({ command: `should be ${m[2].trim()}`, args: [m[1].trim()], line }) },
+  { id: 'should not be visible', regex: /^(.+?)\s+should\s+not\s+be\s+visible$/i, toToken: (m, line) => ({ command: 'should not be visible', args: [m[1].trim()], line }) },
+  { id: 'should not be checked', regex: /^(.+?)\s+should\s+not\s+be\s+checked$/i, toToken: (m, line) => ({ command: 'should not be checked', args: [m[1].trim()], line }) },
+  { id: 'should exist', regex: /^(.+?)\s+should\s+exist$/i, toToken: (m, line) => ({ command: 'should exist', args: [m[1].trim()], line }) },
+  { id: 'should not exist', regex: /^(.+?)\s+should\s+not\s+exist$/i, toToken: (m, line) => ({ command: 'should not exist', args: [m[1].trim()], line }) },
+  { id: 'should have value', regex: /^(.+?)\s+should\s+have\s+value\s+(.+)$/i, toToken: (m, line) => ({ command: 'should have value', args: [m[1].trim(), m[2].trim()], line }) },
+  { id: 'should have text', regex: /^(.+?)\s+should\s+have\s+text\s+(.+)$/i, toToken: (m, line) => ({ command: 'should have text', args: [m[1].trim(), m[2].trim()], line }) },
+  { id: 'should include text', regex: /^(.+?)\s+should\s+include\s+text\s+(.+)$/i, toToken: (m, line) => ({ command: 'should include text', args: [m[1].trim(), m[2].trim()], line }) },
 
-  // Handle "go back" command
-  if (trimmedLine === 'go back') {
-    return {
-      command: 'go back',
-      args: [],
-      line: trimmedLine
-    };
-  }
+  // Timing and control
+  { id: 'wait', regex: /^wait\s+(.+)$/i, toToken: (m, line) => ({ command: 'wait', args: [m[1].trim()], line }) },
+  { id: 'pause', regex: /^pause$/i, toToken: (_m, line) => ({ command: 'pause', args: [], line }) },
 
-  // Handle "click" command
-  if (trimmedLine.startsWith('click ')) {
-    const selector = trimmedLine.substring(6).trim();
-    return {
-      command: 'click',
-      args: [selector],
-      line: trimmedLine
-    };
-  }
+  // Scrolling & viewport (text variants)
+  { id: 'scroll to top', regex: /^scroll to top$/i, toToken: (_m, line) => ({ command: 'scroll to top', args: [], line }) },
+  { id: 'scroll to bottom', regex: /^scroll to bottom$/i, toToken: (_m, line) => ({ command: 'scroll to bottom', args: [], line }) },
+  { id: 'scroll to x y', regex: /^scroll to\s+([^\s]+)\s+([^\s]+)$/i, toToken: (m, line) => ({ command: 'scroll to', args: [m[1].trim(), m[2].trim()], line }) },
+  { id: 'set viewport w h', regex: /^set viewport\s+([^\s]+)\s+([^\s]+)$/i, toToken: (m, line) => ({ command: 'set viewport', args: [m[1].trim(), m[2].trim()], line }) },
 
-  // Handle commands with parentheses
+  // Wait for (alias)
+  { id: 'wait for', regex: /^wait for\s+(.+)$/i, toToken: (m, line) => ({ command: 'wait for', args: [m[1].trim()], line }) },
+];
+
+function tokenizeWithFallbacks(trimmedLine: string): Token | null {
+  // Parentheses form: command(arg1, arg2, ...)
   const parenMatch = trimmedLine.match(/^([^(]+)\(([^)]*)\)$/);
   if (parenMatch) {
     const command = parenMatch[1].trim();
     const argsStr = parenMatch[2].trim();
     const args = argsStr ? argsStr.split(',').map(arg => arg.trim()) : [];
-    return {
-      command,
-      args,
-      line: trimmedLine
-    };
+    return { command, args, line: trimmedLine };
   }
 
-  // Handle "scroll to" with coordinates
+  // scroll to(x, y)
   const scrollToMatch = trimmedLine.match(/^scroll to\(([^,]+),\s*([^)]+)\)$/);
   if (scrollToMatch) {
-    return {
-      command: 'scroll to',
-      args: [scrollToMatch[1].trim(), scrollToMatch[2].trim()],
-      line: trimmedLine
-    };
+    return { command: 'scroll to', args: [scrollToMatch[1].trim(), scrollToMatch[2].trim()], line: trimmedLine };
   }
 
-  // Handle "set viewport"
+  // set viewport(w, h)
   const viewportMatch = trimmedLine.match(/^set viewport\(([^,]+),\s*([^)]+)\)$/);
   if (viewportMatch) {
-    return {
-      command: 'set viewport',
-      args: [viewportMatch[1].trim(), viewportMatch[2].trim()],
-      line: trimmedLine
-    };
+    return { command: 'set viewport', args: [viewportMatch[1].trim(), viewportMatch[2].trim()], line: trimmedLine };
   }
 
-  // Handle "trigger" with event and selector
+  // trigger(event, selector)
   const triggerMatch = trimmedLine.match(/^trigger\(([^,]+),\s*([^)]+)\)$/);
   if (triggerMatch) {
-    return {
-      command: 'trigger',
-      args: [triggerMatch[1].trim(), triggerMatch[2].trim()],
-      line: trimmedLine
-    };
+    return { command: 'trigger', args: [triggerMatch[1].trim(), triggerMatch[2].trim()], line: trimmedLine };
   }
 
-  // Handle "attach file"
+  // attach file(file, selector)
   const attachFileMatch = trimmedLine.match(/^attach file\(([^,]+),\s*([^)]+)\)$/);
   if (attachFileMatch) {
-    return {
-      command: 'attach file',
-      args: [attachFileMatch[1].trim(), attachFileMatch[2].trim()],
-      line: trimmedLine
-    };
+    return { command: 'attach file', args: [attachFileMatch[1].trim(), attachFileMatch[2].trim()], line: trimmedLine };
   }
 
-  // Handle "alias as"
+  // alias as(selector, name)
   const aliasAsMatch = trimmedLine.match(/^alias as\(([^,]+),\s*([^)]+)\)$/);
   if (aliasAsMatch) {
-    return {
-      command: 'alias as',
-      args: [aliasAsMatch[1].trim(), aliasAsMatch[2].trim()],
-      line: trimmedLine
-    };
+    return { command: 'alias as', args: [aliasAsMatch[1].trim(), aliasAsMatch[2].trim()], line: trimmedLine };
   }
 
-  // Handle "use alias"
+  // use alias(name)
   const useAliasMatch = trimmedLine.match(/^use alias\(([^)]+)\)$/);
   if (useAliasMatch) {
-    return {
-      command: 'use alias',
-      args: [useAliasMatch[1].trim()],
-      line: trimmedLine
-    };
+    return { command: 'use alias', args: [useAliasMatch[1].trim()], line: trimmedLine };
   }
 
-  // Handle "intercept" command
+  // intercept(method, url, alias)
   const interceptMatch = trimmedLine.match(/^intercept\(([^,]+),\s*([^,]+),\s*([^)]+)\)$/);
   if (interceptMatch) {
-    return {
-      command: 'intercept',
-      args: [interceptMatch[1].trim(), interceptMatch[2].trim(), interceptMatch[3].trim()],
-      line: trimmedLine
-    };
+    return { command: 'intercept', args: [interceptMatch[1].trim(), interceptMatch[2].trim(), interceptMatch[3].trim()], line: trimmedLine };
   }
 
-  // Handle "wait for" command
-  const waitForMatch = trimmedLine.match(/^wait for\s+(.+)$/);
-  if (waitForMatch) {
-    return {
-      command: 'wait for',
-      args: [waitForMatch[1].trim()],
-      line: trimmedLine
-    };
+  // force click [selector]
+  const forceClickMatch = trimmedLine.match(/^force click\s+(.+)$/i);
+  if (forceClickMatch) {
+    return { command: 'force click', args: [forceClickMatch[1].trim()], line: trimmedLine };
   }
 
-  // Handle "cookie [name] should [assertion]" pattern
-  const cookieShouldMatch = trimmedLine.match(/^cookie\s+(.+?)\s+should\s+(exist|not exist|have value)\s*(.+)?$/);
+  // cookie [name] should (exist|not exist|have value <v>)
+  const cookieShouldMatch = trimmedLine.match(/^cookie\s+(.+?)\s+should\s+(exist|not exist|have value)\s*(.+)?$/i);
   if (cookieShouldMatch) {
     const name = cookieShouldMatch[1].trim();
     const assertion = cookieShouldMatch[2];
     const value = cookieShouldMatch[3]?.trim();
-    
     if (assertion === 'have value' && value) {
-      return {
-        command: 'cookie should have value',
-        args: [name, value],
-        line: trimmedLine
-      };
-    } else {
-      return {
-        command: `cookie should ${assertion}`,
-        args: [name],
-        line: trimmedLine
-      };
+      return { command: 'cookie should have value', args: [name, value], line: trimmedLine };
+    }
+    return { command: `cookie should ${assertion}`, args: [name], line: trimmedLine };
+  }
+
+  return null;
+}
+
+function tokenizeLine(line: string): Token | null {
+  const trimmedLine = line.trim();
+  if (!trimmedLine) return null;
+
+  for (const rule of tokenizerRules) {
+    const match = trimmedLine.match(rule.regex);
+    if (match) {
+      return rule.toToken(match, trimmedLine);
     }
   }
 
-  // Handle "force click" command
-  const forceClickMatch = trimmedLine.match(/^force click\s+(.+)$/);
-  if (forceClickMatch) {
-    return {
-      command: 'force click',
-      args: [forceClickMatch[1].trim()],
-      line: trimmedLine
-    };
-  }
-
-
-
-  return null;
+  return tokenizeWithFallbacks(trimmedLine);
 }
 
 function wrapValue(value: string): string {

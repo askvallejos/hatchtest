@@ -42,13 +42,13 @@ const Dashboard = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {quickActions.map((action, index) => (
             <Link key={index} to={action.href} className="block">
-              <Card className="hover:border-primary h-[82px] p-4 u-panel backdrop-blur-xl u-border-faint shadow-lg transition-all duration-200 cursor-pointer">
+              <Card className="hover:border-primary max-h-[82px] p-4 u-panel backdrop-blur-xl u-border-faint shadow-lg transition-all duration-200 cursor-pointer">
                 <div className="flex items-center space-x-3 overflow-hidden">
                   <div className={`p-2 rounded-xs ${action.color} text-white shrink-0`}>
                     {action.icon}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-lg font-semibold u-heading">
+                    <h3 className="text-lg font-semibold u-heading truncate">
                       {action.title}
                     </h3>
                     <p className="u-text-muted text-sm truncate">
