@@ -28,7 +28,7 @@ const Variables = () => {
   const [exportJsonText, setExportJsonText] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 7;
+  const pageSize = 10;
   const { toast } = useToast();
 
   useEffect(() => {
@@ -430,8 +430,8 @@ const Variables = () => {
   }, [totalPages, currentPage]);
 
   return (
-    <div className="p-4 space-y-6 min-h-screen flex flex-col">
-      <div className="flex items-center justify-between">
+    <div className="flex-1 flex flex-col min-h-0 overflow-hidden p-4 space-y-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Variables</h1>
           <p className="text-muted-foreground">
@@ -542,12 +542,12 @@ const Variables = () => {
               <Database className="h-5 w-5" />
               <CardTitle>Stored Variables</CardTitle>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 w-full sm:w-auto">
               <Input
                 value={searchQuery}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
                 placeholder="Search by name or value..."
-                className="w-72 bg-gray-200/90 dark:bg-gray-950/60"
+                className="w-full sm:w-72 bg-gray-200/90 dark:bg-gray-950/60"
               />
             </div>
           </div>
@@ -555,7 +555,7 @@ const Variables = () => {
             Variables are automatically replaced in Cypress converters. Use the variable name in your tests and it will be replaced with the corresponding value.
           </CardDescription>
         </CardHeader>
-        <CardContent className="flex-1 overflow-auto mt-2">
+        <CardContent className="flex-1 mt-2 flex flex-col min-h-0 overflow-hidden">
           {loading ? (
             <div className="flex items-center justify-center py-8">
               <div className="text-muted-foreground">Loading variables...</div>
@@ -569,16 +569,16 @@ const Variables = () => {
               </p>
             </div>
           ) : (
-            <>
-              <div className="space-y-2">
+            <div className="flex-1 min-h-0 flex flex-col">
+              <div className="flex-1 overflow-auto space-y-2 pr-1">
                 {paginatedVariables.map((variable) => (
                   <div
                     key={variable.id}
                     className="p-4 bg-gray-100 dark:bg-gray-700 border border-gray-300/50 dark:border-gray-700/30 rounded-xs"
                   >
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1 space-y-2">
-                        <div className="flex items-center gap-2">
+                    <div className="flex items-start justify-between gap-3 flex-wrap">
+                      <div className="flex-1 space-y-2 min-w-[240px]">
+                        <div className="flex items-center gap-2 flex-wrap">
                           <span className="font-semibold text-sm bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-gray-100 px-2 py-1 rounded-xs">
                             {variable.name}
                           </span>
@@ -593,7 +593,7 @@ const Variables = () => {
                           Created: {formatDate(variable.createdAt)} • Updated: {formatDate(variable.updatedAt)}
                         </div>
                       </div>
-                      <div className="flex items-center gap-2 ml-4">
+                      <div className="flex items-center gap-2 ml-0 sm:ml-4">
                         <Button
                           className="bg-gray-200/90 dark:bg-gray-950/60 hover:bg-gray-300/70 dark:hover:opacity-80 border-none"
                           variant="outline"
@@ -646,7 +646,7 @@ const Variables = () => {
                   </Button>
                 </div>
               </div>
-            </>
+            </div>
           )}
         </CardContent>
       </Card>
