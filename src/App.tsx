@@ -59,7 +59,7 @@ const Navigation = () => {
       <Sidebar 
         collapsed={sidebarCollapsed} 
         onCollapsedChange={setSidebarCollapsed}
-        className="h-screen border-r border-gray-300/50 dark:border-gray-600/50 bg-gray-100/90 dark:bg-gray-800 hover:bg-gray-150/95 dark:hover:bg-gray-750/95 backdrop-blur-xl"
+        className="h-screen border-r u-border-soft bg-gray-100/90 dark:bg-gray-800 backdrop-blur-xl"
       >
         <SidebarHeader collapsed={sidebarCollapsed}>
           <SidebarHeaderTitle>

@@ -371,18 +371,18 @@ const TestConverter = () => {
   return (
     <div className="h-full flex flex-col p-4">
       <div className="mb-6 flex-shrink-0 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-2xl font-bold u-heading">
           Cypress Converter
         </h1>
-        <HelpCircle className="w-6 h-6 cursor-pointer text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-300 transition-all duration-200 hover:scale-110 hover:drop-shadow-lg" onClick={() => setShowKeywordGuide(true)} />
+        <HelpCircle className="w-6 h-6 cursor-pointer u-heading transition-all duration-200 hover:scale-110 hover:drop-shadow-lg" onClick={() => setShowKeywordGuide(true)} />
       </div>
 
       <div className="flex w-full flex-1 gap-x-4 min-h-0">
-        <Card className="w-1/2 flex flex-col p-6 bg-white/40 dark:bg-gray-800/40 backdrop-blur-xl border-white/30 dark:border-gray-700/30 shadow-2xl rounded-xs">
+        <Card className="w-1/2 flex flex-col p-6 u-panel backdrop-blur-xl u-border-faint shadow-2xl rounded-xs">
           <div className="flex flex-col flex-1 space-y-4 min-h-0">
             <div className="flex items-center gap-3 flex-shrink-0">
-              <div className={`w-3 h-3 rounded-full transition-colors duration-300 ${input.trim() ? 'bg-green-500' : 'bg-gray-500'}`}></div>
-              <h2 className="text-xl font-semibold text-gray-800 dark:text-white tracking-wide">Input</h2>
+              <div className={`w-3 h-3 rounded-full transition-colors duration-300 ${input.trim() ? 'u-dot-success' : 'u-dot-idle'}`}></div>
+              <h2 className="text-xl font-semibold u-subheading tracking-wide">Input</h2>
             </div>
             <div ref={wrapperRef} className="relative flex flex-col flex-1 min-h-0">
               <Textarea
@@ -394,11 +394,11 @@ const TestConverter = () => {
                 onBlur={handleBlur}
                 onScroll={updatePopupPosition}
                 placeholder="Input your test here."
-                className="flex-1 h-full min-h-0 bg-gray-200/90 dark:bg-gray-950/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 resize-none font-mono text-sm leading-relaxed placeholder:text-gray-400 rounded-xs"
+                className="flex-1 h-full min-h-0 u-editor backdrop-blur-sm border u-border-soft resize-none font-mono text-sm leading-relaxed placeholder:text-gray-400 rounded-xs"
               />
               {isOpen && suggestions.length > 0 && (
                 <div
-                  className="absolute z-10 max-h-64 w-[min(28rem,calc(100%-1rem))] overflow-auto rounded-xs border border-gray-300/60 dark:border-gray-600/60 bg-white dark:bg-gray-900 shadow-xl"
+                  className="absolute z-10 max-h-64 w-[min(28rem,calc(100%-1rem))] overflow-auto rounded-xs border u-border-soft bg-white dark:bg-gray-900 shadow-xl"
                   style={{ top: popupTop, left: popupLeft }}
                 >
                   <ul className="py-1">
@@ -408,19 +408,17 @@ const TestConverter = () => {
                         onMouseDown={(e) => e.preventDefault()}
                         onClick={() => handleClickSuggestion(s)}
                         className={`px-3 py-1.5 cursor-pointer text-sm flex items-center gap-2 ${
-                          idx === highlightIndex ? 'bg-gray-100 dark:bg-gray-800' : ''
+                          idx === highlightIndex ? 'u-note' : ''
                         }`}
                       >
                         <span
                           className={`inline-flex min-w-[2.2rem] justify-center rounded-xs px-1 py-0.5 text-[10px] font-semibold ${
-                            s.type === 'keyword'
-                              ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300'
-                              : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300'
+                            s.type === 'keyword' ? 'u-badge-kw' : 'u-badge-var'
                           }`}
                         >
                           {s.type === 'keyword' ? 'KW' : 'VAR'}
                         </span>
-                        <span className="text-gray-900 dark:text-gray-100">{s.value}</span>
+                        <span className="u-heading">{s.value}</span>
                       </li>
                     ))}
                   </ul>
@@ -430,7 +428,7 @@ const TestConverter = () => {
             <Button
               onClick={convertToCypressHandler}
               disabled={isConverting || !input.trim()}
-              className="w-full flex-shrink-0 bg-orange-500 hover:bg-orange-600 text-white shadow-lg hover:shadow-xl transition-all duration-200 backdrop-blur-sm border-0 py-6 text-lg font-medium rounded-xs"
+              className="w-full flex-shrink-0 u-btn-cta shadow-lg hover:shadow-xl transition-all duration-200 backdrop-blur-sm border-0 py-6 text-lg font-medium rounded-xs"
             >
               {showProcessing ? (
                 <div className="flex items-center gap-2">
@@ -446,28 +444,25 @@ const TestConverter = () => {
           </div>
         </Card>
 
-        <Card className="w-1/2 flex flex-col p-6 bg-white/40 dark:bg-gray-800/40 backdrop-blur-xl border-white/30 dark:border-gray-700/30 shadow-2xl rounded-xs">
+        <Card className="w-1/2 flex flex-col p-6 u-panel backdrop-blur-xl u-border-faint shadow-2xl rounded-xs">
           <div className="flex flex-col flex-1 space-y-4 min-h-0">
             <div className="flex items-center gap-3 flex-shrink-0">
-              <div className={`w-3 h-3 rounded-full transition-colors duration-300 ${conversionStatus === 'success' ? (hasWarnings ? 'bg-yellow-500' : 'bg-green-500') :
-                  conversionStatus === 'error' ? 'bg-red-500' :
-                    'bg-gray-500'
-                }`}></div>
-              <h2 className="text-xl font-semibold text-gray-800 dark:text-white tracking-wide">Output</h2>
+              <div className={`w-3 h-3 rounded-full transition-colors duration-300 ${conversionStatus === 'success' ? (hasWarnings ? 'u-dot-warn' : 'u-dot-success') : conversionStatus === 'error' ? 'u-dot-error' : 'u-dot-idle'}`}></div>
+              <h2 className="text-xl font-semibold u-subheading tracking-wide">Output</h2>
             </div>
             <div className="flex-1 min-h-0 relative">
               <Textarea
                 value={cypressCode}
                 readOnly
                 placeholder="Converted code will appear here."
-                className="w-full h-full bg-gray-200/90 dark:bg-gray-950/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 resize-none font-mono text-sm leading-relaxed placeholder:text-gray-400 pr-12 rounded-xs"
+                className="w-full h-full u-editor backdrop-blur-sm border u-border-soft resize-none font-mono text-sm leading-relaxed placeholder:text-gray-400 pr-12 rounded-xs"
               />
               {cypressCode && (
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={copyToClipboard}
-                  className="absolute top-2 right-2 h-8 w-8 p-0 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 hover:bg-white/80 dark:hover:bg-gray-800/80 rounded-xs"
+                  className="absolute top-2 right-2 h-8 w-8 p-0 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm u-border-soft hover:bg-white/80 dark:hover:bg-gray-800/80 rounded-xs"
                 >
                   <Copy className="w-4 h-4" />
                 </Button>
@@ -476,7 +471,7 @@ const TestConverter = () => {
             <Button
               onClick={clearOutput}
               disabled={!cypressCode.trim()}
-              className="w-full flex-shrink-0 bg-gray-500 hover:bg-gray-600 text-white shadow-lg hover:shadow-xl transition-all duration-200 backdrop-blur-sm border-0 py-6 text-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed rounded-xs"
+              className="w-full flex-shrink-0 u-btn-neutral shadow-lg hover:shadow-xl transition-all duration-200 backdrop-blur-sm border-0 py-6 text-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed rounded-xs"
             >
               Clear
             </Button>
@@ -491,231 +486,231 @@ const TestConverter = () => {
       >
         <div className="space-y-6">
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Available Commands</h3>
+            <h3 className="text-lg font-semibold u-heading">Available Commands</h3>
 
             <div className="space-y-4">
               <div className="space-y-2">
-                <h4 className="font-medium text-gray-800 dark:text-gray-200">Navigation</h4>
-                <div className="bg-gray-200/80 dark:bg-gray-700/50 p-4 rounded-xs space-y-3 border border-gray-300/50 dark:border-gray-600/50">
+                <h4 className="font-medium u-subheading">Navigation</h4>
+                <div className="u-note p-4 rounded-xs space-y-3 border u-border-soft">
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">go to [url]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Navigate to a specific URL</p>
+                    <code className="text-sm u-code-emphasis font-semibold">go to [url]</code>
+                    <p className="text-sm u-text-muted mt-1">Navigate to a specific URL</p>
                   </div>
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">reload</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Reload the current page</p>
+                    <code className="text-sm u-code-emphasis font-semibold">reload</code>
+                    <p className="text-sm u-text-muted mt-1">Reload the current page</p>
                   </div>
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">go back</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Go back in browser history</p>
+                    <code className="text-sm u-code-emphasis font-semibold">go back</code>
+                    <p className="text-sm u-text-muted mt-1">Go back in browser history</p>
                   </div>
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">go forward</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Go forward in browser history</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <h4 className="font-medium text-gray-800 dark:text-gray-200">Element Interaction</h4>
-                <div className="bg-gray-200/80 dark:bg-gray-700/50 p-4 rounded-xs space-y-3 border border-gray-300/50 dark:border-gray-600/50">
-                  <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">click [selector]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Click on an element</p>
-                  </div>
-                  <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">double click [selector]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Double click on an element</p>
-                  </div>
-                  <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">right click [selector]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Right click on an element</p>
-                  </div>
-                  <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">type [text] [selector]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Type text into an input field</p>
-                  </div>
-                  <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">clear [selector]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Clear the value of an input field</p>
-                  </div>
-                  <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">select [option] [selector]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Select an option from a dropdown</p>
-                  </div>
-                  <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">check [selector]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Check a checkbox or radio button</p>
-                  </div>
-                  <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">uncheck [selector]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Uncheck a checkbox</p>
-                  </div>
-                  <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">hover [selector]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Hover over an element</p>
-                  </div>
-                  <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">focus [selector]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Focus on an element</p>
-                  </div>
-                  <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">blur [selector]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Remove focus from an element</p>
+                    <code className="text-sm u-code-emphasis font-semibold">go forward</code>
+                    <p className="text-sm u-text-muted mt-1">Go forward in browser history</p>
                   </div>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <h4 className="font-medium text-gray-800 dark:text-gray-200">Assertions</h4>
-                <div className="bg-gray-200/80 dark:bg-gray-700/50 p-4 rounded-xs space-y-3 border border-gray-300/50 dark:border-gray-600/50">
+                <h4 className="font-medium u-subheading">Element Interaction</h4>
+                <div className="u-note p-4 rounded-xs space-y-3 border u-border-soft">
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">should be visible [selector]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Assert element is visible</p>
+                    <code className="text-sm u-code-emphasis font-semibold">click [selector]</code>
+                    <p className="text-sm u-text-muted mt-1">Click on an element</p>
                   </div>
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">should not be visible [selector]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Assert element is not visible</p>
+                    <code className="text-sm u-code-emphasis font-semibold">double click [selector]</code>
+                    <p className="text-sm u-text-muted mt-1">Double click on an element</p>
                   </div>
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">should exist [selector]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Assert element exists in DOM</p>
+                    <code className="text-sm u-code-emphasis font-semibold">right click [selector]</code>
+                    <p className="text-sm u-text-muted mt-1">Right click on an element</p>
                   </div>
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">should not exist [selector]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Assert element does not exist in DOM</p>
+                    <code className="text-sm u-code-emphasis font-semibold">type [text] [selector]</code>
+                    <p className="text-sm u-text-muted mt-1">Type text into an input field</p>
                   </div>
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">should be enabled [selector]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Assert element is enabled</p>
+                    <code className="text-sm u-code-emphasis font-semibold">clear [selector]</code>
+                    <p className="text-sm u-text-muted mt-1">Clear the value of an input field</p>
                   </div>
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">should be disabled [selector]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Assert element is disabled</p>
+                    <code className="text-sm u-code-emphasis font-semibold">select [option] [selector]</code>
+                    <p className="text-sm u-text-muted mt-1">Select an option from a dropdown</p>
                   </div>
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">should be checked [selector]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Assert checkbox/radio is checked</p>
+                    <code className="text-sm u-code-emphasis font-semibold">check [selector]</code>
+                    <p className="text-sm u-text-muted mt-1">Check a checkbox or radio button</p>
                   </div>
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">should not be checked [selector]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Assert checkbox/radio is not checked</p>
+                    <code className="text-sm u-code-emphasis font-semibold">uncheck [selector]</code>
+                    <p className="text-sm u-text-muted mt-1">Uncheck a checkbox</p>
                   </div>
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">should contain [selector] [text]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Assert element contains text</p>
+                    <code className="text-sm u-code-emphasis font-semibold">hover [selector]</code>
+                    <p className="text-sm u-text-muted mt-1">Hover over an element</p>
                   </div>
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">should not contain [selector] [text]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Assert element does not contain text</p>
+                    <code className="text-sm u-code-emphasis font-semibold">focus [selector]</code>
+                    <p className="text-sm u-text-muted mt-1">Focus on an element</p>
                   </div>
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">should have value [selector] [value]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Assert input has specific value</p>
-                  </div>
-                  <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">should have text [selector] [text]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Assert element has exact text</p>
-                  </div>
-                  <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">should include text [selector] [text]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Assert element text includes substring</p>
-                  </div>
-                  <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">url should include [text]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Assert URL contains text</p>
-                  </div>
-                  <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">title should be [text]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Assert page title</p>
+                    <code className="text-sm u-code-emphasis font-semibold">blur [selector]</code>
+                    <p className="text-sm u-text-muted mt-1">Remove focus from an element</p>
                   </div>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <h4 className="font-medium text-gray-800 dark:text-gray-200">Wait & Control</h4>
-                <div className="bg-gray-200/80 dark:bg-gray-700/50 p-4 rounded-xs space-y-3 border border-gray-300/50 dark:border-gray-600/50">
+                <h4 className="font-medium u-subheading">Assertions</h4>
+                <div className="u-note p-4 rounded-xs space-y-3 border u-border-soft">
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">wait [milliseconds]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Wait for specified milliseconds</p>
+                    <code className="text-sm u-code-emphasis font-semibold">should be visible [selector]</code>
+                    <p className="text-sm u-text-muted mt-1">Assert element is visible</p>
                   </div>
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">pause</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Pause test execution for debugging</p>
+                    <code className="text-sm u-code-emphasis font-semibold">should not be visible [selector]</code>
+                    <p className="text-sm u-text-muted mt-1">Assert element is not visible</p>
+                  </div>
+                  <div>
+                    <code className="text-sm u-code-emphasis font-semibold">should exist [selector]</code>
+                    <p className="text-sm u-text-muted mt-1">Assert element exists in DOM</p>
+                  </div>
+                  <div>
+                    <code className="text-sm u-code-emphasis font-semibold">should not exist [selector]</code>
+                    <p className="text-sm u-text-muted mt-1">Assert element does not exist in DOM</p>
+                  </div>
+                  <div>
+                    <code className="text-sm u-code-emphasis font-semibold">should be enabled [selector]</code>
+                    <p className="text-sm u-text-muted mt-1">Assert element is enabled</p>
+                  </div>
+                  <div>
+                    <code className="text-sm u-code-emphasis font-semibold">should be disabled [selector]</code>
+                    <p className="text-sm u-text-muted mt-1">Assert element is disabled</p>
+                  </div>
+                  <div>
+                    <code className="text-sm u-code-emphasis font-semibold">should be checked [selector]</code>
+                    <p className="text-sm u-text-muted mt-1">Assert checkbox/radio is checked</p>
+                  </div>
+                  <div>
+                    <code className="text-sm u-code-emphasis font-semibold">should not be checked [selector]</code>
+                    <p className="text-sm u-text-muted mt-1">Assert checkbox/radio is not checked</p>
+                  </div>
+                  <div>
+                    <code className="text-sm u-code-emphasis font-semibold">should contain [selector] [text]</code>
+                    <p className="text-sm u-text-muted mt-1">Assert element contains text</p>
+                  </div>
+                  <div>
+                    <code className="text-sm u-code-emphasis font-semibold">should not contain [selector] [text]</code>
+                    <p className="text-sm u-text-muted mt-1">Assert element does not contain text</p>
+                  </div>
+                  <div>
+                    <code className="text-sm u-code-emphasis font-semibold">should have value [selector] [value]</code>
+                    <p className="text-sm u-text-muted mt-1">Assert input has specific value</p>
+                  </div>
+                  <div>
+                    <code className="text-sm u-code-emphasis font-semibold">should have text [selector] [text]</code>
+                    <p className="text-sm u-text-muted mt-1">Assert element has exact text</p>
+                  </div>
+                  <div>
+                    <code className="text-sm u-code-emphasis font-semibold">should include text [selector] [text]</code>
+                    <p className="text-sm u-text-muted mt-1">Assert element text includes substring</p>
+                  </div>
+                  <div>
+                    <code className="text-sm u-code-emphasis font-semibold">url should include [text]</code>
+                    <p className="text-sm u-text-muted mt-1">Assert URL contains text</p>
+                  </div>
+                  <div>
+                    <code className="text-sm u-code-emphasis font-semibold">title should be [text]</code>
+                    <p className="text-sm u-text-muted mt-1">Assert page title</p>
                   </div>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <h4 className="font-medium text-gray-800 dark:text-gray-200">Cookies & Network</h4>
-                <div className="bg-gray-200/80 dark:bg-gray-700/50 p-4 rounded-xs space-y-3 border border-gray-300/50 dark:border-gray-600/50">
+                <h4 className="font-medium u-subheading">Wait & Control</h4>
+                <div className="u-note p-4 rounded-xs space-y-3 border u-border-soft">
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">cookie [name] should exist</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Assert cookie exists</p>
+                    <code className="text-sm u-code-emphasis font-semibold">wait [milliseconds]</code>
+                    <p className="text-sm u-text-muted mt-1">Wait for specified milliseconds</p>
                   </div>
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">cookie [name] should not exist</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Assert cookie does not exist</p>
-                  </div>
-                  <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">cookie [name] should have value [value]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Assert cookie has specific value</p>
+                    <code className="text-sm u-code-emphasis font-semibold">pause</code>
+                    <p className="text-sm u-text-muted mt-1">Pause test execution for debugging</p>
                   </div>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <h4 className="font-medium text-gray-800 dark:text-gray-200">Scrolling & Viewport</h4>
-                <div className="bg-gray-200/80 dark:bg-gray-700/50 p-4 rounded-xs space-y-3 border border-gray-300/50 dark:border-gray-600/50">
+                <h4 className="font-medium u-subheading">Cookies & Network</h4>
+                <div className="u-note p-4 rounded-xs space-y-3 border u-border-soft">
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">scroll to top</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Scroll to top of page</p>
+                    <code className="text-sm u-code-emphasis font-semibold">cookie [name] should exist</code>
+                    <p className="text-sm u-text-muted mt-1">Assert cookie exists</p>
                   </div>
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">scroll to bottom</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Scroll to bottom of page</p>
+                    <code className="text-sm u-code-emphasis font-semibold">cookie [name] should not exist</code>
+                    <p className="text-sm u-text-muted mt-1">Assert cookie does not exist</p>
                   </div>
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">scroll to [x] [y]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Scroll to specific coordinates</p>
-                  </div>
-                  <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">set viewport [width] [height]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Set browser viewport size</p>
+                    <code className="text-sm u-code-emphasis font-semibold">cookie [name] should have value [value]</code>
+                    <p className="text-sm u-text-muted mt-1">Assert cookie has specific value</p>
                   </div>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <h4 className="font-medium text-gray-800 dark:text-gray-200">Advanced</h4>
-                <div className="bg-gray-200/80 dark:bg-gray-700/50 p-4 rounded-xs space-y-3 border border-gray-300/50 dark:border-gray-600/50">
+                <h4 className="font-medium u-subheading">Scrolling & Viewport</h4>
+                <div className="u-note p-4 rounded-xs space-y-3 border u-border-soft">
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">trigger [event] [selector]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Trigger custom event on element</p>
+                    <code className="text-sm u-code-emphasis font-semibold">scroll to top</code>
+                    <p className="text-sm u-text-muted mt-1">Scroll to top of page</p>
                   </div>
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">attach file [file] [selector]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Attach file to file input</p>
+                    <code className="text-sm u-code-emphasis font-semibold">scroll to bottom</code>
+                    <p className="text-sm u-text-muted mt-1">Scroll to bottom of page</p>
                   </div>
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">alias as [selector] [name]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Create alias for element</p>
+                    <code className="text-sm u-code-emphasis font-semibold">scroll to [x] [y]</code>
+                    <p className="text-sm u-text-muted mt-1">Scroll to specific coordinates</p>
                   </div>
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">use alias [name]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Use previously created alias</p>
+                    <code className="text-sm u-code-emphasis font-semibold">set viewport [width] [height]</code>
+                    <p className="text-sm u-text-muted mt-1">Set browser viewport size</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <h4 className="font-medium u-subheading">Advanced</h4>
+                <div className="u-note p-4 rounded-xs space-y-3 border u-border-soft">
+                  <div>
+                    <code className="text-sm u-code-emphasis font-semibold">trigger [event] [selector]</code>
+                    <p className="text-sm u-text-muted mt-1">Trigger custom event on element</p>
                   </div>
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">intercept [method] [url] [alias]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Intercept network requests</p>
+                    <code className="text-sm u-code-emphasis font-semibold">attach file [file] [selector]</code>
+                    <p className="text-sm u-text-muted mt-1">Attach file to file input</p>
                   </div>
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">wait for [alias]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Wait for intercepted request</p>
+                    <code className="text-sm u-code-emphasis font-semibold">alias as [selector] [name]</code>
+                    <p className="text-sm u-text-muted mt-1">Create alias for element</p>
                   </div>
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">force click [selector]</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Force click on element</p>
+                    <code className="text-sm u-code-emphasis font-semibold">use alias [name]</code>
+                    <p className="text-sm u-text-muted mt-1">Use previously created alias</p>
+                  </div>
+                  <div>
+                    <code className="text-sm u-code-emphasis font-semibold">intercept [method] [url] [alias]</code>
+                    <p className="text-sm u-text-muted mt-1">Intercept network requests</p>
+                  </div>
+                  <div>
+                    <code className="text-sm u-code-emphasis font-semibold">wait for [alias]</code>
+                    <p className="text-sm u-text-muted mt-1">Wait for intercepted request</p>
+                  </div>
+                  <div>
+                    <code className="text-sm u-code-emphasis font-semibold">force click [selector]</code>
+                    <p className="text-sm u-text-muted mt-1">Force click on element</p>
                   </div>
 
                 </div>
@@ -724,8 +719,8 @@ const TestConverter = () => {
           </div>
 
           <div className="space-y-3">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Examples</h3>
-            <div className="bg-gray-300/80 dark:bg-gray-800/50 p-4 rounded-xs border border-gray-400/50 dark:border-gray-600/50">
+            <h3 className="text-lg font-semibold u-heading">Examples</h3>
+            <div className="u-note p-4 rounded-xs border u-border-soft">
               <pre className="text-sm text-gray-900 dark:text-gray-300 font-mono whitespace-pre-wrap">
                 {
                 `it complete login test
@@ -762,8 +757,8 @@ it login with intercept test
             </div>
           </div>
 
-          <div className="text-sm text-gray-700 dark:text-gray-400 bg-gray-100/80 dark:bg-gray-700/50 p-3 rounded-xs border border-gray-300/50 dark:border-gray-600/50">
-            <p><strong>Note:</strong> Selectors can be CSS selectors like <code className="text-blue-700 dark:text-blue-400 font-semibold">#id</code>, <code className="text-blue-700 dark:text-blue-400 font-semibold">.class</code>, or <code className="text-blue-700 dark:text-blue-400 font-semibold">[attribute=value]</code></p>
+          <div className="text-sm u-text-muted u-note p-3 rounded-xs border u-border-soft">
+            <p><strong>Note:</strong> Selectors can be CSS selectors like <code className="u-code-emphasis font-semibold">#id</code>, <code className="u-code-emphasis font-semibold">.class</code>, or <code className="u-code-emphasis font-semibold">[attribute=value]</code></p>
           </div>
         </div>
       </Dialog>

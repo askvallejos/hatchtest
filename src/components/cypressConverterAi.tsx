@@ -158,29 +158,29 @@ Input: ${input}`;
   return (
     <div className="h-full flex flex-col p-4">
       <div className="mb-6 flex-shrink-0 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-2xl font-bold u-heading">
           Cypress Converter AI
         </h1>
-        <HelpCircle className="w-6 h-6 cursor-pointer text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-300 transition-all duration-200 hover:scale-110 hover:drop-shadow-lg" onClick={() => setShowKeywordGuide(true)} />
+        <HelpCircle className="w-6 h-6 cursor-pointer u-heading transition-all duration-200 hover:scale-110 hover:drop-shadow-lg" onClick={() => setShowKeywordGuide(true)} />
       </div>
 
       <div className="flex w-full flex-1 gap-x-4 min-h-0">
-        <Card className="w-1/2 flex flex-col p-6 bg-white/40 dark:bg-gray-800/40 backdrop-blur-xl border-white/30 dark:border-gray-700/30 shadow-2xl rounded-xs">
+        <Card className="w-1/2 flex flex-col p-6 u-panel backdrop-blur-xl u-border-faint shadow-2xl rounded-xs">
           <div className="flex flex-col flex-1 space-y-4 min-h-0">
             <div className="flex items-center gap-3 flex-shrink-0">
-              <div className={`w-3 h-3 rounded-full transition-colors duration-300 ${input.trim() ? 'bg-green-500' : 'bg-gray-500'}`}></div>
-              <h2 className="text-xl font-semibold text-gray-800 dark:text-white tracking-wide">Input</h2>
+              <div className={`w-3 h-3 rounded-full transition-colors duration-300 ${input.trim() ? 'u-dot-success' : 'u-dot-idle'}`}></div>
+              <h2 className="text-xl font-semibold u-subheading tracking-wide">Input</h2>
             </div>
             <Textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Input your test description here."
-              className="flex-1 min-h-0 bg-gray-200/90 dark:bg-gray-950/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 resize-none font-mono text-sm leading-relaxed placeholder:text-gray-400 rounded-xs"
+              className="flex-1 min-h-0 u-editor backdrop-blur-sm border u-border-soft resize-none font-mono text-sm leading-relaxed placeholder:text-gray-400 rounded-xs"
             />
             <Button
               onClick={processWithAI}
               disabled={isProcessing || !input.trim()}
-              className="w-full flex-shrink-0 bg-orange-500 hover:bg-orange-600 text-white shadow-lg hover:shadow-xl transition-all duration-200 backdrop-blur-sm border-0 py-6 text-lg font-medium rounded-xs"
+              className="w-full flex-shrink-0 u-btn-cta shadow-lg hover:shadow-xl transition-all duration-200 backdrop-blur-sm border-0 py-6 text-lg font-medium rounded-xs"
             >
               {showProcessing ? (
                 <div className="flex items-center gap-2">
@@ -196,28 +196,25 @@ Input: ${input}`;
           </div>
         </Card>
 
-        <Card className="w-1/2 flex flex-col p-6 bg-white/40 dark:bg-gray-800/40 backdrop-blur-xl border-white/30 dark:border-gray-700/30 shadow-2xl rounded-xs">
+        <Card className="w-1/2 flex flex-col p-6 u-panel backdrop-blur-xl u-border-faint shadow-2xl rounded-xs">
           <div className="flex flex-col flex-1 space-y-4 min-h-0">
             <div className="flex items-center gap-3 flex-shrink-0">
-              <div className={`w-3 h-3 rounded-full transition-colors duration-300 ${processingStatus === 'success' ? 'bg-green-500' :
-                  processingStatus === 'error' ? 'bg-red-500' :
-                    'bg-gray-500'
-                }`}></div>
-              <h2 className="text-xl font-semibold text-gray-800 dark:text-white tracking-wide">Output</h2>
+              <div className={`w-3 h-3 rounded-full transition-colors duration-300 ${processingStatus === 'success' ? 'u-dot-success' : processingStatus === 'error' ? 'u-dot-error' : 'u-dot-idle'}`}></div>
+              <h2 className="text-xl font-semibold u-subheading tracking-wide">Output</h2>
             </div>
             <div className="flex-1 min-h-0 relative">
               <Textarea
                 value={aiOutput}
                 readOnly
                 placeholder="Generated test code will appear here."
-                className="w-full h-full bg-gray-200/90 dark:bg-gray-950/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 resize-none font-mono text-sm leading-relaxed placeholder:text-gray-400 pr-12 rounded-xs"
+                className="w-full h-full u-editor backdrop-blur-sm border u-border-soft resize-none font-mono text-sm leading-relaxed placeholder:text-gray-400 pr-12 rounded-xs"
               />
               {aiOutput && (
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={copyToClipboard}
-                  className="absolute top-2 right-2 h-8 w-8 p-0 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-white/40 dark:border-gray-600/40 hover:bg-white/80 dark:hover:bg-gray-800/80 rounded-xs"
+                  className="absolute top-2 right-2 h-8 w-8 p-0 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm u-border-soft hover:bg-white/80 dark:hover:bg-gray-800/80 rounded-xs"
                 >
                   <Copy className="w-4 h-4" />
                 </Button>
@@ -226,7 +223,7 @@ Input: ${input}`;
             <Button
               onClick={clearOutput}
               disabled={!aiOutput.trim()}
-              className="w-full flex-shrink-0 bg-gray-500 hover:bg-gray-600 text-white shadow-lg hover:shadow-xl transition-all duration-200 backdrop-blur-sm border-0 py-6 text-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed rounded-xs"
+              className="w-full flex-shrink-0 u-btn-neutral shadow-lg hover:shadow-xl transition-all duration-200 backdrop-blur-sm border-0 py-6 text-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed rounded-xs"
             >
               Clear
             </Button>
@@ -241,48 +238,48 @@ Input: ${input}`;
       >
         <div className="space-y-6">
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">AI Test Generation</h3>
+            <h3 className="text-lg font-semibold u-heading">AI Test Generation</h3>
 
             <div className="space-y-4">
               <div className="space-y-2">
-                <h4 className="font-medium text-gray-800 dark:text-gray-200">How to Use</h4>
-                <div className="bg-gray-200/80 dark:bg-gray-700/50 p-4 rounded-xs space-y-3 border border-gray-300/50 dark:border-gray-600/50">
+                <h4 className="font-medium u-subheading">How to Use</h4>
+                <div className="u-note p-4 rounded-xs space-y-3 border u-border-soft">
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">English Description</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Describe your test scenario in plain English</p>
+                    <code className="text-sm u-code-emphasis font-semibold">English Description</code>
+                    <p className="text-sm u-text-muted mt-1">Describe your test scenario in plain English</p>
                   </div>
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">AI Conversion</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">AI converts your description into Cypress test code</p>
+                    <code className="text-sm u-code-emphasis font-semibold">AI Conversion</code>
+                    <p className="text-sm u-text-muted mt-1">AI converts your description into Cypress test code</p>
                   </div>
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">Ready-to-Use Code</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Get properly formatted Cypress tests with assertions</p>
+                    <code className="text-sm u-code-emphasis font-semibold">Ready-to-Use Code</code>
+                    <p className="text-sm u-text-muted mt-1">Get properly formatted Cypress tests with assertions</p>
                   </div>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <h4 className="font-medium text-gray-800 dark:text-gray-200">Example Descriptions</h4>
-                <div className="bg-gray-200/80 dark:bg-gray-700/50 p-4 rounded-xs space-y-3 border border-gray-300/50 dark:border-gray-600/50">
+                <h4 className="font-medium u-subheading">Example Descriptions</h4>
+                <div className="u-note p-4 rounded-xs space-y-3 border u-border-soft">
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">"Test login with valid credentials"</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Generates login test with form filling and validation</p>
+                    <code className="text-sm u-code-emphasis font-semibold">"Test login with valid credentials"</code>
+                    <p className="text-sm u-text-muted mt-1">Generates login test with form filling and validation</p>
                   </div>
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">"Verify user can add item to cart"</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Creates e-commerce cart functionality test</p>
+                    <code className="text-sm u-code-emphasis font-semibold">"Verify user can add item to cart"</code>
+                    <p className="text-sm u-text-muted mt-1">Creates e-commerce cart functionality test</p>
                   </div>
                   <div>
-                    <code className="text-sm text-blue-700 dark:text-blue-400 font-semibold">"Check form validation shows errors"</code>
-                    <p className="text-sm text-gray-800 dark:text-gray-400 mt-1">Tests form validation and error messages</p>
+                    <code className="text-sm u-code-emphasis font-semibold">"Check form validation shows errors"</code>
+                    <p className="text-sm u-text-muted mt-1">Tests form validation and error messages</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="text-sm text-gray-700 dark:text-gray-400 bg-gray-100/80 dark:bg-gray-700/50 p-3 rounded-xs border border-gray-300/50 dark:border-gray-600/50">
+          <div className="text-sm u-text-muted u-note p-3 rounded-xs border u-border-soft">
             <p><strong>Note:</strong> The AI uses Google's Gemini 2.0 Flash model to generate high-quality Cypress test code from your English descriptions.</p>
           </div>
         </div>

@@ -7,40 +7,40 @@ const Preferences = () => {
   return (
     <div className="p-4 space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-2xl font-bold u-heading">
           Preferences
         </h1>
       </div>
 
       <div className="space-y-4">
         <div className="flex items-center space-x-2">
-          <Palette className="h-5 w-5 text-gray-600 dark:text-gray-400" />
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+          <Palette className="h-5 w-5 u-text-muted" />
+          <h2 className="text-xl font-semibold u-heading">
             Appearance
           </h2>
         </div>
         
-        <Card className="p-6 bg-white/40 dark:bg-gray-800/40 backdrop-blur-xl border-gray-300/50 dark:border-gray-700/30">
+        <Card className="p-6 u-panel backdrop-blur-xl u-border-faint">
           <div className="space-y-4">
             <div>
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+              <h3 className="text-lg font-medium u-heading mb-2">
                 Theme
               </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+              <p className="text-sm u-text-muted mb-4">
                 Choose between light and dark mode for the application interface.
               </p>
             </div>
             
-            <div className="flex items-center justify-between p-4 bg-gray-100 dark:bg-gray-700 rounded-xs">
+            <div className="flex items-center justify-between p-4 u-note rounded-xs">
               <div className="flex items-center space-x-3">
                 <div className="p-2 bg-gray-200 dark:bg-gray-600 rounded-xs">
-                  <Settings className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                  <Settings className="h-4 w-4 u-text-muted" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">
+                  <p className="text-sm font-medium u-heading">
                     Theme Toggle
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <p className="text-xs u-text-extra-muted">
                     Switch between light and dark mode
                   </p>
                 </div>
@@ -53,33 +53,33 @@ const Preferences = () => {
 
       <div className="space-y-4">
         <div className="flex items-center space-x-2">
-          <SquareMousePointer className="h-5 w-5 text-gray-600 dark:text-gray-400" />
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+          <SquareMousePointer className="h-5 w-5 u-text-muted" />
+          <h2 className="text-xl font-semibold u-heading">
             Interface
           </h2>
         </div>
         
-        <Card className="p-6 bg-white/40 dark:bg-gray-800/40 backdrop-blur-xl border-gray-300/50 dark:border-gray-700/30">
+        <Card className="p-6 u-panel backdrop-blur-xl u-border-faint">
           <div className="space-y-4">
             <div>
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+              <h3 className="text-lg font-medium u-heading mb-2">
                 Tooltips
               </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+              <p className="text-sm u-text-muted mb-4">
                 Enable or disable tooltip hints throughout the application interface.
               </p>
             </div>
             
-            <div className="flex items-center justify-between p-4 bg-gray-100 dark:bg-gray-700 rounded-xs">
+            <div className="flex items-center justify-between p-4 u-note rounded-xs">
               <div className="flex items-center space-x-3">
                 <div className="p-2 bg-gray-200 dark:bg-gray-600 rounded-xs">
-                  <HelpCircle className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                  <HelpCircle className="h-4 w-4 u-text-muted" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">
+                  <p className="text-sm font-medium u-heading">
                     Show Tooltips
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <p className="text-xs u-text-extra-muted">
                     Display helpful hints and information
                   </p>
                 </div>

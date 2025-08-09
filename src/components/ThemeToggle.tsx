@@ -10,7 +10,7 @@ export function ThemeToggle() {
       variant="ghost"
       size="default"
       onClick={toggleTheme}
-      className="flex items-center space-x-2 px-3 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-200 border border-gray-300 dark:border-gray-600 rounded-xs"
+      className="flex items-center space-x-2 px-3 py-2 transition-all duration-200 rounded-xs u-hover-surface u-border-soft border"
     >
       {theme === 'light' ? (
         <Moon className="h-4 w-4" />

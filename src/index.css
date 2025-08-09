@@ -175,3 +175,48 @@ body {
 .dark .glass-shadow {
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
 }
+
+/* High-frequency color utilities (normalized) */
+@layer utilities {
+  /* Text */
+  .u-heading { @apply text-gray-900 dark:text-white; }
+  .u-subheading { @apply text-gray-800 dark:text-gray-200; }
+  .u-text-muted { @apply text-gray-600 dark:text-gray-400; }
+  .u-text-extra-muted { @apply text-gray-500 dark:text-gray-400; }
+  .u-text-faint { @apply text-gray-400 dark:text-gray-400; }
+
+  /* Code/keyword emphasis */
+  .u-code-emphasis { @apply text-blue-700 dark:text-blue-400; }
+
+  /* Surfaces */
+  .u-panel { @apply bg-white/40 dark:bg-gray-800/40; }
+  .u-editor { @apply bg-gray-200/90 dark:bg-gray-950/60; }
+  .u-note { @apply bg-gray-100/80 dark:bg-gray-700/50; }
+
+  /* Borders */
+  .u-border-soft { @apply border-gray-300/50 dark:border-gray-600/50; }
+  .u-border-faint { @apply border-white/30 dark:border-gray-700/30; }
+
+  /* Hover helpers */
+  .u-hover-surface:hover { @apply bg-gray-100/80 dark:bg-gray-700/80; }
+
+  /* Buttons */
+  .u-btn-cta { @apply bg-orange-500 text-white; }
+  .u-btn-cta:hover { @apply bg-orange-600; }
+  .u-btn-neutral { @apply bg-gray-500 text-white; }
+  .u-btn-neutral:hover { @apply bg-gray-600; }
+
+  /* Status dots */
+  .u-dot-success { @apply bg-green-500; }
+  .u-dot-warn { @apply bg-yellow-500; }
+  .u-dot-error { @apply bg-red-500; }
+  .u-dot-idle { @apply bg-gray-500; }
+
+  /* Focus */
+  .u-focus-ring { @apply focus:outline-none; }
+  .u-focus-ring:focus { @apply ring-2 ring-gray-400 dark:ring-gray-600; }
+
+  /* Suggestion badges */
+  .u-badge-kw { @apply bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300; }
+  .u-badge-var { @apply bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300; }
+}
