@@ -430,7 +430,7 @@ const Variables = () => {
   }, [totalPages, currentPage]);
 
   return (
-    <div className="flex-1 flex flex-col min-h-0 overflow-hidden p-4 space-y-6">
+    <div className="h-full flex flex-col min-h-0 overflow-hidden p-4 space-y-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Variables</h1>
