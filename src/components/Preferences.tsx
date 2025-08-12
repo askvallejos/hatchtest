@@ -22,7 +22,7 @@ const Preferences = () => {
           </h2>
         </div>
         
-        <Card className="p-6 u-panel backdrop-blur-xl u-border-faint">
+        <Card className="p-6 u-panel backdrop-blur-xl u-border-faint shadow-2xl">
           <div className="space-y-4">
             <div>
               <h3 className="text-lg font-medium u-heading mb-2">
@@ -61,7 +61,7 @@ const Preferences = () => {
           </h2>
         </div>
         
-        <Card className="p-6 u-panel backdrop-blur-xl u-border-faint">
+        <Card className="p-6 u-panel backdrop-blur-xl u-border-faint shadow-2xl">
           <div className="space-y-4">
             <div>
               <h3 className="text-lg font-medium u-heading mb-2">
